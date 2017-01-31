@@ -366,6 +366,7 @@ class StoreController extends Controller {
 		Session::flash('_old_input.ubicacion', $tienda[0]->ubication);
 		Session::flash('_old_input.prioridad', $tienda[0]->order);
 		Session::flash('_old_input.img_banner', $tienda[0]->banner);
+		Session::flash('_old_input.status', $tienda[0]->status);
 		Session::flash('_old_input.store_id', $id_store);
 		Session::flash('_old_input.edit', true);
 				
