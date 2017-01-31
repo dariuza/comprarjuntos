@@ -377,8 +377,7 @@ class StoreController extends Controller {
 		}
 	}
 
-	public function postConsultarproducts(Request $request){
-		//$request->input('id')
+	public function postConsultarproducts(Request $request){		
 		//consultamos los productos de la tienda seleccionada.
 		$productos=array();
 		try {$productos=\DB::table('clu_products')
@@ -388,13 +387,19 @@ class StoreController extends Controller {
 		}catch (ModelNotFoundException $e) {
 			$message = ['Problemas al hallar productos de la Tienda'];			
 		}
-		//si no tiene tiendas, verificador.	
+		//antes de enviar, asignamos el id de tienda par el listarajax
+		Session::put('store.id', $request->input('id'));
 		
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
 	}
 
 	public function getListarajax(Request $request){
 
+		//Tienda id
+		if(empty(Session::get('store.id'))){
+			//algo anda muy mal, no se udo asignar el id de tienda en la funcion Consultarproductos
+			return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]]);
+		}
 
 		$moduledata['total']=Producto::count();
 

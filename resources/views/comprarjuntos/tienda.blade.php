@@ -464,52 +464,31 @@
 		    //llamado sincrono, para cambiar el id de tienda
 
 		    javascript:clu_tienda.table = $('#example').DataTable( {		
-		    "responsive": true,
-		    "columnDefs": [
-		        { responsivePriority: 1, targets: 0 },
-		        { responsivePriority: 2, targets: -1 }
-    		],
-		    "processing": true,
-		    "bLengthChange": false,
-		    "serverSide": true,
-		    "bDestroy": true,      
-		    "ajax": "{{url('mistiendas/listarajax')}}",
-		    "iDisplayLength": 25,     	       
-		    "columns": [				   
-				{ "data": "name"},
-				{ "data": "price"},		        
-				{ "data": "category"},  	    
-		        { "data": "description"}		                   
-		    ],       
-		    "language": {
-		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-		    },	 
-
-		});
-		});
-		
-		/*
-		javascript:clu_tienda.table = $('#example').DataTable( {		
-		    "responsive": true,
-		    "processing": true,
-		    "bLengthChange": false,
-		    "serverSide": true,	        
-		    "ajax": "{{url('mistiendas/listarajax')}}",
-		    "iDisplayLength": 25,     	       
-		    "columns": [				   
-				{ "data": "name"},
-				{ "data": "price"},		        
-				{ "data": "category"},  	    
-		        { "data": "description"}		                   
-		    ],       
-		    "language": {
-		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-		    },	    
-		});
-		*/
+			    "responsive": true,
+			    "columnDefs": [
+			        { responsivePriority: 1, targets: 0 },
+			        { responsivePriority: 2, targets: -1 }
+	    		],
+			    "processing": true,
+			    "bLengthChange": false,
+			    "serverSide": true,
+			    "bDestroy": true,      
+			    "ajax": "{{url('mistiendas/listarajax')}}",
+			    "iDisplayLength": 25,     	       
+			    "columns": [				   
+					{ "data": "name"},
+					{ "data": "price"},		        
+					{ "data": "category"},  	    
+			        { "data": "description"}		                   
+			    ],       
+			    "language": {
+			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			    },
+			});
+		});		
 
 	</script>
 	@if(old('edit'))		
 		<script> $("#nuevatienda_modal").modal(); </script>
-	@endif
+	@endif	
 @endsection
