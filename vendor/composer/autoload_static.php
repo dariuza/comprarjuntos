@@ -273,7 +273,10 @@ class ComposerStaticInit4de8934c8b51214bf3548eeb287fcd8c
     public static $classMap = array (
         'AppTableSeeder' => __DIR__ . '/../..' . '/database/seeds/AppTableSeeder.php',
         'AppXUserTableSeeder' => __DIR__ . '/../..' . '/database/seeds/AppXUserTableSeeder.php',
+        'CategoryTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CategoryTableSeeder.php',
         'CityTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CityTableSeeder.php',
+        'CreateCluCategoryTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_01_031419_create_clu_category_table.php',
+        'CreateCluProductsTable' => __DIR__ . '/../..' . '/database/migrations/2017_26_01_031419_create_clu_products_table.php',
         'CreateCluStoreTable' => __DIR__ . '/../..' . '/database/migrations/2017_09_01_031419_create_clu_store_table.php',
         'CreateSegAppTable' => __DIR__ . '/../..' . '/database/migrations/2016_12_08_184057_create_seg_app_table.php',
         'CreateSegAppXUserTable' => __DIR__ . '/../..' . '/database/migrations/2016_12_08_184128_create_seg_app_x_user_table.php',

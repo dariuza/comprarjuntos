@@ -28,8 +28,23 @@
 			color: #333 !important;
 		}
 		
+		.chosen-container .chosen-container-multi{
+			border: 1px solid #ccc !important;
+			border-radius: 4px !important;
+		}
+		.categorias{
+			width: 100% !important;
+			border-radius: 4px !important;
+			position: relative !important;
+			min-height: 1px !important;
+			padding-right: 15px !important;
+			padding-left: 15px !important;			
+		}
+		
+		
 	</style>
 	<link  rel="stylesheet" href="{{ url('css/bootstrap-colorpicker.min.css') }}" type="text/css" />
+	<link  rel="stylesheet" href="{{ url('css/chosen.css') }}" type="text/css" />
 	<link  rel="stylesheet" href="{{ url('css/bootstrap-social.css') }}" type="text/css" />
 	<link  rel="stylesheet" href="{{ url('css/font-awesome.css') }}" type="text/css" />	
 	<div class="row">	
@@ -178,79 +193,80 @@
 						<div class="row ">
 							<div class="col-md-12 col-md-offset-0 row_init">								
 								<div class="row col-md-12 ">
-									<div class="col-md-4">
-										<div class="form-group ">
-											{!! Form::label('nombre', 'Nombre', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">
-												{!! Form::text('nombre',old('nombre'), array('class' => 'form-control','placeholder'=>'Ingresa el Nombre o La Razòn Social')) !!}
-											</div>
-
-											{{--
-												{!! Form::label('nit', 'NIT', array('class' => 'col-md-12 control-label')) !!}
+									<div class="col-md-8">
+										<div class="col-md-6">
+											<div class="form-group ">
+												{!! Form::label('nombre', 'Nombre', array('class' => 'col-md-12 control-label')) !!}
 												<div class="col-md-12">
-													{!! Form::text('nit',old('nit'), array('class' => 'form-control','placeholder'=>'Nùmero de identificaciòn Tributaria')) !!}
+													{!! Form::text('nombre',old('nombre'), array('class' => 'form-control','placeholder'=>'Ingresa el Nombre o La Razòn Social')) !!}
 												</div>
-											--}}
 
-											{!! Form::label('departamento', 'Departamento', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">
-												{!! Form::select('departamento',Session::get('modulo.departamentos'),old('departamento'), array('class' => 'form-control','placeholder'=>'Departamento de Tienda')) !!}
-											</div>
-											
-											{!! Form::label('municipio', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">
-												{!! Form::select('municipio',Session::get('modulo.ciudades'),old('municipio'), array('class' => 'form-control','placeholder'=>'Municipio de Tienda')) !!}
-											</div>
-											
-											{!! Form::label('direccion', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">
-												{!! Form::text('direccion',old('direccion'), array('class' => 'form-control','placeholder'=>'Dirección de Tienda')) !!}
-											</div>
+												{{--
+													{!! Form::label('nit', 'NIT', array('class' => 'col-md-12 control-label')) !!}
+													<div class="col-md-12">
+														{!! Form::text('nit',old('nit'), array('class' => 'form-control','placeholder'=>'Nùmero de identificaciòn Tributaria')) !!}
+													</div>
+												--}}
 
-											{!! Form::label('categorias', 'Categorias', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">									
-												<div class="input-group ">									
-													{!! Form::text('categorias',old('categorias'), array('class' => 'form-control','placeholder'=>'Datos separado por una coma','aria-label'=>'Amount (to the nearest dollar)')) !!}
-													<span class="input-group-addon" data-toggle="tooltip" title="Las categorias agrupan los diferentes productos de la tienda. Ejemplo: bisuterìa,accesorios,regalos">?</span>
+												{!! Form::label('departamento', 'Departamento', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													{!! Form::select('departamento',Session::get('modulo.departamentos'),old('departamento'), array('class' => 'form-control','placeholder'=>'Departamento de Tienda')) !!}
+												</div>
+												
+												{!! Form::label('municipio', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													{!! Form::select('municipio',Session::get('modulo.ciudades'),old('municipio'), array('class' => 'form-control','placeholder'=>'Municipio de Tienda')) !!}
+												</div>
+												
+												{!! Form::label('direccion', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													{!! Form::text('direccion',old('direccion'), array('class' => 'form-control','placeholder'=>'Dirección de Tienda')) !!}
 												</div>
 											</div>
-
-											
 										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group ">
-											
-											{!! Form::label('color_uno', 'Color Primario', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">
-												<div id="cp1" class="input-group colorpicker-component">
-													@if(old('color_uno'))
-														{!! Form::text('color_uno',old('color_uno'), array('class' => 'form-control sample-selector','placeholder'=>'Color Primario de tu tienda')) !!}
-													@else
-														{!! Form::text('color_uno','#ddd', array('class' => 'form-control sample-selector','placeholder'=>'Color Primario de tu tienda')) !!}
-													@endif
-													
-													<span class="input-group-addon"><i></i></span>
+										<div class="col-md-6">
+											<div class="form-group ">
+												
+												{!! Form::label('color_uno', 'Color Primario', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													<div id="cp1" class="input-group colorpicker-component">
+														@if(old('color_uno'))
+															{!! Form::text('color_uno',old('color_uno'), array('class' => 'form-control sample-selector','placeholder'=>'Color Primario de tu tienda')) !!}
+														@else
+															{!! Form::text('color_uno','#ddd', array('class' => 'form-control sample-selector','placeholder'=>'Color Primario de tu tienda')) !!}
+														@endif
+														
+														<span class="input-group-addon"><i></i></span>
+													</div>
 												</div>
-											</div>
 
-											{!! Form::label('color_dos', 'Color Secundario', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">
-												<div id="cp2" class="input-group colorpicker-component">
-													@if(old('color_dos'))
-														{!! Form::text('color_dos',old('color_dos'), array('class' => 'form-control sample-selector','placeholder'=>'Color Secundario de tu tienda')) !!}											
-													@else
-														{!! Form::text('color_dos','#333', array('class' => 'form-control sample-selector','placeholder'=>'Color Secundario de tu tienda')) !!}											
-													@endif
-													<span class="input-group-addon"><i></i></span>
+												{!! Form::label('color_dos', 'Color Secundario', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													<div id="cp2" class="input-group colorpicker-component">
+														@if(old('color_dos'))
+															{!! Form::text('color_dos',old('color_dos'), array('class' => 'form-control sample-selector','placeholder'=>'Color Secundario de tu tienda')) !!}											
+														@else
+															{!! Form::text('color_dos','#333', array('class' => 'form-control sample-selector','placeholder'=>'Color Secundario de tu tienda')) !!}											
+														@endif
+														<span class="input-group-addon"><i></i></span>
+													</div>
 												</div>
-											</div>
 
-											{!! Form::label('descripcion', 'Descripciòn', array('class' => 'col-md-12 control-label')) !!}
-											<div class="col-md-12">
-												{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows' => 7,'placeholder'=>'Descripciòn de tu Tienda')) !!}
-											</div>
+												{!! Form::label('descripcion', 'Descripciòn', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows' => 3,'placeholder'=>'Descripciòn de tu Tienda')) !!}
+												</div>
 
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group ">
+												{!! Form::label('categorias', 'Categorias', array('class' => 'col-md-12 control-label')) !!}
+												<div class="input-group input-grp categorias col-md-12">		
+													{!! Form::select('categorias_select',Session::get('modulo.categorias'),old('categorias_select'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las categorias','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+													{!! Form::hidden('categorias',old('categorias'),array('id'=>'categorias')) !!}
+												</div>											
+											</div>
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -295,7 +311,7 @@
 
 											<label for="movil" class="col-md-12 control-label"><span class="fa fa-whatsapp"></span>  Movil WhatsUP</label>											
 											<div class="col-md-12">
-												{!! Form::text('movil',old('movil'), array('class' => 'form-control','placeholder'=>'Ìngresa un nùmero de Celular')) !!}
+												{!! Form::text('movil',old('movil'), array('id' => 'movil' , 'class' => 'form-control','placeholder'=>'Ìngresa un nùmero de Celular')) !!}
 											</div>
 
 											<label for="ubicacion" class="col-md-12 control-label"><span class="fa fa-google"></span>  Ubicaciòn</label>											
@@ -443,8 +459,48 @@
 					<h4 class="modal-title">Nuevo Producto</h4>				
 				</div>
 				<div class = "alerts-module"></div>
+				{!! Form::open(array('url' => Session::get('controlador').'nuevoproducto', 'id'=>'form_nuevo_producto','files'=>true,'onsubmit'=>'javascript:return clu_tienda.validateNuevaTienda()')) !!}
 				<div class="modal-body">
+					<ul class="nav nav-tabs">
+						<li role="presentation" class="active"><a href="#tab_prod1" data-toggle="tab">Informaciòn Basica</a></li>
+						<li role="presentation"><a href="#tab_prod2" data-toggle="tab">Infomaciòn Complementaria</a></li>								
+					</ul>
+					<div class="tab-content">					
+						<div class="tab-pane fade in active" id="tab_prod1">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 row_init">								
+									<div class="row col-md-12 ">
+										<div class="col-md-6">
+											<div class="form-group ">
+												{!! Form::label('nombre', 'Nombre', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													{!! Form::text('nombre',old('nombre'), array('class' => 'form-control','placeholder'=>'Ingresa el Nombre')) !!}
+												</div>
+												{!! Form::label('precio', 'Precio', array('class' => 'col-md-12 control-label')) !!}
+												<div class="col-md-12">
+													{!! Form::text('precio',old('precio'), array('class' => 'form-control','placeholder'=>'Ingresa precio sin puntos ni comas')) !!}
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+										</div>
+									</div>
+								</div>								
+							</div>
+						</div>
+						<div class="tab-pane fade " id="tab_prod2">
+							<div class="row ">
+								
+							</div>
+						</div>
+					</div>
 				</div>
+				{!! Form::close() !!}
+				<div class="modal-footer">
+					 <button type="submit" form = "form_nuevo_producto" class="btn btn-default " > Crear Producto</button>			
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
+		        </div>
+	      	</div>
 			</div>
 		</div>
 	</div>
@@ -460,6 +516,7 @@
 @endsection
 @section('script')
 	<script type="text/javascript" src="{{ url('js/bootstrap-colorpicker.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript">
 		$( "#departamento" ).change(function() {
 			var datos = new Array();
@@ -508,10 +565,35 @@
 			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			    },
 			});
-		});		
+		});
+
+		$( "#movil" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});
+
+		$( "#precio" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});
+
+		$('.chosen-select').chosen();
+		$('.chosen-container').width('100%');		
+		$(".chosen-select").chosen().change(function(event) {
+			$('#categorias').val($('.chosen-select').chosen().val());		    
+		});
 
 	</script>
 	@if(old('edit'))		
 		<script> $("#nuevatienda_modal").modal(); </script>
-	@endif	
+	@endif
+
 @endsection

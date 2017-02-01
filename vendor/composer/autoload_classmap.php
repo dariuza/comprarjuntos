@@ -8,7 +8,10 @@ $baseDir = dirname($vendorDir);
 return array(
     'AppTableSeeder' => $baseDir . '/database/seeds/AppTableSeeder.php',
     'AppXUserTableSeeder' => $baseDir . '/database/seeds/AppXUserTableSeeder.php',
+    'CategoryTableSeeder' => $baseDir . '/database/seeds/CategoryTableSeeder.php',
     'CityTableSeeder' => $baseDir . '/database/seeds/CityTableSeeder.php',
+    'CreateCluCategoryTable' => $baseDir . '/database/migrations/2017_08_01_031419_create_clu_category_table.php',
+    'CreateCluProductsTable' => $baseDir . '/database/migrations/2017_26_01_031419_create_clu_products_table.php',
     'CreateCluStoreTable' => $baseDir . '/database/migrations/2017_09_01_031419_create_clu_store_table.php',
     'CreateSegAppTable' => $baseDir . '/database/migrations/2016_12_08_184057_create_seg_app_table.php',
     'CreateSegAppXUserTable' => $baseDir . '/database/migrations/2016_12_08_184128_create_seg_app_x_user_table.php',

@@ -22,6 +22,9 @@ class CreateCluProductsTable extends Migration
             $table->string('unity_measure')->nullable();
             $table->string('colors')->nullable();
             $table->string('sizes')->nullable(); 
+            $table->string('flavors')->nullable();
+            $table->string('materials')->nullable();
+            $table->string('models')->nullable();
             $table->string('description')->nullable();            
             $table->string('image1')->nullable();
             $table->string('image2')->nullable();

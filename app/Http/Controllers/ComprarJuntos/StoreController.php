@@ -2,6 +2,7 @@
 
 use App\Core\ComprarJuntos\Tienda;
 use App\Core\ComprarJuntos\Producto;
+use App\Core\ComprarJuntos\Categoria;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -88,6 +89,13 @@ class StoreController extends Controller {
 		//si no tiene tiendas, verificador.
 		if(!count($moduledata['tiendas']))$message = ['Tiendas0'];
 
+		//categorias
+		$categories = Categoria::select('id','name')->where('category_id',0)->get()->toArray();
+		foreach ($categories as $categoria){
+			$categorias[$categoria['id']] = $categoria['name'];
+		}
+		$moduledata['categorias']=$categorias;		
+
 		//verificacion de mensajes de error
 		if(Session::get('error')){			
 			return Redirect::to('mistiendas/inicio')->with('modulo',$moduledata)->with('error', Session::get('error'));
@@ -132,48 +140,35 @@ class StoreController extends Controller {
 			}
 		}
 		
-		//rutina para refinar los inputs		
+		//rutina para refinar los inputs			
 		$array_input = array();
 		$array_input['_token'] = $request->input('_token');
-		$array_input['categorias'] = $request->input('categorias');
-		if($request->input('categorias')){
-			$array_category = explode(",", $request->input('categorias'));
-			foreach($array_category as $key=>$value){
-				$array_category_up[$key] = ucwords(strtolower($value));
-			}
-			$array_input['categorias'] =implode(',',$array_category_up);		
-
-			$array_category = explode(" ", $request->input('categorias'));
-			foreach($array_category as $key=>$value){
-				$array_category_up[$key] = ucwords(strtolower($value));
-			}
-			$array_input['categorias'] =implode(',',$array_category_up);		
-
-			$array_category = explode(";", $request->input('categorias'));
-			foreach($array_category as $key=>$value){
-				$array_category_up[$key] = ucwords(strtolower($value));
-			}
-			$array_input['categorias'] =implode(',',$array_category_up);		
-		}				
+		$array_input['nombre'] = strtolower($request->input('nombre'));
+		$array_input['categorias'] = $request->input('categorias');	
 		$array_input['color_uno'] = $request->input('color_uno');
-		$array_input['color_dos'] = $request->input('color_dos');
-		$array_input['descripcion'] = ucwords($request->input('descripcion'));
+		$array_input['color_dos'] = $request->input('color_dos');		
+		$array_input['descripcion'] = $request->input('descripcion');		
 		$array_input['image_store'] = $request->input('image_store');
 		$array_input['image_banner'] = $request->input('image_banner');
+		$array_input['sitio_web'] = $request->input('sitio_web');
 		$array_input['facebook_web'] = $request->input('facebook_web');
+		$array_input['movil'] = $request->input('movil');
 		$array_input['ubicacion'] = $request->input('ubicacion');
 		$array_input['prioridad'] = 0;
 		if(is_numeric($request->input('prioridad')))$array_input['prioridad'] = $request->input('prioridad');
 
 		foreach($request->input() as $key=>$value){
 			if($key != "_token" && 
+				$key != "nombre" && 
 				$key != "categorias" && 
 				$key != "color_uno" &&
-				$key != "color_dos" &&
-				$key != "descripcion" &&
+				$key != "color_dos" &&	
+				$key != "descripcion" &&				
 				$key != "image_store" &&
 				$key != "image_banner" &&
+				$key != "sitio_web" &&
 				$key != "facebook_web" &&
+				$key != "movil" &&
 				$key != "ubicacion" &&
 				$key != "prioridad")
 			{				
@@ -350,12 +345,20 @@ class StoreController extends Controller {
 			return Redirect::to('mistiendas/inicio')->with('modulo',$moduledata)->with('error', $message);
 		}
 
+		//categorias
+		$categories = Categoria::select('id','name')->where('category_id',0)->get()->toArray();
+		foreach ($categories as $categoria){
+			$categorias[$categoria['id']] = $categoria['name'];
+		}
+		$moduledata['categorias']=$categorias;
+
 		Session::flash('_old_input.store_id', $tienda[0]->id);
 		Session::flash('_old_input.nombre', $tienda[0]->name);
 		Session::flash('_old_input.departamento', $tienda[0]->department);
 		Session::flash('_old_input.municipio', $tienda[0]->city);
 		Session::flash('_old_input.direccion', $tienda[0]->adress);
 		Session::flash('_old_input.categorias', $tienda[0]->metadata);
+		Session::flash('_old_input.categorias_select', explode(",", $tienda[0]->metadata));
 		Session::flash('_old_input.color_uno', $tienda[0]->color_one);
 		Session::flash('_old_input.color_dos', $tienda[0]->color_two);
 		Session::flash('_old_input.descripcion', $tienda[0]->description);
