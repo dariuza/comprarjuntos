@@ -24,6 +24,9 @@
 		.option_store a:hover{			
 			color: #000 !important;
 		}
+		.modal-header a:hover{
+			color: #333 !important;
+		}
 		
 	</style>
 	<link  rel="stylesheet" href="{{ url('css/bootstrap-colorpicker.min.css') }}" type="text/css" />
@@ -401,6 +404,12 @@
 	      	<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<h4 class="modal-title">Productos Tienda</h4>
+				<a href="#" style="text-decoration: none; color: #777">
+				<div class="" id="btn_nuevo_producto" data-toggle="modal" data-target="#nuevoproducto_modal">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true" style="font-size: 12px;"></span>
+					<span>Crear un Producto</span>
+				</div>
+				</a>
 			</div>
 			<div class = "alerts-module"></div>
 			<div class="modal-body">
@@ -423,6 +432,20 @@
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
 		        </div>
 	      	</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="nuevoproducto_modal" role="dialog" >
+		<div class="modal-dialog">
+			<div class="modal-content">
+		      	<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Nuevo Producto</h4>				
+				</div>
+				<div class = "alerts-module"></div>
+				<div class="modal-body">
+				</div>
+			</div>
 		</div>
 	</div>
 

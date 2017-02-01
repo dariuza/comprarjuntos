@@ -42,40 +42,7 @@ clu_tienda.prototype.consultaRespuestaProducts = function(result) {
 		$('#productos_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La tienda aùn no tiene Productos!</strong></br> Para crear un nuevo producto.</div>');
 	}
 
-	/*
-	$('#productos_modal .row_init').html('<table id="example" class="display " cellspacing="0" width="100%">');
-	$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+' <thead>');
-	$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+' <tr>');
-	for(var i=0;i<clu_tienda.fillable.length;i++){
-		$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+' <th>');
-		$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+clu_tienda.fillable[i]);
-		$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+' </th>');
-	}
-	$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+' </tr>');
-	$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+' </thead>');
-	$('#productos_modal .row_init').html($('#productos_modal .row_init').html()+'</table>');
-	*/
-
-	$('#productos_modal').modal();
-	/*
-	clu_tienda.table = $('#example').DataTable( {		
-	    "responsive": true,
-	    "processing": true,
-	    "bLengthChange": false,
-	    "serverSide": true,	        
-	    "ajax": "{{url('mistiendas/listarajax')}}",
-	    "iDisplayLength": 25,     	       
-	    "columns": [				   
-			{ "data": "name"},
-			{ "data": "price" },		        
-			{ "data": "category" },  	    
-	        { "data": "description"}		                   
-	    ],	          
-	    "language": {
-	        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-	    },	    
-	});
-	*/
+	$('#productos_modal').modal();	
 
 };
 

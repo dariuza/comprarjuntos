@@ -407,8 +407,9 @@ class StoreController extends Controller {
 			Session::flash('search', $request->input('search')['value']);			
 			
 			$moduledata['productos']=
-			Producto::			
-			where(function ($query) {
+			Producto::
+			where('clu_products.store_id',Session::get('store.id'))		
+			->where(function ($query) {
 				$query->where('clu_products.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_products.price', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_products.category', 'like', '%'.Session::get('search').'%');								
@@ -417,7 +418,9 @@ class StoreController extends Controller {
 			->get();		
 			$moduledata['filtro'] = count($moduledata['productos']);
 		}else{			
-			$moduledata['productos']=\DB::table('clu_products')->skip($request->input('start'))->take($request->input('length'))->get();			
+			$moduledata['productos']=\DB::table('clu_products')
+			->where('clu_products.store_id',Session::get('store.id'))
+			->skip($request->input('start'))->take($request->input('length'))->get();			
 				
 			$moduledata['filtro'] = $moduledata['total'];
 		}
