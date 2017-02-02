@@ -5,7 +5,21 @@ use Illuminate\Database\Seeder;
 class CategoryTableSeeder extends Illuminate\Database\Seeder {
 	
 	public function run(){
-
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Comida Rapida',
+			'category_id'=> 0		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Fritos',
+			'category_id'=> 0		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Azados',
+			'category_id'=> 0		
+			)
+		);
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Bebidas',
 			'category_id'=> 0		
@@ -13,6 +27,11 @@ class CategoryTableSeeder extends Illuminate\Database\Seeder {
 		);
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Lacteos',
+			'category_id'=> 0		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Elados',
 			'category_id'=> 0		
 			)
 		);
@@ -146,6 +165,49 @@ class CategoryTableSeeder extends Illuminate\Database\Seeder {
 			'category_id'=> 0		
 			)
 		);
+
+		//SUBCATEGORIAS
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Lavadoras',
+			'category_id'=> 19		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Neveras',
+			'category_id'=> 19		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Secadoras',
+			'category_id'=> 19		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Hornos',
+			'category_id'=> 19		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Cuidado Personal',
+			'category_id'=> 19		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Cafeteras',
+			'category_id'=> 19		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Televisores',
+			'category_id'=> 20		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
+			'name'=>'Computadoras',
+			'category_id'=> 20		
+			)
+		);
+
 
 	}
 }

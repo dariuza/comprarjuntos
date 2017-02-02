@@ -472,9 +472,9 @@
 									<div class="row col-md-12 ">
 										<div class="col-md-6">
 											<div class="form-group ">
-												{!! Form::label('nombre', 'Nombre', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::label('nombre_producto', 'Nombre', array('class' => 'col-md-12 control-label')) !!}
 												<div class="col-md-12">
-													{!! Form::text('nombre',old('nombre'), array('class' => 'form-control','placeholder'=>'Ingresa el Nombre')) !!}
+													{!! Form::text('nombre_producto',old('nombre_producto'), array('class' => 'form-control','placeholder'=>'Ingresa el Nombre')) !!}
 												</div>
 												{!! Form::label('precio', 'Precio', array('class' => 'col-md-12 control-label')) !!}
 												<div class="col-md-12">

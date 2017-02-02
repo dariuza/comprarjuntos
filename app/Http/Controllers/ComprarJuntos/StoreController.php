@@ -396,6 +396,7 @@ class StoreController extends Controller {
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
 	}
 
+	//Lista los productos
 	public function getListarajax(Request $request){
 
 		//Tienda id
@@ -431,5 +432,8 @@ class StoreController extends Controller {
 		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['productos']]);
 	}
 
+	public function postNuevoproducto(Request $request){
+		return 'Nuevo Prod OK';
+	}
 
 }
