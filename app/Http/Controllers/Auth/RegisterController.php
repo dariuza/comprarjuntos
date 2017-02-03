@@ -178,20 +178,35 @@ class RegisterController extends Controller
 								}
 								chmod('users/'.$user->name.'/stores/default.png', 0777);
 
-								if(!mkdir('users/'.$user->name.'/banner',0777,true)){
+								if(!mkdir('users/'.$user->name.'/banners',0777,true)){
 									$message[] = '¡Lo sentimos!, se presentarón problemas al crear el usuario';
 									$message[] = '¡Fallo la creación de tu directorio.';
 									return Redirect::back()->with('error', $message);									
 								}								
 								chmod('users/'.$user->name, 0777);
 
-								//ubicamos la imagen de la tienda de usuario, necesaria para que se cree el directorio
-								if (!copy('images/banner/default.png', 'users/'.$user->name.'/banner/default.png')) {
+								//ubicamos la imagen del banner de tienda
+								if (!copy('images/banner/default.png', 'users/'.$user->name.'/banners/default.png')) {
 									$message[] = '¡Lo sentimos!, se presentarón problemas al crear el usuario';
 									$message[] = '¡Fallo la copia de archivos.';
 									return Redirect::back()->with('error', $message);	
 								}
-								chmod('users/'.$user->name.'/banner/default.png', 0777);
+								chmod('users/'.$user->name.'/banners/default.png', 0777);
+
+								if(!mkdir('users/'.$user->name.'/products',0777,true)){
+									$message[] = '¡Lo sentimos!, se presentarón problemas al crear el usuario';
+									$message[] = '¡Fallo la creación de tu directorio.';
+									return Redirect::back()->with('error', $message);									
+								}								
+								chmod('users/'.$user->name, 0777);
+
+								//ubicamos la imagen del producto por defecto
+								if (!copy('images/product/default.png', 'users/'.$user->name.'/products/default.png')) {
+									$message[] = '¡Lo sentimos!, se presentarón problemas al crear el usuario';
+									$message[] = '¡Fallo la copia de archivos.';
+									return Redirect::back()->with('error', $message);	
+								}
+								chmod('users/'.$user->name.'/products/default.png', 0777);
 							} 
 								
 							

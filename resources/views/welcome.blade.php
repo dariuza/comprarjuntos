@@ -389,7 +389,6 @@
 			<script> 
 				$("#cpep_modal").modal(); 
 				$('#cpep_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El perfil de usuario esta incompleto!</strong> Faltan campos por diligenciar.</div>');
-
 			</script>
 		@endif
 		@if(in_array('Perfil3',Session::get('message')))

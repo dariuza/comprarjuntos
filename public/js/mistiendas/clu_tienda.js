@@ -42,10 +42,29 @@ clu_tienda.prototype.validateNuevaTienda = function() {
 	return true;
 };
 
+clu_tienda.prototype.validateNuevoProducto = function() {
+	if($("#form_nuevo_producto :input")[1].value =="" || $("#form_nuevo_producto :input")[2].value ==""){
+		$('#nuevoproducto_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>!Envio Fallido!</strong></br> Faltan campos por diligenciar.</div>');
+		//pintar los inputs problematicos
+		for(var i=0; i < $("#form_nuevo_producto :input").length ; i++){
+	        if( i==1 || i==2 ) {
+	            if($("#form_nuevo_producto :input")[i].value ==""){
+	                $($("#form_nuevo_producto :input")[i]).addClass('input_danger');
+	            }	            
+	        }
+        }
+        $(".close_alert_product").on('click', function () { 
+        	$("#form_nuevo_producto :input").removeClass("input_danger");        	
+        });
+		return false;
+	}
+	return true;
+}
+
 clu_tienda.prototype.consultaRespuestaProducts = function(result) {
 
 	$('#productos_modal .modal-title').html('Productos Tienda '+result.request.name);
-	if(!result.data.length){
+	if(!result.productos){
 		$('#productos_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La tienda aùn no tiene Productos!</strong></br> Para crear un nuevo producto, no esperes màs y crea un producto dando click en la opciòn <a href="#"><div class="" id="btn_nueva_tienda_a" data-toggle="modal" data-target="#nuevoproducto_modal"><b> Crear un Producto</b></div></a></div>');
 	}
 	$('#productos_modal').modal();

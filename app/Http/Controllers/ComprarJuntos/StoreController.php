@@ -99,19 +99,16 @@ class StoreController extends Controller {
 			return Redirect::to('mistiendas/inicio')->with('modulo',$moduledata)->with('error', Session::get('error'));
 		}
 
-		//verificacion de mensajes tipo message
+		//verificacion de mensajes tipo message, pueden venir de los pop ups
 		if(Session::get('message')){			
 			$message = array_merge ($message,Session::get('message'));
-		}
-
-		
+		}		
 
 		if(!empty($message)){
 			return Redirect::to('mistiendas/inicio')->with('modulo',$moduledata)->with('message', $message);
 		}else{
 			return Redirect::to('mistiendas/inicio')->with('modulo',$moduledata);
 		}
-
 		
 		//return view('comprarjuntos/tienda')->with($moduledata);
 	}
@@ -133,7 +130,7 @@ class StoreController extends Controller {
 			if(!empty($tiendas)){
 				if($tiendas[0]->total > (int)Session::get('comjunplus.usuario.stores')){
 					$message[] = 'Problemas al crear la tienda';
-					$message[] = 'No puedes crear màs de '.$tiendas[0]->total. ' tiendas. Para màs informaciòn envìa tu sugerencia al administrador en tu perfil de usuario.';
+					$message[] = 'No puedes crear màs de '.Session::get('comjunplus.usuario.stores'). ' tiendas. Para màs informaciòn envìa tu sugerencia al administrador en tu perfil de usuario.';
 					return Redirect::to('mistiendas/listar')->with('error', $message);
 				}
 			}
@@ -142,11 +139,11 @@ class StoreController extends Controller {
 		//rutina para refinar los inputs			
 		$array_input = array();
 		$array_input['_token'] = $request->input('_token');
-		$array_input['nombre'] = strtolower($request->input('nombre'));
+		$array_input['nombre'] = mb_strtolower($request->input('nombre'));
 		$array_input['categorias'] = $request->input('categorias');	
 		$array_input['color_uno'] = $request->input('color_uno');
 		$array_input['color_dos'] = $request->input('color_dos');		
-		$array_input['descripcion'] = ucfirst(strtolower($request->input('descripcion')));		
+		$array_input['descripcion'] = ucfirst(mb_strtolower($request->input('descripcion')));		
 		$array_input['image_store'] = $request->input('image_store');
 		$array_input['image_banner'] = $request->input('image_banner');
 		$array_input['sitio_web'] = $request->input('sitio_web');
@@ -171,7 +168,7 @@ class StoreController extends Controller {
 				$key != "ubicacion" &&
 				$key != "prioridad")
 			{				
-				$array_input[$key] = ucwords(strtolower($value));
+				$array_input[$key] = ucwords(mb_strtolower($value));
 			}
 		}
 		$request->replace($array_input);
@@ -188,8 +185,7 @@ class StoreController extends Controller {
 		
 		$rules = array(			
 			'nombre' => 'required',
-			'departamento'    => 'required', // make sure the username field is not empty			
-			'departamento' => 'required',
+			'departamento'    => 'required',					
 			'municipio' => 'required',
 			'direccion' => 'required',	
 			'categorias' => 'required',						
@@ -229,10 +225,9 @@ class StoreController extends Controller {
 				$validator = Validator::make($file, $rules, $messages);
 				if ($validator->fails()) {			
 					return Redirect::back()->withErrors($validator)->withInput();;
-				}else{
-					//eliminamos todos los ficheros
+				}else{					
 					if(Input::file('image_banner')->isValid()){						
-						$destinationPath = 'users/'.Session::get('comjunplus.usuario.name').'/banner';
+						$destinationPath = 'users/'.Session::get('comjunplus.usuario.name').'/banners';
 						$extension = Input::file('image_banner')->getClientOriginalExtension(); // getting image extension
 						$fileName_banner = rand(1,9999999).'.'.$extension; // renameing image
 						Input::file('image_banner')->move($destinationPath, $fileName_banner); 						
@@ -381,7 +376,11 @@ class StoreController extends Controller {
 		}
 	}
 
-	public function postConsultarproducts(Request $request){		
+	public function postConsultarproducts(Request $request){
+
+		//total de productos
+		$productos=Producto::count();
+
 		//consultamos las categorias de la tienda seleccionada.
 		$categorias=array();
 		try {$categorias=\DB::table('clu_store')
@@ -410,8 +409,9 @@ class StoreController extends Controller {
 		
 		//antes de enviar, asignamos el id de tienda par el listarajax
 		Session::put('store.id', $request->input('id'));
+		Session::put('store.name', $request->input('name'));
 		
-		if(count($subcategorias)) return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$subcategorias]);
+		if(count($subcategorias)) return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$subcategorias,'productos'=>$productos]);
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
 	}
 
@@ -454,8 +454,143 @@ class StoreController extends Controller {
 		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['productos']]);
 	}
 
-	public function postNuevoproducto(Request $request){
-		return 'Nuevo Prod OK';
+	public function postNuevoproducto(Request $request){		
+
+		//VERIFICACIONES
+		//verificamos si tienda puede tener màs productos
+		if(!$request->input('edit')){			
+			$productos=\DB::table('clu_products')
+			->select(\DB::raw('count(*) as total'))
+			->where('clu_products.store_id', '=', Session::get('store.id'))			
+			->groupBy('store_id')
+			->get();
+			
+			if(!empty($productos)){
+				if($productos[0]->total > (int)Session::get('comjunplus.usuario.products')){
+					$message[] = 'Productos0';					
+					return Redirect::to('mistiendas/listar')->with('error', $message);
+				}
+			}
+		}
+
+		//rutina para refinar los inputs			
+		$array_input = array();
+		$array_input['_token'] = $request->input('_token');
+		$array_input['precio'] = $request->input('precio');
+		$array_input['descripcion_producto'] = ucfirst(mb_strtolower($request->input('descripcion_producto')));
+		$array_input['categoria_select'] = $request->input('categoria_select');
+		$array_input['unidades_medida'] = $request->input('unidades_medida');
+		$array_input['colores'] = $request->input('colores');				
+		$array_input['tallas'] = $request->input('tallas');
+		$array_input['sabores'] = $request->input('sabores');
+		$array_input['materiales'] = $request->input('materiales');
+		$array_input['modelos'] = $request->input('modelos');
+		$array_input['prioridad_producto'] = 0;
+		if(is_numeric($request->input('prioridad_producto')))$array_input['prioridad_producto'] = $request->input('prioridad_producto');
+
+		foreach($request->input() as $key=>$value){
+			if($key != "_token" && 
+				$key != "precio" && 
+				$key != "descripcion_producto" &&
+				$key != "categoria_select" &&
+				$key != "unidades_medida" &&
+				$key != "colores" &&
+				$key != "tallas" &&
+				$key != "sabores" &&
+				$key != "materiales" &&	
+				$key != "modelos" &&	
+				$key != "prioridad")
+			{				
+				$array_input[$key] = ucwords(mb_strtolower($value));
+			}
+		}
+		$request->replace($array_input);
+
+		$messages = [
+			'required' => 'El campo :attribute es requerido.',
+			'size' => 'La :attribute deberia ser mayor a :size.',
+			'min' => 'La :attribute deberia tener almenos :min. caracteres',
+			'max' => 'La :attribute no debe tener maximo :max. caracteres',
+			'numeric' => 'El :attribute  debe ser un número',			
+			'date' => 'El :attribute  no es una fecha valida',
+			'mimes' => 'La :attribute debe ser de tipo jpeg, png o bmp',
+		];
+		
+		$rules = array(			
+			'nombre_producto' => 'required',
+			'precio'    => 'required', 
+
+		);		
+		
+		$validator = Validator::make($request->input(), $rules, $messages);		
+		if ($validator->fails()) {			
+			return Redirect::back()->withErrors($validator)->withInput();
+		}else{
+			//preparación y validacion de imagen de producto
+			if(!empty(Input::file('imge_product'))){
+				$file = array('imge_product' => Input::file('imge_product'));
+				$rules = array(
+					'imge_product'=>'required|mimes:jpeg,bmp,png',
+				);
+				$validator = Validator::make($file, $rules, $messages);
+				if ($validator->fails()) {			
+					return Redirect::back()->withErrors($validator)->withInput();;
+				}else{
+					if(Input::file('imge_product')->isValid()){						
+						$destinationPath = 'users/'.Session::get('comjunplus.usuario.name').'/products';
+						$extension = Input::file('imge_product')->getClientOriginalExtension(); // getting image extension
+						$fileName_image1 = rand(1,9999999).'.'.$extension; // renameing image
+						Input::file('imge_product')->move($destinationPath, $fileName_image1); 						
+					}
+				}	
+			}
+
+			$product = new Producto();
+			if($request->input('edit')){					
+				//se actualizan los datos del producto
+				$product = Producto::find($request->input('product_id'));
+				$product->active =  $request->input('estado');
+			}else{
+				//nueva tienda
+				$product->active =  1;
+			}
+
+
+			$product->name =  $request->input()['nombre_producto'];
+			$product->price = $request->input()['precio'];
+			$product->category = $request->input()['categoria_select'];
+			$product->unity_measure = 'Unidad';
+			if(!empty($request->input()['unidades_medida']))$product->unity_measure=  $request->input()['unidades_medida'];
+			$product->colors = $request->input()['colores'];
+			$product->sizes = $request->input()['tallas'];
+			$product->flavors = $request->input()['sabores'];
+			$product->materials = $request->input()['materiales'];
+			$product->models = $request->input()['modelos'];
+			$product->description = $request->input()['descripcion_producto'];
+			$product->order = 1;
+			if(!empty($request->input()['prioridad_producto']))$product->order =  $request->input()['prioridad_producto'];	
+			if(empty($product->image1))$product->image1 =  'default.png';
+			if(!empty($fileName_image1))$store->image =  $fileName_image1;
+			$product->store_id = Session::get('store.id');
+
+			//preparaciòn de datos
+
+			try {			
+				$product->save();
+				if($request->input('edit')){
+					$message[] = 'ProductosEDITOK';	
+					return Redirect::to('mistiendas/listar')->withInput()->with('message',$message);
+				}
+				$message[] = 'ProductosOK';	
+				return Redirect::to('mistiendas/listar')->withInput()->with('message', $message);
+			}catch (\Illuminate\Database\QueryException $e) {
+				$message[] = 'Problemas al crear la tienda';
+				$message[] = $e->getMessage();
+				return Redirect::to('mistiendas/listar')->with('error', $message);
+			}
+
+		}			
+			
 	}
 
 }

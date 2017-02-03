@@ -30,6 +30,7 @@ class CreateCluProductsTable extends Migration
             $table->string('image2')->nullable();
             $table->string('image3')->nullable();
             $table->string('order')->nullable();
+            $table->boolean('active')->default(true);
             $table->integer('store_id')->unsigned();
     		$table->foreign('store_id')->references('id')->on('clu_store')->onDelete('cascade');
     		$table->timestamps();
