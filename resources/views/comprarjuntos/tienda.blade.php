@@ -346,7 +346,7 @@
 											</div>
 											<div class="col-md-12" style="text-align: center;">
 												{!! Form::file('image_banner',array('id'=>'image_banner','style'=>'font-size: 14px;')) !!}
-										</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -463,7 +463,7 @@
 				<div class="modal-body">
 					<ul class="nav nav-tabs">
 						<li role="presentation" class="active"><a href="#tab_prod1" data-toggle="tab">Informaciòn Basica</a></li>
-						<li role="presentation"><a href="#tab_prod2" data-toggle="tab">Infomaciòn Complementaria</a></li>								
+						<li role="presentation"><a href="#tab_prod2" data-toggle="tab">Infomaciòn Complementaria</a></li>			
 					</ul>
 					<div class="tab-content">					
 						<div class="tab-pane fade in active" id="tab_prod1">
@@ -480,9 +480,22 @@
 												<div class="col-md-12">
 													{!! Form::text('precio',old('precio'), array('class' => 'form-control','placeholder'=>'Ingresa precio sin puntos ni comas')) !!}
 												</div>
+												{!! Form::label('categoria', 'Categoria', array('class' => 'col-md-12 control-label')) !!}
+												<div class="input-group input-grp categorias col-md-12">		
+													{!! Form::select('categoria_select',array(),old('categoria_select'), array('id'=>'categoria_select', 'class' => 'form-control chosen-select', 'style'=>'width:350px;')) !!}						
+												</div>												
 											</div>
 										</div>
 										<div class="col-md-6">
+											<div class="form-group ">
+												<div class="col-md-12" style="text-align: center; margin-bottom: 9px; margin-top: 9px;">
+													@if( old('img_product_1'))
+														{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/banner/'.old('img_banner'),'Imagen no disponible',array( 'style'=>'width: 90%; border:2px solid #ddd;border-radius: 0%;'))}}
+													@else
+														{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/banner/default.png','Imagen no disponible',array( 'style'=>'width: 90%; border:2px solid #ddd;border-radius: 0%;'))}}
+													@endif
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>								
@@ -542,6 +555,7 @@
 		    seg_ajaxobject.peticionajax($('#form_consult_products').attr('action'),datos,"clu_tienda.consultaRespuestaProducts",false);
 
 		    //llamado sincrono, para cambiar el id de tienda
+		    //la otra opciòn es retardar el listado de las los productos
 
 		    javascript:clu_tienda.table = $('#example').DataTable( {		
 			    "responsive": true,

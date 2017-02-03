@@ -151,6 +151,11 @@ class CategoryTableSeeder extends Illuminate\Database\Seeder {
 			)
 		);
 		\DB::table('clu_category')->insert(array(
+			'name'=>'Prendas de Vestir',
+			'category_id'=> 0		
+			)
+		);
+		\DB::table('clu_category')->insert(array(
 			'name'=>'Ocio',
 			'category_id'=> 0		
 			)

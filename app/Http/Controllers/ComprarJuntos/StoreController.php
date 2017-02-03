@@ -36,9 +36,7 @@ class StoreController extends Controller {
 		//no funcionara debido a la ruta de busqueda por url
 	}
 	
-	public function getListar(){
-		
-		$moduledata['productos']=\DB::table('clu_products')->skip(1)->take(2)->get();
+	public function getListar(){	
 		
 		$message =array();
 		//Control de perfil de usuario.
@@ -122,7 +120,8 @@ class StoreController extends Controller {
 		return view('comprarjuntos/tienda');
 	}
 
-	public function postNuevatienda(Request $request){		
+	public function postNuevatienda(Request $request){
+
 		//verificamos si el tendero puede tener una tienda màs
 		if(!$request->input('edit')){			
 			$tiendas=\DB::table('clu_store')
@@ -147,7 +146,7 @@ class StoreController extends Controller {
 		$array_input['categorias'] = $request->input('categorias');	
 		$array_input['color_uno'] = $request->input('color_uno');
 		$array_input['color_dos'] = $request->input('color_dos');		
-		$array_input['descripcion'] = $request->input('descripcion');		
+		$array_input['descripcion'] = ucfirst(strtolower($request->input('descripcion')));		
 		$array_input['image_store'] = $request->input('image_store');
 		$array_input['image_banner'] = $request->input('image_banner');
 		$array_input['sitio_web'] = $request->input('sitio_web');
@@ -192,7 +191,9 @@ class StoreController extends Controller {
 			'departamento'    => 'required', // make sure the username field is not empty			
 			'departamento' => 'required',
 			'municipio' => 'required',
-			'direccion' => 'required',						
+			'direccion' => 'required',	
+			'categorias' => 'required',						
+
 		);		
 		
 		$validator = Validator::make($request->input(), $rules, $messages);		
@@ -381,19 +382,37 @@ class StoreController extends Controller {
 	}
 
 	public function postConsultarproducts(Request $request){		
-		//consultamos los productos de la tienda seleccionada.
-		$productos=array();
-		try {$productos=\DB::table('clu_products')
-		->where('clu_products.store_id',$request->input('id'))
-		->orderBy('order', 'asc')
-		->get();
+		//consultamos las categorias de la tienda seleccionada.
+		$categorias=array();
+		try {$categorias=\DB::table('clu_store')
+		->select('metadata')
+		->where('clu_store.id',1)		
+		->get()[0]->metadata;
 		}catch (ModelNotFoundException $e) {
-			$message = ['Problemas al hallar productos de la Tienda'];			
+			$message = ['Problemas al hallar categorias de la Tienda'];			
 		}
+
+		$subcategorias = array();
+		if(count($categorias)){
+			//si hay categorias
+			$categorias_id = explode(",", $categorias);
+			$categorias_db=\DB::table('clu_category')
+			->select('id','name')
+			->where(function($q) use ($categorias_id){
+				foreach($categorias_id as $key => $value){
+					$q->orwhere('category_id', '=', $value);
+				}
+			})->get();
+			foreach($categorias_db as $categoria){
+				$subcategorias[$categoria->id] = $categoria->name;
+			}
+		}
+		
 		//antes de enviar, asignamos el id de tienda par el listarajax
 		Session::put('store.id', $request->input('id'));
 		
-		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
+		if(count($subcategorias)) return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$subcategorias]);
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
 	}
 
 	//Lista los productos
@@ -419,12 +438,15 @@ class StoreController extends Controller {
 				->orWhere('clu_products.category', 'like', '%'.Session::get('search').'%');								
 			})
 			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('order', 'asc')
 			->get();		
 			$moduledata['filtro'] = count($moduledata['productos']);
 		}else{			
 			$moduledata['productos']=\DB::table('clu_products')
 			->where('clu_products.store_id',Session::get('store.id'))
-			->skip($request->input('start'))->take($request->input('length'))->get();			
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('order', 'asc')
+			->get();			
 				
 			$moduledata['filtro'] = $moduledata['total'];
 		}
