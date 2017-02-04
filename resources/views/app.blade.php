@@ -120,6 +120,7 @@
 										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>										
 										<span class="" aria-hidden="true" style = "font-size: 10px;" >{{Session::get('comjunplus.usuario.messages')}}</span>
 										Buzón de Mensajes
+										<span class="badge">5</span>
 									</a>
 								</li>
 								<li>
