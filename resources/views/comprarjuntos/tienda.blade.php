@@ -327,7 +327,8 @@
 											</div>
 
 											{!! Form::label('prioridad', 'Prioridad' , array('class' => 'col-md-12 control-label')) !!} 
-											<div class="col-md-12"><div class="input-group ">									
+											<div class="col-md-12">
+												<div class="input-group ">									
 													{!! Form::text('prioridad',old('prioridad'), array('class' => 'form-control solo_numeros','placeholder'=>'Prioridad de la Tienda para ComprarJuntos')) !!}
 													<span class="input-group-addon" data-toggle="tooltip" title="La prioridad es un nùmero que indica el orden en el cual se listaran las tiendas dentro de ComprarJuntos.">?</span>
 												</div>
@@ -565,7 +566,7 @@
 												</div>
 
 												{!! Form::label('modelos', 'Modelos', array('class' => 'col-md-12 control-label')) !!}
-												<div class="col-md-12 input-group">
+												<div class="col-md-12">
 													<div class="input-group">
 														{!! Form::text('modelos',old('modelos'), array('class' => 'form-control','placeholder'=>'Ingresa el o los modelos en los cuales esta disponible el producto.')) !!}
 														<span class="input-group-addon" data-toggle="tooltip" title="Para diligenciar adecuadamente este campo, ponemos una coma entre modelo y modelo; ejemplo; Modelo 2016, Modelo 2015, Modelo 2000.">?</span>
