@@ -570,7 +570,7 @@ class StoreController extends Controller {
 			$product->order = 1;
 			if(!empty($request->input()['prioridad_producto']))$product->order =  $request->input()['prioridad_producto'];	
 			if(empty($product->image1))$product->image1 =  'default.png';
-			if(!empty($fileName_image1))$store->image =  $fileName_image1;
+			if(!empty($fileName_image1))$product->image1 =  $fileName_image1;
 			$product->store_id = Session::get('store.id');
 
 			//preparaciòn de datos
