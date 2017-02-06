@@ -532,9 +532,9 @@
 												<div class="col-md-12" style="text-align: center;">
 													{!! Form::label('img_product', 'Imagen de Producto', array('class' => 'col-md-12 control-label')) !!}
 													@if( old('img_product'))
-														{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/products/'.old('img_product'),'Imagen no disponible',array( 'style'=>'width: 90%; border:2px solid #ddd;border-radius: 0%;'))}}
+														{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/products/'.old('img_product'),'Imagen no disponible',array('id'=>'img_product', 'style'=>'width: 90%; border:2px solid #ddd;border-radius: 0%;'))}}
 													@else
-														{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/products/default.png','Imagen no disponible',array( 'style'=>'width: 90%; border:2px solid #ddd;border-radius: 0%;'))}}
+														{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/products/default.png','Imagen no disponible',array('id'=>'img_product','style'=>'width: 90%; border:2px solid #ddd;border-radius: 0%;'))}}
 													@endif
 												</div>
 												<div class="col-md-12 filestyle" style="text-align: center; margin-top: 10px">
@@ -606,6 +606,8 @@
 						</div>
 					</div>
 				</div>
+				{!! Form::hidden('edit_product', old('edit_product')) !!}
+				{!! Form::hidden('product_id', old('product_id')) !!}
 				{!! Form::close() !!}
 				<div class="modal-footer">
 					 <button type="submit" form = "form_nuevo_producto" class="btn btn-default " > Crear Producto</button>			
@@ -633,23 +635,29 @@
 	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url('js/bootstrap-filestyle.min.js') }}"></script>
 	<script type="text/javascript">
+		//cambio de municipio ante el cambio del departamento
 		$( "#departamento" ).change(function() {
 			var datos = new Array();
 			datos['id'] =$( "#departamento option:selected" ).val();			   
 			seg_ajaxobject.peticionajax($('#form_consult_city').attr('action'),datos,"seg_user.consultaRespuestaCity");
 		});
 		
+		//estilo de titulos
 		$('[data-toggle="tooltip"]').tooltip();
+
+		//estilo de selectores de imagen
 		$(":file").filestyle({buttonText: "Elige una Imagen"});
 		
 		$('#cp1').colorpicker({ /*options...*/ });
 		$('#cp2').colorpicker({ /*options...*/ });
 		$('.sample-selector').colorpicker({ /*options...*/ });
 		
+		//boton siguiente tienda
 		$('#to_tab2').on('click', function (e) {
 		    $('.nav-tabs a[href="#tab2"]').tab('show');
 		});
 
+		//boton siguiente producto
 		$('#to_prod2').on('click', function (e) {
 		    $('.nav-tabs a[href="#tab_prod2"]').tab('show');
 		});
@@ -695,6 +703,14 @@
 
 			//metodo para la tabla
 			$('#example tbody').on('click', 'td.details-control', function () {
+				//cerramos el div anterior
+				if(clu_tienda.tr != undefined){
+					if(clu_tienda.row.data().id != clu_tienda.table.row($(this).closest('tr')).data().id){
+						clu_tienda.row.child.hide();
+		        		clu_tienda.tr.removeClass('shown');
+					}					
+				}				
+
 		        clu_tienda.tr = $(this).closest('tr');
 		        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
 		 		
@@ -748,8 +764,6 @@
 			$('#materiales').val($('#materiales_select').chosen().val());		    
 		});
 
-
-
 	</script>
 	@if(old('edit'))		
 		<script> $("#nuevatienda_modal").modal(); </script>
@@ -766,6 +780,7 @@
 
 	@if(Session::has('message'))
 		@if(in_array('ProductosOK',Session::get('message')))
+			{{--Luego de haber guardado un producto correctameten, hay que listarlo en la tabla.--}}
 			<script type="text/javascript"> 								
 				$('#productos_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!Producto creado satisfactoriamente!</strong> Tù tienda ahora cuenta con un producto màs que ofertar, recuerda compartir la URL ({{url("/".Session::get("store.name"))}}) de tu tienda para que otros puedan verlo y comprarlo.</div>');
 				//$('#productos_modal').modal();
@@ -808,6 +823,14 @@
 
 				//metodo para la tabla
 			$('#example tbody').on('click', 'td.details-control', function () {
+				//cerramos el div anterior
+				if(clu_tienda.tr != undefined){
+					if(clu_tienda.row.data().id != clu_tienda.table.row($(this).closest('tr')).data().id){
+						clu_tienda.row.child.hide();
+		        		clu_tienda.tr.removeClass('shown');
+					}					
+				}
+
 		        clu_tienda.tr = $(this).closest('tr');
 		        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
 		 		

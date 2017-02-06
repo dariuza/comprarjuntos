@@ -85,6 +85,35 @@ clu_tienda.prototype.consultaRespuestaProducts = function(result) {
 
 clu_tienda.prototype.consultaRespuestaProduct = function(result) {
 	clu_tienda.row.child( clu_tienda.format(clu_tienda.row.data())).show();
+	$('#btn_editar_producto').on('click', function (e) {
+		//buscamos los datos seleccionados
+		for(var i=0; clu_tienda.table.data().length; i++){
+			if(this.className.split('_')[3]==clu_tienda.table.data()[i].id){
+				//encontramos los datos
+				$( "input[name='edit_product']").val(true);
+				$( "input[name='product_id']").val(clu_tienda.table.data()[i].id);
+				$('#nombre_producto').val(clu_tienda.table.data()[i].name);
+				$('#precio').val(clu_tienda.table.data()[i].price);
+				$('#categoria_select').val(clu_tienda.table.data()[i].category);
+				$('#descripcion_producto').val(clu_tienda.table.data()[i].description);
+				$('#prioridad_producto').val(clu_tienda.table.data()[i].order);
+				$('#prioridad_producto').val(clu_tienda.table.data()[i].order);
+				//imagen, se reemplaza el src del elemento
+				$('#img_product').attr('src',$('#img_product').attr('src').replace($('#img_product').attr('src').split('/')[$('#img_product').attr('src').split('/').length-1],clu_tienda.table.data()[i].image1));
+				$('#unidades_select').val(clu_tienda.table.data()[i].unity_measure);
+				$('#unidades_medida').val(clu_tienda.table.data()[i].unity_measure);
+				
+
+
+
+				$('#nuevoproducto_modal').modal();
+				//para hacer efectivo el cambio del chossen
+				$('#categoria_select').trigger("chosen:updated");
+				$('#unidades_select').trigger("chosen:updated");
+				break;
+			};
+		}	    
+	});
 };
 
 clu_tienda.prototype.format= function(d) {    			
@@ -92,7 +121,7 @@ clu_tienda.prototype.format= function(d) {
     '<div class="panel panel-default">'+
     	'<div class="panel-heading">'+
     		'<a href="#" style="text-decoration: none; color: #777">'+
-				'<div class="" id="btn_editar_producto" data-toggle="modal" data-target="#nuevoproducto_modal">'+
+				'<div class=" btn_editar_producto_'+d.id+'" id="btn_editar_producto" >'+
 					'<span class="glyphicon glyphicon-cog" aria-hidden="true" style=""></span>'+
 					'<span> Editar este Producto</span>'+
 				'</div>'+
