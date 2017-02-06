@@ -377,7 +377,6 @@ class StoreController extends Controller {
 	}
 
 	public function postConsultarproducts(Request $request){
-
 		//total de productos
 		$productos=Producto::count();
 
@@ -415,7 +414,12 @@ class StoreController extends Controller {
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
 	}
 
-	//Lista los productos
+	public function postConsultarproduct(Request $request){
+		//consultamos, el nùmero de veces vendido, 
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
+	}
+
+	//LISTAR LOS PRODUCTOS
 	public function getListarajax(Request $request){
 
 		//Tienda id
@@ -431,7 +435,9 @@ class StoreController extends Controller {
 			
 			$moduledata['productos']=
 			Producto::
-			where('clu_products.store_id',Session::get('store.id'))		
+			select('clu_products.*','clu_category.name as category_name')
+			->leftjoin('clu_category', 'clu_products.category', '=', 'clu_category.id')
+			->where('clu_products.store_id',Session::get('store.id'))		
 			->where(function ($query) {
 				$query->where('clu_products.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_products.price', 'like', '%'.Session::get('search').'%')
@@ -443,6 +449,8 @@ class StoreController extends Controller {
 			$moduledata['filtro'] = count($moduledata['productos']);
 		}else{			
 			$moduledata['productos']=\DB::table('clu_products')
+			->select('clu_products.*','clu_category.name as category_name')
+			->leftjoin('clu_category', 'clu_products.category', '=', 'clu_category.id')
 			->where('clu_products.store_id',Session::get('store.id'))
 			->skip($request->input('start'))->take($request->input('length'))
 			->orderBy('order', 'asc')

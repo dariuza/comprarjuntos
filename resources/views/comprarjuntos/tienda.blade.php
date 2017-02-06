@@ -40,6 +40,30 @@
 			padding-right: 15px !important;
 			padding-left: 15px !important;			
 		}
+		td.details-control {
+			/*
+			position: relative;
+		    top: 1px;
+		    display: inline-block;
+		    font-family: 'Glyphicons Halflings';
+		    font-style: normal;
+		    font-weight: 400;
+		    line-height: 1;
+		    -webkit-font-smoothing: antialiased;
+		    content: "\e134";
+		    */
+		}
+
+		td.details-control {
+		    background: url('../css/DataTables-1.10.11/images/details_open.png') no-repeat center center;
+		    cursor: pointer;
+		}
+		tr.shown td.details-control {
+		    background: url('../css/DataTables-1.10.11/images/details_close.png') no-repeat center center;
+		}
+		.product_more{
+			text-align: justify;
+		}
 		
 		
 	</style>
@@ -194,7 +218,7 @@
 				</ul>
 				<div class="tab-content">					
 					<div class="tab-pane fade in active" id="tab1">
-						<div class="row ">
+						<div class="row">
 							<div class="col-md-12 col-md-offset-0 row_init">								
 								<div class="row col-md-12 ">
 									<div class="col-md-8">
@@ -438,11 +462,12 @@
 					<div class="col-md-12 col-md-offset-0 row_init">
 						<table id="example" class="display responsive no-wrap " cellspacing="0" width="100%">
 					         <thead>
-					            <tr>					            	
+					            <tr>
+					            	<th></th>					            	
 			            			<th>Nombre</th>
 			            			<th>Precio</th>
 			            			<th>Categorìa</th>
-			            			<th>Descripciòn</th>
+			            			<th>Unidades de Venta</th>
 					            </tr>
 					        </thead>              
 					    </table> 
@@ -598,6 +623,9 @@
     {!! Form::open(array('id'=>'form_consult_products','url' => 'mistiendas/consultarproducts')) !!}		
     {!! Form::close() !!}
 
+    {!! Form::open(array('id'=>'form_consult_product','url' => 'mistiendas/consultarproduct')) !!}		
+    {!! Form::close() !!}
+
 
 @endsection
 @section('script')
@@ -648,17 +676,44 @@
 			    "bDestroy": true,      
 			    "ajax": "{{url('mistiendas/listarajax')}}",
 			    "iDisplayLength": 25,     	       
-			    "columns": [				   
+			    "columns": [
+			    	{
+		                "className":      'details-control',
+		                "orderable":      false,
+		                "data":           null,
+		                "defaultContent": ''
+		            },		   
 					{ "data": "name"},
 					{ "data": "price"},		        
-					{ "data": "category"},  	    
-			        { "data": "description"}		                   
+					{ "data": "category_name"},  	    
+			        { "data": "unity_measure"}	                   
 			    ],       
 			    "language": {
 			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			    },
 			});
-		});		
+
+			//metodo para la tabla
+			$('#example tbody').on('click', 'td.details-control', function () {
+		        clu_tienda.tr = $(this).closest('tr');
+		        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
+		 		
+		        if ( clu_tienda.row.child.isShown() ) {
+		            // la fila esta abierta
+		            clu_tienda.row.child.hide();
+		            clu_tienda.tr.removeClass('shown');
+		        }
+		        else {
+		            //la fila esta cerrada
+		            //llamado asincrono datos de producto
+		            var datos = new Array();
+		            datos['id_producto'] = clu_tienda.row.data().id;
+		            datos['id_tienda'] = clu_tienda.row.data().store_id;
+		            seg_ajaxobject.peticionajax($('#form_consult_product').attr('action'),datos,"clu_tienda.consultaRespuestaProduct");
+		            clu_tienda.tr.addClass('shown');
+		        }
+		    });		    
+		});
 
 		$( ".solo_numeros" ).keypress(function(evt) {
 			 evt = (evt) ? evt : window.event;
@@ -692,6 +747,8 @@
 		$("#materiales_select").chosen().change(function(event) {
 			$('#materiales').val($('#materiales_select').chosen().val());		    
 		});
+
+
 
 	</script>
 	@if(old('edit'))		
@@ -732,16 +789,43 @@
 				    "bDestroy": true,      
 				    "ajax": "{{url('mistiendas/listarajax')}}",
 				    "iDisplayLength": 25,     	       
-				    "columns": [				   
+				    "columns": [
+				    	{
+			                "className":      'details-control',
+			                "orderable":      false,
+			                "data":           null,
+			                "defaultContent": ''
+			            },				   
 						{ "data": "name"},
 						{ "data": "price"},		        
-						{ "data": "category"},  	    
-				        { "data": "description"}		                   
+						{ "data": "category_name"},  	    
+				        { "data": "unity_measure"}		                   
 				    ],       
 				    "language": {
 				        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 				    },
 				});
+
+				//metodo para la tabla
+			$('#example tbody').on('click', 'td.details-control', function () {
+		        clu_tienda.tr = $(this).closest('tr');
+		        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
+		 		
+		        if ( clu_tienda.row.child.isShown() ) {
+		            // la fila esta abierta
+		            clu_tienda.row.child.hide();
+		            clu_tienda.tr.removeClass('shown');
+		        }
+		        else {
+		            //la fila esta cerrada
+		            //llamado asincrono datos de producto
+		            var datos = new Array();
+		            datos['id_producto'] = clu_tienda.row.data().id;
+		            datos['id_tienda'] = clu_tienda.row.data().store_id;
+		            seg_ajaxobject.peticionajax($('#form_consult_product').attr('action'),datos,"clu_tienda.consultaRespuestaProduct");
+		            clu_tienda.tr.addClass('shown');
+		        }
+		    });		
 				
 			</script>
 		@endif		

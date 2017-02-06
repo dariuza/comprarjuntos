@@ -163,7 +163,7 @@
 		<script type="text/javascript" src="{{ url('js/bootstrap.submenu.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url('js/bootstrap-datepicker.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url('js/locales/bootstrap-datepicker.es.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url('js/datatables.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url('js/datatables_row.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url('js/datatables-responsive.min.js') }}"></script>
 
 		<script type="text/javascript" src="{{ url('js/seguridad/seg_user.js') }}"></script>

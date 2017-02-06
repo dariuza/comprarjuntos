@@ -81,8 +81,39 @@ clu_tienda.prototype.consultaRespuestaProducts = function(result) {
 	$('#categoria_select').trigger("chosen:updated");
 	
 	$('#productos_modal').modal();
-		
+};
 
+clu_tienda.prototype.consultaRespuestaProduct = function(result) {
+	clu_tienda.row.child( clu_tienda.format(clu_tienda.row.data())).show();
+};
+
+clu_tienda.prototype.format= function(d) {    			
+    return ''+
+    '<div class="panel panel-default">'+
+    	'<div class="panel-heading">'+
+    		'<a href="#" style="text-decoration: none; color: #777">'+
+				'<div class="" id="btn_editar_producto" data-toggle="modal" data-target="#nuevoproducto_modal">'+
+					'<span class="glyphicon glyphicon-cog" aria-hidden="true" style=""></span>'+
+					'<span> Editar este Producto</span>'+
+				'</div>'+
+			'</a>'+
+    	'</div>'+			        
+    	'<div class="panel-body">'+
+			'<div class="row">'+
+				'<div class="col-md-12">'+
+					'<div class="col-md-8 product_more">'+
+						'<label for="description" class="col-md-12 control-label">Descripciòn</label>'+
+						''+d.description+
+					'</div'+
+					'<div class="col-md-4">'+
+					'</div'+
+				'</div>'+
+			'</div>'+
+    	'</div>'+    
+    '</div>';
 };
 
 var clu_tienda = new clu_tienda();
+
+
+
