@@ -84,39 +84,51 @@ clu_tienda.prototype.consultaRespuestaProducts = function(result) {
 };
 
 clu_tienda.prototype.consultaRespuestaProduct = function(result) {
-	clu_tienda.row.child( clu_tienda.format(clu_tienda.row.data())).show();
+	clu_tienda.row.child( clu_tienda.format(clu_tienda.row.data(),result.request)).show();
 	$('#btn_editar_producto').on('click', function (e) {
 		//buscamos los datos seleccionados
 		for(var i=0; clu_tienda.table.data().length; i++){
 			if(this.className.split('_')[3]==clu_tienda.table.data()[i].id){
 				//encontramos los datos
+				$('#modal-title-product').html('Editar Producto');
 				$( "input[name='edit_product']").val(true);
 				$( "input[name='product_id']").val(clu_tienda.table.data()[i].id);
 				$('#nombre_producto').val(clu_tienda.table.data()[i].name);
 				$('#precio').val(clu_tienda.table.data()[i].price);
 				$('#categoria_select').val(clu_tienda.table.data()[i].category);
 				$('#descripcion_producto').val(clu_tienda.table.data()[i].description);
-				$('#prioridad_producto').val(clu_tienda.table.data()[i].order);
-				$('#prioridad_producto').val(clu_tienda.table.data()[i].order);
+				$('#prioridad_producto').val(clu_tienda.table.data()[i].order);				
 				//imagen, se reemplaza el src del elemento
 				$('#img_product').attr('src',$('#img_product').attr('src').replace($('#img_product').attr('src').split('/')[$('#img_product').attr('src').split('/').length-1],clu_tienda.table.data()[i].image1));
 				$('#unidades_select').val(clu_tienda.table.data()[i].unity_measure);
 				$('#unidades_medida').val(clu_tienda.table.data()[i].unity_measure);
-				
+				$('#colores_select').val(clu_tienda.table.data()[i].colors);
+				$('#colores').val(clu_tienda.table.data()[i].colors);
+				$('#tallas_select').val(clu_tienda.table.data()[i].sizes);
+				$('#tallas').val(clu_tienda.table.data()[i].sizes);
+				$('#sabores_select').val(clu_tienda.table.data()[i].flavors);
+				$('#sabores').val(clu_tienda.table.data()[i].flavors);
+				$('#materiales_select').val(clu_tienda.table.data()[i].flavors);
+				$('#materiales').val(clu_tienda.table.data()[i].materials);
+				$('#modelos').val(clu_tienda.table.data()[i].materials);
+				$('#modal-button-product').html('Editar Producto')
 
-
-
+				//Mostrar Modal
 				$('#nuevoproducto_modal').modal();
 				//para hacer efectivo el cambio del chossen
 				$('#categoria_select').trigger("chosen:updated");
-				$('#unidades_select').trigger("chosen:updated");
+				$('#unidades_select').val(clu_tienda.table.data()[i].unity_measure.split(',')).trigger("chosen:updated");
+				$('#colores_select').val(clu_tienda.table.data()[i].colors.split(',')).trigger("chosen:updated");
+				$('#tallas_select').val(clu_tienda.table.data()[i].sizes.split(',')).trigger("chosen:updated");
+				$('#sabores_select').val(clu_tienda.table.data()[i].flavors.split(',')).trigger("chosen:updated");
+				$('#materiales_select').val(clu_tienda.table.data()[i].materials.split(',')).trigger("chosen:updated");
 				break;
 			};
 		}	    
 	});
 };
 
-clu_tienda.prototype.format= function(d) {    			
+clu_tienda.prototype.format= function(d,r) {    			
     return ''+
     '<div class="panel panel-default">'+
     	'<div class="panel-heading">'+
@@ -133,9 +145,11 @@ clu_tienda.prototype.format= function(d) {
 					'<div class="col-md-8 product_more">'+
 						'<label for="description" class="col-md-12 control-label">Descripciòn</label>'+
 						''+d.description+
-					'</div'+
-					'<div class="col-md-4">'+
-					'</div'+
+					'</div>'+
+					'<div class="col-md-4" style="text-align: center;">'+
+						'<label for="img_product" class="col-md-12 control-label">Imagen de Producto</label>'+
+						'<img src="'+r.url+'/users/'+r.usuario+'/products/'+d.image1+'" id="img_product" style="width: 90%; border:2px solid #ddd;border-radius: 0%;" alt="Imagen no disponible">'+
+					'</div>'+
 				'</div>'+
 			'</div>'+
     	'</div>'+    

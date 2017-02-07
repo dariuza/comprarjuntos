@@ -99,7 +99,7 @@
 						@foreach (Session::get('message') as $message)
 							@if ($message  == 'Tiendas0')
 								<li style="display: inline-flex;"> {{Session::get('comjunplus.usuario.names')}}, no tienes ninguna tienda que administar. No esperes màs y crea una dando click en la opciòn.&nbsp;<a href="#"><div class="" id="btn_nueva_tienda_a" data-toggle="modal" data-target="#nuevatienda_modal"><b> Crear una tienda</b></div></a> </li>
-							@elseif ($message  == 'ProductosOK')						
+							@elseif ($message  == 'ProductosOK' || $message  == 'ProductosEDITOK' )						
 							@else
 								<li>{{ $message }}</li>
 							@endif
@@ -486,7 +486,7 @@
 			<div class="modal-content">
 		      	<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Nuevo Producto</h4>				
+					<h4 id="modal-title-product" class="modal-title">Nuevo Producto</h4>				
 				</div>
 				<div class = "alerts-module"></div>
 				{!! Form::open(array('url' => Session::get('controlador').'nuevoproducto', 'id'=>'form_nuevo_producto','files'=>true,'onsubmit'=>'javascript:return clu_tienda.validateNuevoProducto()')) !!}
@@ -610,8 +610,8 @@
 				{!! Form::hidden('product_id', old('product_id')) !!}
 				{!! Form::close() !!}
 				<div class="modal-footer">
-					 <button type="submit" form = "form_nuevo_producto" class="btn btn-default " > Crear Producto</button>			
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
+					 <button type="submit" form = "form_nuevo_producto" id="modal-button-product" class="btn btn-default " > Crear Producto</button>			
+			        <button type="button" id="bnt-close-products" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
 		        </div>
 	      	</div>
 			</div>
@@ -666,7 +666,7 @@
 		$('.option_products').on('click', function (e) {
 			var datos = new Array();
 			datos['id'] = this.id.split('_')[1];
-			datos['name'] = this.id.split('_')[0];			
+			datos['name'] = this.id.split('_')[0];				
 		    seg_ajaxobject.peticionajax($('#form_consult_products').attr('action'),datos,"clu_tienda.consultaRespuestaProducts",false);
 
 		    //llamado sincrono, para cambiar el id de tienda
@@ -725,6 +725,8 @@
 		            var datos = new Array();
 		            datos['id_producto'] = clu_tienda.row.data().id;
 		            datos['id_tienda'] = clu_tienda.row.data().store_id;
+		            datos['url'] = "{{url('/')}}";
+					datos['usuario'] = "{{Session::get('comjunplus.usuario.name')}}";
 		            seg_ajaxobject.peticionajax($('#form_consult_product').attr('action'),datos,"clu_tienda.consultaRespuestaProduct");
 		            clu_tienda.tr.addClass('shown');
 		        }
@@ -741,7 +743,8 @@
 		});		
 
 		$('.chosen-select').chosen();
-		$('.chosen-container').width('100%');		
+		$('.chosen-container').width('100%');
+
 		$("#categorias_select").chosen().change(function(event) {
 			$('#categorias').val($('#categorias_select').chosen().val());		    
 		});
@@ -764,6 +767,40 @@
 			$('#materiales').val($('#materiales_select').chosen().val());		    
 		});
 
+		$('#nuevoproducto_modal').on('hidden.bs.modal', function () {
+		   //limpiamos todos los datos, puudo haver sido un edit quien abrio el modal
+			$('#modal-title-product').html('Crear Producto');
+			$( "input[name='edit_product']").val(false);
+			$( "input[name='product_id']").val('');
+			$('#nombre_producto').val('');
+			$('#precio').val('');
+			$('#categoria_select').val('');
+			$('#descripcion_producto').val('');
+			$('#prioridad_producto').val('');			
+			//imagen, se reemplaza el src del elemento
+			$('#img_product').attr('src',$('#img_product').attr('src').replace($('#img_product').attr('src').split('/')[$('#img_product').attr('src').split('/').length-1],'default.png'));
+			$('#unidades_select').val('');
+			$('#unidades_medida').val('');
+			$('#colores_select').val('');
+			$('#colores').val('');
+			$('#tallas_select').val('');
+			$('#tallas').val('');
+			$('#sabores_select').val('');
+			$('#sabores').val('');
+			$('#materiales_select').val('');
+			$('#materiales').val('');
+			$('#modelos').val('');
+			$('#modal-button-product').html('Crear Producto')			
+			
+			//para hacer efectivo el cambio del chossen
+			$('#categoria_select').trigger("chosen:updated");
+			$('#unidades_select').val([]).trigger("chosen:updated");
+			$('#colores_select').val([]).trigger("chosen:updated");
+			$('#tallas_select').val([]).trigger("chosen:updated");
+			$('#sabores_select').val([]).trigger("chosen:updated");
+			$('#materiales_select').val([]).trigger("chosen:updated");
+		 });
+
 	</script>
 	@if(old('edit'))		
 		<script> $("#nuevatienda_modal").modal(); </script>
@@ -779,16 +816,21 @@
 	@endif
 
 	@if(Session::has('message'))
-		@if(in_array('ProductosOK',Session::get('message')))
+		@if(in_array('ProductosOK',Session::get('message')) || in_array('ProductosEDITOK',Session::get('message')))
 			{{--Luego de haber guardado un producto correctameten, hay que listarlo en la tabla.--}}
-			<script type="text/javascript"> 								
+			<script type="text/javascript">
+				
+				@if(in_array('ProductosOK',Session::get('message'))) 								
 				$('#productos_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!Producto creado satisfactoriamente!</strong> Tù tienda ahora cuenta con un producto màs que ofertar, recuerda compartir la URL ({{url("/".Session::get("store.name"))}}) de tu tienda para que otros puedan verlo y comprarlo.</div>');
+				@else
+				$('#productos_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!Producto editado satisfactoriamente!</strong> Recuerda compartir la URL ({{url("/".Session::get("store.name"))}}) de tu tienda para que otros puedan verlo y comprarlo.</div>');
+				@endif
 				//$('#productos_modal').modal();
 				
 				//llamado apra categorias
 				var datos = new Array();
 				datos['id'] = "{!!Session::get('store.id')!!}";
-				datos['name'] = "{!!Session::get('store.name')!!}";			
+				datos['name'] = "{!!Session::get('store.name')!!}";						
 			    seg_ajaxobject.peticionajax($('#form_consult_products').attr('action'),datos,"clu_tienda.consultaRespuestaProducts",false);
 
 				//recarga la tabla de productos
@@ -845,6 +887,8 @@
 		            var datos = new Array();
 		            datos['id_producto'] = clu_tienda.row.data().id;
 		            datos['id_tienda'] = clu_tienda.row.data().store_id;
+		            datos['url'] = "{{url('/')}}";
+					datos['usuario'] = "{{Session::get('comjunplus.usuario.name')}}";
 		            seg_ajaxobject.peticionajax($('#form_consult_product').attr('action'),datos,"clu_tienda.consultaRespuestaProduct");
 		            clu_tienda.tr.addClass('shown');
 		        }

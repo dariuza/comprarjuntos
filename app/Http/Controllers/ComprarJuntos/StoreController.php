@@ -463,7 +463,7 @@ class StoreController extends Controller {
 	}
 
 	public function postNuevoproducto(Request $request){		
-
+		
 		//VERIFICACIONES
 		//verificamos si tienda puede tener màs productos
 		if(!$request->input('edit')){			
@@ -554,10 +554,11 @@ class StoreController extends Controller {
 			}
 
 			$product = new Producto();
-			if($request->input('edit')){					
+			if($request->input('edit_product')){					
 				//se actualizan los datos del producto
 				$product = Producto::find($request->input('product_id'));
-				$product->active =  $request->input('estado');
+				//$product->active =  $request->input('estado');
+				$product->active =  1;
 			}else{
 				//nueva tienda
 				$product->active =  1;
@@ -580,12 +581,10 @@ class StoreController extends Controller {
 			if(empty($product->image1))$product->image1 =  'default.png';
 			if(!empty($fileName_image1))$product->image1 =  $fileName_image1;
 			$product->store_id = Session::get('store.id');
-
-			//preparaciòn de datos
-
+		
 			try {			
 				$product->save();
-				if($request->input('edit')){
+				if($request->input('edit_product')){
 					$message[] = 'ProductosEDITOK';	
 					return Redirect::to('mistiendas/listar')->withInput()->with('message',$message);
 				}
