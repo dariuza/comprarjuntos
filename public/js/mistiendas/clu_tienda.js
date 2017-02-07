@@ -111,6 +111,8 @@ clu_tienda.prototype.consultaRespuestaProduct = function(result) {
 				$('#materiales_select').val(clu_tienda.table.data()[i].flavors);
 				$('#materiales').val(clu_tienda.table.data()[i].materials);
 				$('#modelos').val(clu_tienda.table.data()[i].materials);
+				$('.estado-roduct').show();
+				$('input[name=estado_producto][value='+clu_tienda.table.data()[i].active+']').attr("checked", "checked");
 				$('#modal-button-product').html('Editar Producto')
 
 				//Mostrar Modal
@@ -129,7 +131,7 @@ clu_tienda.prototype.consultaRespuestaProduct = function(result) {
 };
 
 clu_tienda.prototype.format= function(d,r) {    			
-    return ''+
+    var html = ''+
     '<div class="panel panel-default">'+
     	'<div class="panel-heading">'+
     		'<a href="#" style="text-decoration: none; color: #777">'+
@@ -143,9 +145,48 @@ clu_tienda.prototype.format= function(d,r) {
 			'<div class="row">'+
 				'<div class="col-md-12">'+
 					'<div class="col-md-8 product_more">'+
-						'<label for="description" class="col-md-12 control-label">Descripciòn</label>'+
-						''+d.description+
-					'</div>'+
+						'<div>'+					
+							'<label for="description" class="col-md-12 control-label">Descripciòn</label>'+
+							''+d.description+''+
+						'</div>';
+						
+						if(d.colors != ''){
+							html = html + '<div>';
+							html = html +'<label for="colores" class="col-md-12 control-label">Colores Disponibles</label>'+
+							''+d.colors+'</div>';						
+						}
+
+						if(d.sizes != ''){
+							html = html +'<div><label for="tallas" class="col-md-12 control-label">Tallas o Tamaños Disponibles</label>'+
+							''+d.sizes+'</div>';						
+						}	
+
+						if(d.flavors != ''){
+							html = html +'<div><label for="sabores" class="col-md-12 control-label">Sabores Disponibles</label>'+
+							''+d.flavors+'</div>';				
+						}
+
+						if(d.materials != ''){
+							html = html +'<div><label for="materiales" class="col-md-12 control-label">Materiales Disponibles</label>'+
+							''+d.materials+'</div>';					
+						}
+
+						if(d.models != ''){
+							html = html +'<div><label for="modelos" class="col-md-12 control-label">Modelos Disponibles</label>'+
+							''+d.models+'</div>';					
+						}
+
+						html = html +'<div><label for="prioridad" class="col-md-12 control-label">Nivel de Prioridad</label>';
+						html = html + 'Orden: '+d.order+'</div>';
+
+						if(d.active){
+							html = html +'<div><label for="active" class="col-md-12 control-label">Estado de Producto</label>';
+							html = html + 'Activo </div>';
+						}else{
+							html = html +'<div><label for="active" class="col-md-12 control-label">Estado de Producto</label>';
+							html = html + 'Desactivo </div>';
+						}					
+		html = html +'</div>'+
 					'<div class="col-md-4" style="text-align: center;">'+
 						'<label for="img_product" class="col-md-12 control-label">Imagen de Producto</label>'+
 						'<img src="'+r.url+'/users/'+r.usuario+'/products/'+d.image1+'" id="img_product" style="width: 90%; border:2px solid #ddd;border-radius: 0%;" alt="Imagen no disponible">'+
@@ -154,9 +195,12 @@ clu_tienda.prototype.format= function(d,r) {
 			'</div>'+
     	'</div>'+    
     '</div>';
+    return html;
 };
 
 var clu_tienda = new clu_tienda();
+
+
 
 
 

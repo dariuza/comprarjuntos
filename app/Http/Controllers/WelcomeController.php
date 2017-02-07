@@ -42,6 +42,7 @@ class WelcomeController extends Controller {
 		 */
 		
 		Session::flash('controlador', '/inicio/');
+
 		$departments = \DB::table('seg_department')->orderBy('department','asc')->get();		
 		foreach ($departments as $department){
 			$departamentos[$department->department] = $department->department;
@@ -65,6 +66,11 @@ class WelcomeController extends Controller {
 			}
 			$moduledata['ciudades']=$ciudades;
 		}
+
+		//algunas aleatorias categorias raiz
+		$moduledata['categorias'] = \DB::table('clu_category')
+		->where('category_id',0)
+		->get();
 
 		//return view('welcome',['modulo'=>$moduledata]);
 		return view('welcome')->with($moduledata);

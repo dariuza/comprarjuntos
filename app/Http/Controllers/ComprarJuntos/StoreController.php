@@ -557,8 +557,8 @@ class StoreController extends Controller {
 			if($request->input('edit_product')){					
 				//se actualizan los datos del producto
 				$product = Producto::find($request->input('product_id'));
-				//$product->active =  $request->input('estado');
-				$product->active =  1;
+				$product->active =  $request->input('estado_producto');
+				//$product->active =  1;
 			}else{
 				//nueva tienda
 				$product->active =  1;

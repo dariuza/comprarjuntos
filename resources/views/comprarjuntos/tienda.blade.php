@@ -397,8 +397,7 @@
 											@else
 												<div>{{Form::radio('estado', 'Activa', false)}} Activa</div>
 												<div>{{Form::radio('estado', 'Desactiva', true)}} Desactiva</div>
-											@endif
-											
+											@endif											
 											</div>
 										</div>
 									</div>
@@ -468,6 +467,7 @@
 			            			<th>Precio</th>
 			            			<th>Categorìa</th>
 			            			<th>Unidades de Venta</th>
+			            			<th>Estado</th>
 					            </tr>
 					        </thead>              
 					    </table> 
@@ -597,6 +597,11 @@
 														<span class="input-group-addon" data-toggle="tooltip" title="Para diligenciar adecuadamente este campo, ponemos una coma entre modelo y modelo; ejemplo; Modelo 2016, Modelo 2015, Modelo 2000.">?</span>
 													</div>
 												</div>
+												<div class="col-md-12 estado-roduct" style="display:none">
+													{!! Form::label('estado', 'Estado', array('class' => 'col-md-12 control-label')) !!}
+													<div>{{Form::radio('estado_producto', '1', true)}} Activo</div>
+													<div>{{Form::radio('estado_producto', '0', false)}} Desactivo</div>
+												</div>
 
 											</div>
 										</div>										
@@ -676,7 +681,7 @@
 			    "responsive": true,
 			    "columnDefs": [
 			        { responsivePriority: 1, targets: 0 },
-			        { responsivePriority: 2, targets: -1 }
+			        { responsivePriority: 2, targets: 0 }
 	    		],
 			    "processing": true,
 			    "bLengthChange": false,
@@ -694,7 +699,15 @@
 					{ "data": "name"},
 					{ "data": "price"},		        
 					{ "data": "category_name"},  	    
-			        { "data": "unity_measure"}	                   
+			        { "data": "unity_measure"},
+			        { "data": "active",render: function ( data, type, row ) {
+		        		if (data == 1) {
+		                    return 'Activo';
+	                    }else{
+		                    return 'Desactivo';
+	                    }
+			        	}
+			    	}               
 			    ],       
 			    "language": {
 			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -790,6 +803,8 @@
 			$('#materiales_select').val('');
 			$('#materiales').val('');
 			$('#modelos').val('');
+			$('.estado-roduct').hide();
+			$("input[name=estado_producto][value=1]").attr("checked", "checked");
 			$('#modal-button-product').html('Crear Producto')			
 			
 			//para hacer efectivo el cambio del chossen
@@ -838,7 +853,7 @@
 				    "responsive": true,
 				    "columnDefs": [
 				        { responsivePriority: 1, targets: 0 },
-				        { responsivePriority: 2, targets: -1 }
+				        { responsivePriority: 2, targets: 0 }
 		    		],
 				    "processing": true,
 				    "bLengthChange": false,
@@ -856,7 +871,15 @@
 						{ "data": "name"},
 						{ "data": "price"},		        
 						{ "data": "category_name"},  	    
-				        { "data": "unity_measure"}		                   
+				        { "data": "unity_measure"},
+				        { "data": "active",render: function ( data, type, row ) {
+			        		if (data == 1) {
+			                    return 'Activo';
+		                    }else{
+			                    return 'Desactivo';
+		                    }
+			        	}
+			    	}                     
 				    ],       
 				    "language": {
 				        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
@@ -864,35 +887,35 @@
 				});
 
 				//metodo para la tabla
-			$('#example tbody').on('click', 'td.details-control', function () {
-				//cerramos el div anterior
-				if(clu_tienda.tr != undefined){
-					if(clu_tienda.row.data().id != clu_tienda.table.row($(this).closest('tr')).data().id){
-						clu_tienda.row.child.hide();
-		        		clu_tienda.tr.removeClass('shown');
-					}					
-				}
+				$('#example tbody').on('click', 'td.details-control', function () {
+					//cerramos el div anterior
+					if(clu_tienda.tr != undefined){
+						if(clu_tienda.row.data().id != clu_tienda.table.row($(this).closest('tr')).data().id){
+							clu_tienda.row.child.hide();
+			        		clu_tienda.tr.removeClass('shown');
+						}					
+					}
 
-		        clu_tienda.tr = $(this).closest('tr');
-		        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
-		 		
-		        if ( clu_tienda.row.child.isShown() ) {
-		            // la fila esta abierta
-		            clu_tienda.row.child.hide();
-		            clu_tienda.tr.removeClass('shown');
-		        }
-		        else {
-		            //la fila esta cerrada
-		            //llamado asincrono datos de producto
-		            var datos = new Array();
-		            datos['id_producto'] = clu_tienda.row.data().id;
-		            datos['id_tienda'] = clu_tienda.row.data().store_id;
-		            datos['url'] = "{{url('/')}}";
-					datos['usuario'] = "{{Session::get('comjunplus.usuario.name')}}";
-		            seg_ajaxobject.peticionajax($('#form_consult_product').attr('action'),datos,"clu_tienda.consultaRespuestaProduct");
-		            clu_tienda.tr.addClass('shown');
-		        }
-		    });		
+			        clu_tienda.tr = $(this).closest('tr');
+			        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
+			 		
+			        if ( clu_tienda.row.child.isShown() ) {
+			            // la fila esta abierta
+			            clu_tienda.row.child.hide();
+			            clu_tienda.tr.removeClass('shown');
+			        }
+			        else {
+			            //la fila esta cerrada
+			            //llamado asincrono datos de producto
+			            var datos = new Array();
+			            datos['id_producto'] = clu_tienda.row.data().id;
+			            datos['id_tienda'] = clu_tienda.row.data().store_id;
+			            datos['url'] = "{{url('/')}}";
+						datos['usuario'] = "{{Session::get('comjunplus.usuario.name')}}";
+			            seg_ajaxobject.peticionajax($('#form_consult_product').attr('action'),datos,"clu_tienda.consultaRespuestaProduct");
+			            clu_tienda.tr.addClass('shown');
+			        }
+			    });		
 				
 			</script>
 		@endif		

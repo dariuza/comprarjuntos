@@ -77,8 +77,12 @@
 	</div>
 	</div>
 	
-	<div class="title m-b-md">
-		Bien-llegado a Compara Juntos
+	<div class="title m-b-md col-md-12">
+		<div class="btn-group" role="group">
+		@foreach ($categorias as $llave_categoria => $categoria)
+			<button type="button" class="btn btn-default">{{$categoria->name}}</button>			
+		@endforeach
+		</div>
 	</div>
 @endsection
 
@@ -123,8 +127,6 @@
 	      </div>
       </div>
 	</div>
-	
-	
 
 	@if (Auth::guest())
 	<!-- Modals para invitados -->
