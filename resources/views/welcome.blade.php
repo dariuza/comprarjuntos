@@ -6,6 +6,14 @@
     		background-color: #f2dede;
     		border-color: #ebccd1;
 		}
+		.center-block {
+		  display: block;
+		  margin-left: auto;
+		  margin-right: auto;
+		  text-align: center;
+		}
+
+
 	</style>		
 	<div class="row">	
 	<div class="alerts col-md-12 col-md-offset-0">
@@ -76,14 +84,38 @@
 		@endif
 	</div>
 	</div>
-	
-	<div class="title m-b-md col-md-12">
-		<div class="btn-group" role="group">
+
+	<!--Categorias-->	
+	<div class="title m-b-md center-block visible-lg ">
+		<div class="btn-group" role="group">		
 		@foreach ($categorias as $llave_categoria => $categoria)
 			<button type="button" class="btn btn-default">{{$categoria->name}}</button>			
 		@endforeach
 		</div>
 	</div>
+
+	<div class="title m-b-md center-block visible-md">
+		<div class="btn-group" role="group">		
+		@foreach ($categorias as $llave_categoria => $categoria)			
+			<button type="button" class="btn btn-default">{{$categoria->name}}</button>			
+			@if($llave_categoria > 10) 
+				@break;
+			@endif
+		@endforeach
+		</div>
+	</div>
+
+	<div class="title m-b-md center-block visible-sm">
+		<div class="btn-group" role="group">		
+		@foreach ($categorias as $llave_categoria => $categoria)			
+			<button type="button" class="btn btn-default">{{$categoria->name}}</button>			
+			@if($llave_categoria > 6) 
+				@break;
+			@endif
+		@endforeach
+		</div>
+	</div>
+
 @endsection
 
 @section('modal')

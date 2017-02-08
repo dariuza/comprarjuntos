@@ -69,7 +69,9 @@ class WelcomeController extends Controller {
 
 		//algunas aleatorias categorias raiz
 		$moduledata['categorias'] = \DB::table('clu_category')
-		->where('category_id',0)
+		->where('category_id',0)		
+		->orderByRaw("RAND()")
+		->skip(0)->take(16)
 		->get();
 
 		//return view('welcome',['modulo'=>$moduledata]);
