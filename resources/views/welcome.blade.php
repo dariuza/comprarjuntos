@@ -12,6 +12,31 @@
 		  margin-right: auto;
 		  text-align: center;
 		}
+		.introduccion{
+			margin-top: 2%;padding: 1%;
+			background:  #D8E9EC; /* For browsers that do not support gradients */    
+		    background: -webkit-linear-gradient(left,  #D8E9EC , white); /* For Safari 5.1 to 6.0 */
+		    background: -o-linear-gradient(right,  #D8E9EC, white); /* For Opera 11.1 to 12.0 */
+		    background: -moz-linear-gradient(right,  #D8E9EC, white); /* For Firefox 3.6 to 15 */
+		    background: linear-gradient(to right,  #D8E9EC , white); /* Standard syntax (must be last) */
+		}
+		.option_store{
+			text-align: center;
+			cursor:pointer;			
+		}
+
+		.option_store a{
+			text-decoration:none;			
+		}
+		.option_store_icon{
+			font-size: 17px;
+		}
+		.option_store:hover{			
+			color: #000 !important;
+		}
+		.option_store a:hover{			
+			color: #000 !important;
+		}
 
 
 	</style>		
@@ -112,6 +137,71 @@
 			@if($llave_categoria > 6) 
 				@break;
 			@endif
+		@endforeach
+		</div>
+	</div>
+
+	<!--Div Introducciòn-->
+	<div class="col-md-12 col-md-offset-0 introduccion">
+		<div class="row col-md-2">
+			{{ Html::image('images/icons/LogoFomentamos.png','Imagen no disponible',array( 'style'=>'width: auto; height: 200px;border-radius: 0%; float: left;' ))}}	
+		</div>
+		<div class="row col-md-7" style="text-align: justify;">
+			La economía del bien común no es ni el mejor de los modelos económicos ni el final de una historia, sólo el paso siguiente hacia un futuro más sostenible, justo y democrático. Se trata de un proceso participativo, de desarrollo abierto que busca sinergia en procesos similares como: economía solidaria, economía social, movimiento de bienes comunes, economía del postcrecimiento o democracia económica. Juntando sus esfuerzos, una gran cantidad de personas y actores son capaces de crear algo fundalmente nuevo. La implementación de la visión requiere motivación intrínseca y autorresponsabilidad, incentivos económicos, un orden político-legal coherente, así como concientización. Todas las personas, empresas y comunidades están invitadas a participar en la reconstrucción de la economía hacia el bien común.
+		</div>
+		<div class="row col-md-3"  style="text-align: center;">
+			{{ Html::image('users/'.$tendero[0]->user_name.'/profile/'.$tendero[0]->avatar,'Imagen no disponible',array( 'style'=>'width: auto; height: 150px;border:2px solid #ddd;border-radius: 50%;' ))}}
+			<div>Yo: {{$tendero[0]->names}} </div>
+			<div> Tambièn hago parte de ComprarJuntos</div>
+		</div>
+	</div>
+
+	<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;">
+		<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
+			<b>Encuentra Tiendas y Crear Redes de Consumo</b>
+		</div>
+		<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
+		@foreach($tiendas as $tienda)
+			<div class="col-md-2 col-mx-offset-1">
+				<div class="panel panel-default">
+					<div class="panel-heading" style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:{{$tienda->color_two}};">{{$tienda->name}}
+						@if($tienda->status == 'Activa')
+							<span class="glyphicon glyphicon-ok" aria-hidden="true" style="float: right;font-size: 20px;" data-toggle="tooltip" title="{{$tienda->status}}"></span>
+						@else
+							<span class="glyphicon glyphicon-remove" aria-hidden="true" style="float: right;font-size: 20px;" data-toggle="tooltip" title="{{$tienda->status}}"></span>
+						@endif						
+					</div>
+					<div class="panel-body">
+				    	<div class="row">
+				    		<div class="col-md-12">
+				    			<a href="{{url('/'.$tienda->name)}}">
+				    				{{ Html::image('users/'.$tienda->user_name.'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 175px;border-radius: 0%;' ))}}	    				
+				    			</a>
+				    			
+				    		</div>
+				    	</div>
+				    </div>
+				    <div class="panel-footer " style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
+				    	{{$tienda->color_two}};">
+				    	<div class="row">				    		
+				    		<div class="col-md-4 col-mx-offset-0 option_store" style="color:{{$tienda->color_two}};">
+				    			<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};">				    			
+					    			<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span>
+					    			<div style="font-size: 10px;">Ver Tienda</div>
+				    			</a>
+				    		</div>
+				    		<div class="col-md-4 col-mx-offset-0 option_store" style="color:{{$tienda->color_two}};">				    			
+				    			<span class="glyphicon glyphicon-envelope option_store_icon" aria-hidden="true"></span>
+				    			<div style="font-size: 10px;">Enviar un Mensage</div>
+				    		</div>
+				    		<div class="col-md-4 col-mx-offset-0 option_store" style="color:{{$tienda->color_two}};">				    			
+				    			<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span>
+				    			<div style="font-size: 10px;">Ver Ubicaciòn</div>
+				    		</div>				    		
+				    	</div>
+			    	</div>
+				</div>
+			</div>	
 		@endforeach
 		</div>
 	</div>

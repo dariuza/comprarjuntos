@@ -37,10 +37,10 @@ Route::get('cambiarcontraseña/',[
 	'as' => 'changepasword'
 ]);
 
-Route::get('/{id}', function ($id) {
-	//registamos las url en uso		
-	return 'Buscas: '.$id;
-});
+Route::get('/{data}',[
+	'uses' => 'WelcomeController@getFind',
+	'as' => 'search'
+]);
 
 Route::group(['middleware' => 'guest'], function () {
 	
@@ -75,6 +75,7 @@ Route::controllers([
 	//'opcion' => 'Security\OpcionController',
 	//'permiso' => 'Security\PermisoController'	
 	'mistiendas' => 'ComprarJuntos\StoreController',
+	'welcome' => 'WelcomeController',
 	
 ]);
 

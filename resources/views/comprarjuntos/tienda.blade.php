@@ -84,8 +84,7 @@
 						@foreach ($errors->all() as $error)
 							<li>{{ $error }}</li>
 						@endforeach
-					</ul></br>						
-					<div data-toggle="modal" data-target="#rpsw_modal" style = "cursor:pointer;" ><strong>Recuperar Contraseña AQUI!!!</strong></div>
+					</ul>
 				</div>
 			@endif
 			

@@ -30,8 +30,8 @@ class WelcomeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
-	{	
+	public function index(){
+
 		Session::put('app', env('APP_NAME','ComprarJuntos'));
 		Session::put('copy', env('APP_RIGTH','ComprarJuntos'));
 		Session::put('mail', env('MAIL_USERNAME','info.comprarjuntos@gmail.com'));
@@ -74,8 +74,51 @@ class WelcomeController extends Controller {
 		->skip(0)->take(16)
 		->get();
 
+		//algunas tiendas
+		$moduledata['tiendas'] = \DB::table('clu_store')
+		->select('clu_store.*','seg_user.name as user_name')
+		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+		->where('clu_store.status','Activa')			
+		->orderByRaw("RAND()")
+		->skip(0)->take(5)
+		->get();
+
+		//un tendero
+		$moduledata['tendero'] = \DB::table('seg_user_profile')
+		->select('seg_user_profile.*','seg_user.name as user_name')
+		->leftjoin('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')			
+		->where('seg_user_profile.avatar','!=','default.png')
+		->orderByRaw("RAND()")
+		->skip(0)->take(1)
+		->get();
+
 		//return view('welcome',['modulo'=>$moduledata]);
-		return view('welcome')->with($moduledata);
+		return view('welcome')->with($moduledata);		
+	}
+
+	public function getFind($data = null){
+		//BUSQUEDA DE TIENDA PRODUCTO O CATEGORIA
+		//Primero miramos si coincide con el nombre de una tienda
+		$moduledata['tienda'] = \DB::table('clu_store')
+		->select('clu_store.*','seg_user.name as user_name')
+		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+		->where('clu_store.name',$data)							
+		->get();
+
+
+		return view('comprarjuntos/vertienda')->with($moduledata);
+
+		//Si hallamos una tienda nos vamos a mostarla
+		if(count($moduledata['tienda'])){
+			return redirect()->action('WelcomeController@getVertienda');
+			//return $this->getVertienda($moduledata);
+		}
+
+
+		return $data;
+	}
+
+	public function getVertienda(){		
 		
 	}
 
