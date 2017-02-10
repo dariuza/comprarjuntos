@@ -76,8 +76,9 @@ class WelcomeController extends Controller {
 
 		//algunas tiendas
 		$moduledata['tiendas'] = \DB::table('clu_store')
-		->select('clu_store.*','seg_user.name as user_name')
+		->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
 		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+		->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 		->where('clu_store.status','Activa')			
 		->orderByRaw("RAND()")
 		->skip(0)->take(5)
@@ -105,21 +106,22 @@ class WelcomeController extends Controller {
 		->where('clu_store.name',$data)							
 		->get();
 
-
-		return view('comprarjuntos/vertienda')->with($moduledata);
-
-		//Si hallamos una tienda nos vamos a mostarla
 		if(count($moduledata['tienda'])){
-			return redirect()->action('WelcomeController@getVertienda');
-			//return $this->getVertienda($moduledata);
+			
+			$moduledata['tendero'] = \DB::table('seg_user_profile')
+			->select('seg_user_profile.*','seg_user.name as user_name')
+			->leftjoin('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')					
+			->where('seg_user.id',$moduledata['tienda'][0]->user_id)		
+			->get();
+
+			$moduledata['productos'] = \DB::table('clu_products')							
+			->where('clu_products.store_id',$moduledata['tienda'][0]->id)		
+			->get();
+
+			return view('comprarjuntos/vertienda')->with($moduledata);
 		}
 
-
 		return $data;
-	}
-
-	public function getVertienda(){		
-		
-	}
+	}	
 
 }

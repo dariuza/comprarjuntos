@@ -139,7 +139,7 @@ class StoreController extends Controller {
 		//rutina para refinar los inputs			
 		$array_input = array();
 		$array_input['_token'] = $request->input('_token');
-		$array_input['nombre'] = mb_strtolower($request->input('nombre'));
+		$array_input['nombre'] = str_replace(' ','',mb_strtolower($request->input('nombre')));
 		$array_input['categorias'] = $request->input('categorias');	
 		$array_input['color_uno'] = $request->input('color_uno');
 		$array_input['color_dos'] = $request->input('color_dos');		

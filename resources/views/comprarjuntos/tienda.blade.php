@@ -159,7 +159,7 @@
 				    	<div class="row">
 				    		<div class="col-md-12">
 				    			<a href="{{url('/'.$tienda->name)}}">
-				    				{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 125px;border-radius: 0%;' ))}}	    				
+				    				{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}	    				
 				    			</a>
 				    			
 				    		</div>
