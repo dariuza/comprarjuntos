@@ -112,37 +112,45 @@
 		@endif
 	</div>
 	</div>
-
+	
 	<!--Categorias-->	
 	<div class="title m-b-md center-block visible-lg ">
-		<div class="btn-group" role="group">		
+		<div class="btn-group" role="group">
+		@php ($i=1)	
 		@foreach ($categorias as $llave_categoria => $categoria)
-			<button type="button" class="btn btn-default">{{$categoria->name}}</button>			
+			{{ HTML::ul($categoria)}}
+			@if($i < 17)
+				<button type="button" class="btn btn-default" data-toggle="popover" title="{{$llave_categoria}}" data-placement="bottom" data-content="" data-html="true">{{$llave_categoria}}</button>			
+			@endif			
+			@php ($i++)	
 		@endforeach
 		</div>
 	</div>
-
+	
 	<div class="title m-b-md center-block visible-md">
 		<div class="btn-group" role="group">		
-		@foreach ($categorias as $llave_categoria => $categoria)			
-			<button type="button" class="btn btn-default">{{$categoria->name}}</button>			
-			@if($llave_categoria > 10) 
-				@break;
-			@endif
+		@php ($i=1)		
+		@foreach ($categorias as $llave_categoria => $categoria)
+			@if($i < 11)
+				<button type="button" class="btn btn-default">{{$llave_categoria}}</button>			
+			@endif			
+			@php ($i++)	
 		@endforeach
 		</div>
 	</div>
 
 	<div class="title m-b-md center-block visible-sm">
 		<div class="btn-group" role="group">		
-		@foreach ($categorias as $llave_categoria => $categoria)			
-			<button type="button" class="btn btn-default">{{$categoria->name}}</button>			
-			@if($llave_categoria > 6) 
-				@break;
-			@endif
+		@php ($i=1)		
+		@foreach ($categorias as $llave_categoria => $categoria)
+			@if($i < 7)
+				<button type="button" class="btn btn-default">{{$llave_categoria}}</button>			
+			@endif			
+			@php ($i++)	
 		@endforeach
 		</div>
 	</div>
+	
 
 	<!--Div Introducciòn-->
 	<div class="col-md-12 col-md-offset-0 introduccion">
@@ -184,13 +192,16 @@
 				    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$tienda->name}}
 			    						</a>
 					    			</div>
-					    			<div style="font-size: 14px;">
-					    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$tienda->department}} - {{$tienda->city}}: {{$tienda->adress}}
+					    			<div style="font-size: 14px;text-align: center;">
+					    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$tienda->department}} - {{$tienda->city}}
+					    			</div>						    			
+					    			<div style="font-size: 14px;text-align: center;">
+					    				{{$tienda->adress}}
 					    			</div>						    			
 			    				</div>
-			    				<div class="col-md-3">
+			    				<div class="col-md-3 hidden-xs">
 			    					<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 18px;">			    				
-				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 100%;border-radius: 50%;' ))}}				    								    			
+				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 120%;border-radius: 50%;' ))}}				    								    			
 				    				</a>
 				    			</div>		    			
 				    		</div>
@@ -524,10 +535,17 @@
 			autoclose: true,			
 			language: "es"
 		});
+
 		$( "#departamento" ).change(function() {
 			var datos = new Array();
 			datos['id'] =$( "#departamento option:selected" ).val();			   
 			seg_ajaxobject.peticionajax($('#form_consult_city').attr('action'),datos,"seg_user.consultaRespuestaCity");
 		});
+
+		
+		$('[data-toggle="popover"]').popover({ 
+			trigger: "hover",
+			container: 'body'
+		 });
 	</script>
 @endsection

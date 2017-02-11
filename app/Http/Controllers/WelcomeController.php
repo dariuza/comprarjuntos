@@ -68,12 +68,28 @@ class WelcomeController extends Controller {
 		}
 
 		//algunas aleatorias categorias raiz
+		/*
 		$moduledata['categorias'] = \DB::table('clu_category')
 		->where('category_id',0)		
 		->orderByRaw("RAND()")
 		->skip(0)->take(16)
 		->get();
+		*/
 
+		$moduledata['category'] = \DB::table('clu_category')
+		->select('clu_category.name','fc.name as fname')
+		->leftjoin('clu_category as fc', 'clu_category.category_id', '=', 'fc.id')
+		->get();
+		//construimos el array
+		$cat =  array();
+		foreach ($moduledata['category'] as $key => $value) {
+			if(!$value->fname){
+				$cat[$value->name] = array(); 
+			}else{
+				$cat[$value->fname][] = $value->name;
+			}
+		}
+		$moduledata['categorias'] = $cat;
 		//algunas tiendas
 		$moduledata['tiendas'] = \DB::table('clu_store')
 		->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
