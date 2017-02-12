@@ -117,10 +117,9 @@
 	<div class="title m-b-md center-block visible-lg ">
 		<div class="btn-group" role="group">
 		@php ($i=1)	
-		@foreach ($categorias as $llave_categoria => $categoria)
-			{{ HTML::ul($categoria)}}
+		@foreach ($categorias as $llave_categoria => $categoria)			
 			@if($i < 17)
-				<button type="button" class="btn btn-default" data-toggle="popover" title="{{$llave_categoria}}" data-placement="bottom" data-content="" data-html="true">{{$llave_categoria}}</button>			
+				<button type="button" class="btn btn-default" data-toggle="popover" title="{{$llave_categoria}}" data-placement="bottom" data-content="{{ Html::ul($categoria)}}" data-html="true">{{$llave_categoria}}</button>			
 			@endif			
 			@php ($i++)	
 		@endforeach
@@ -543,9 +542,31 @@
 		});
 
 		
-		$('[data-toggle="popover"]').popover({ 
-			trigger: "hover",
+		$('[data-toggle="popover"]').popover({
+			html: true,
+	        trigger: 'manual',			
 			container: 'body'
+		 }).on('click', function(e) {
+		 	$('[data-toggle="popover"]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+		            $(this).popover('hide');
+		        }
+		    });	        
+		 	$(this).popover('show');
 		 });
+		 
+		 $(document).on('click', function(e) {
+	        $('[data-toggle="popover"]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+		            $(this).popover('hide');
+		        }
+		    });	
+	    });
+		
+
 	</script>
 @endsection
