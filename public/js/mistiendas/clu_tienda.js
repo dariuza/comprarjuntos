@@ -188,8 +188,8 @@ clu_tienda.prototype.format= function(d,r) {
 						}					
 		html = html +'</div>'+
 					'<div class="col-md-4" style="text-align: center;">'+
-						'<label for="img_product" class="col-md-12 control-label">Imagen de Producto</label>'+
-						'<img src="'+r.url+'/users/'+r.usuario+'/products/'+d.image1+'" id="img_product" style="width: 90%; border:2px solid #ddd;border-radius: 0%;" alt="Imagen no disponible">'+
+						'<label for="img_product_descrip" class="col-md-12 control-label">Imagen de Producto</label>'+
+						'<img src="'+r.url+'/users/'+r.usuario+'/products/'+d.image1+'" id="img_product_descrip" style="width: 90%; border:2px solid #ddd;border-radius: 0%;" alt="Imagen no disponible">'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
