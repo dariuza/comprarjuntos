@@ -273,7 +273,7 @@
 														@if(old('color_dos'))
 															{!! Form::text('color_dos',old('color_dos'), array('class' => 'form-control sample-selector','placeholder'=>'Color Secundario de tu tienda')) !!}											
 														@else
-															{!! Form::text('color_dos','#333', array('class' => 'form-control sample-selector','placeholder'=>'Color Secundario de tu tienda')) !!}											
+															{!! Form::text('color_dos','#777', array('class' => 'form-control sample-selector','placeholder'=>'Color Secundario de tu tienda')) !!}											
 														@endif
 														<span class="input-group-addon"><i></i></span>
 													</div>

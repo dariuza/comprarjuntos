@@ -200,7 +200,7 @@
 			    				</div>
 			    				<div class="col-md-3 hidden-xs">
 			    					<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 18px;">			    				
-				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 120%;border-radius: 50%;' ))}}				    								    			
+				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 130%;border-radius: 50%;' ))}}				    								    			
 				    				</a>
 				    			</div>		    			
 				    		</div>

@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class WelcomeController extends Controller {
 
@@ -43,6 +45,7 @@ class WelcomeController extends Controller {
 		
 		Session::flash('controlador', '/inicio/');
 
+		//departamentos
 		$departments = \DB::table('seg_department')->orderBy('department','asc')->get();		
 		foreach ($departments as $department){
 			$departamentos[$department->department] = $department->department;
@@ -106,6 +109,7 @@ class WelcomeController extends Controller {
 		return view('welcome')->with($moduledata);		
 	}
 
+	//Este es el metodo que controla el buscador principal
 	public function getFind($data = null){
 		//BUSQUEDA DE TIENDA PRODUCTO O CATEGORIA
 		//Primero miramos si coincide con el nombre de una tienda
@@ -115,6 +119,7 @@ class WelcomeController extends Controller {
 		->where('clu_store.name',$data)							
 		->get();
 
+		//al momento de hallar una tienda
 		if(count($moduledata['tienda'])){
 			
 			$moduledata['tendero'] = \DB::table('seg_user_profile')
@@ -131,6 +136,18 @@ class WelcomeController extends Controller {
 		}
 
 		return $data;
-	}	
+	}
+
+	//este motodo es para retornar datos para mostar el modal
+	public function postAddproduct(Request $request){
+		//consultamos las caracteristicas del producto
+		/*
+		$producto = \DB::table('clu_products')							
+			->where('clu_products.id',$request->input('id'))		
+			->get(); 
+			*/
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
+	}
+	
 
 }

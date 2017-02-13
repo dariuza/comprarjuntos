@@ -320,8 +320,7 @@ seg_user.prototype.consultaRespuestaCity = function(result) {
     }
     list.appendChild(fistChild);
     if(result.respuesta){
-        if(result.data){
-            
+        if(result.data){            
             //añadimos nuevos elementos         
             for(var i = 0; i < result.data.length; i++){
                 var option = document.createElement("option");
@@ -331,6 +330,11 @@ seg_user.prototype.consultaRespuestaCity = function(result) {
             }
         }
     }
+};
+
+seg_user.prototype.consultaRespuestaAddCart = function(result) {
+    $('#add_cart_modal .modal-title').html('Agregar '+result.request.name+' al Carrito de Compras');
+    $('#add_cart_modal').modal(); 
 };
 
 var seg_user = new seg_user();

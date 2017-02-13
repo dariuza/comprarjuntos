@@ -25,6 +25,10 @@
 	  margin-right: auto;
 	  text-align: center;
 	}
+	.option_store{
+		text-align: center;
+		cursor:pointer;			
+	}
 
 	</style>
 	<div class="row">	
@@ -97,10 +101,10 @@
 	</div>
 	<div class="col-md-10 col-md-offset-1" style="margin-bottom: 1%;">
 		<div class="row col-md-7">
-			<div class="col-md-4">
+			<div class="col-md-5">
 			{{ Html::image('users/'.$tienda[0]->user_name.'/stores/'.$tienda[0]->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 200px;border-radius: 0%;' ))}}	
 			</div>
-			<div class="col-md-8 col-sd-offset-0">
+			<div class="col-md-7 col-sd-offset-0">
 				<div><b>{{$tienda[0]->name}}</b></div>
 				<div>{{$tienda[0]->description}}</div>
 				<div><span class="glyphicon glyphicon-map-marker" aria-hidden="true">{{$tienda[0]->department}}, {{$tienda[0]->city}}</span></div>
@@ -128,21 +132,30 @@
 			</div>
 		</div>
 	</div>
+	<!--Listado de productos-->
 	<div class="col-md-10 col-md-offset-1">	
-		@foreach($productos as $producto)			
-			<div class="col-md-2 col-mx-offset-1">
+		@foreach($productos as $producto)
+			<div class="col-md-3 col-mx-offset-1">
 				<div class="panel panel-default">					
 					<div class="panel-body">
 				    	<div class="row">
 				    		<div class="col-md-12">				    			
 			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}				    							    			
 				    		</div>
-				    		<div class="col-md-12"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:
-				    	{{$tienda[0]->color_two}};padding: 7px;">				    			
-				    			<a href="{{url('/'.$tienda[0]->name)}}" style="color:{{$tienda[0]->color_two}};font-size: 18px;">			    			
-					    			{{$producto->name}}
-				    			</a>
-				    			<div style=""></div>
+
+				    		<div class="col-md-12 panel-footer"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:
+				    	{{$tienda[0]->color_two}};padding: 2px;">				    			
+				    			<div class="col-md-4 col-mx-offset-0">				    				
+					    			{{$producto->name}}				    			
+				    			</div>	
+				    			<div class="col-md-4 col-mx-offset-0 option_store">			    			
+				    				<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>
+				    				<div style="font-size: 10px;">Informacion de interes</div>
+				    			</div>
+				    			<div class="col-md-4 col-mx-offset-0 option_store option_add_product" id ="{{$producto->name}}_{{$producto->id}}">			    			
+				    				<span class="glyphicon glyphicon-shopping-cart option_store_icon" aria-hidden="true"></span>
+				    				<div style="font-size: 10px;">Agregar al Carrito</div>
+				    			</div>	
 				    		</div>
 				    	</div>
 				    </div>				    
@@ -152,10 +165,28 @@
 	</div>
 
 	
-	
 @endsection
 
 @section('modal')
+	<!--Modal para agregar al carrito-->
+	<div class="modal fade" id="add_cart_modal" role="dialog" >
+		 <div class="modal-dialog">
+		 	<div class="modal-content">
+		 		<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Agregar Producto</h4>
+				</div>
+				<div class = "alerts-module"></div>				
+				<div class="modal-body">
+				</div>
+				 <div class="modal-footer">
+			         <button type="submit" class="btn btn-default" >Agregar</button>
+			         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+		        </div> 
+		 	</div>
+		 </div>
+	</div>
+
 	@if (Auth::guest())
 	<!-- Modals para invitados -->
 
@@ -200,7 +231,7 @@
 		        </div>
 		        <div class="modal-footer">
 		          <button type="submit" form = "login" class="btn btn-default " >Ingresar</button>
-		          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 		        </div>     
 	      </div>
       </div>
@@ -290,7 +321,19 @@
 	</div>
 	@endif
 
+	{!! Form::open(array('id'=>'form_add_product','url' => 'welcome/addproduct')) !!}		
+    {!! Form::close() !!}
+
 @endsection
 
 @section('script')
+	<script type="text/javascript">
+		$('.option_add_product').on('click', function (e) {
+			var datos = new Array();
+			datos['id'] = this.id.split('_')[1];
+			datos['name'] = this.id.split('_')[0];
+			seg_ajaxobject.peticionajax($('#form_add_product').attr('action'),datos,"seg_user.consultaRespuestaAddCart");					
+		});
+
+	</script>
 @endsection
