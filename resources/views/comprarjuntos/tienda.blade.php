@@ -556,9 +556,8 @@
 											<div class="form-group ">
 												{!! Form::label('unidades_medida', 'Unidades de Medida', array('class' => 'col-md-12 control-label')) !!}
 												<div class="input-group input-grp categorias col-md-12">		
-													{!! Form::select('unidades_select',array('Unidad'=>'Unidad','Paquete'=>'Paquete','Paca'=>'Paca','Bolsa'=>'Bolsa','Bulto'=>'Bulto','Litro'=>'Litro','Kilo'=>'Kilo','Metro'=>'Metro'),old('unidades_select'), array('id'=>'unidades_select','class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las categorias','tabindex'=>'4', 'style'=>'width:350px;')) !!}
-													{!! Form::hidden('unidades_medida',old('unidades_medida'),array('id'=>'unidades_medida')) !!}
-													<span class="input-group-addon" data-toggle="tooltip" title="Las unidades de medida indican las cantidades en las cuales se vende este producto, por ejemplo: la leche se puede vender por bolsa, Litor o Paca">?</span>
+													{!! Form::select('unidades_select',array('Unidad'=>'Unidad','Paquete'=>'Paquete','Paca'=>'Paca','Bolsa'=>'Bolsa','Bulto'=>'Bulto','Litro'=>'Litro','Kilo'=>'Kilo','Metro'=>'Metro'),old('unidades_select'), array('id'=>'unidades_select','class' => 'form-control chosen-select' ,'data-placeholder'=>'Selecciona las categorias','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+													{!! Form::hidden('unidades_medida',old('unidades_medida'),array('id'=>'unidades_medida')) !!}													
 												</div>
 
 												{!! Form::label('colores', 'Colores Disponibles', array('class' => 'col-md-12 control-label')) !!}
