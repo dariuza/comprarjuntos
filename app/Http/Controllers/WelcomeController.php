@@ -1,8 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 class WelcomeController extends Controller {
 
@@ -140,13 +140,11 @@ class WelcomeController extends Controller {
 
 	//este motodo es para retornar datos para mostar el modal
 	public function postAddproduct(Request $request){
-		//consultamos las caracteristicas del producto
-		/*
+		//consultamos las caracteristicas del producto		
 		$producto = \DB::table('clu_products')							
 			->where('clu_products.id',$request->input('id'))		
-			->get(); 
-			*/
-		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
+			->get();			
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$producto]);	
 	}
 	
 

@@ -197,9 +197,6 @@ clu_tienda.prototype.format= function(d,r) {
     '</div>';
     return html;
 };
-
-
-
 var clu_tienda = new clu_tienda();
 
 

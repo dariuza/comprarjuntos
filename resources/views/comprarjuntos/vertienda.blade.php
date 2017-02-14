@@ -140,21 +140,21 @@
 					<div class="panel-body">
 				    	<div class="row">
 				    		<div class="col-md-12">				    			
-			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}				    							    			
+			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 175px;border-radius: 0%;' ))}}				    							    			
 				    		</div>
 
 				    		<div class="col-md-12 panel-footer"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:
 				    	{{$tienda[0]->color_two}};padding: 2px;">				    			
-				    			<div class="col-md-4 col-mx-offset-0">				    				
+				    			<div class="col-md-4 col-mx-offset-0" style="font-size: 14px;">
 					    			{{$producto->name}}				    			
 				    			</div>	
 				    			<div class="col-md-4 col-mx-offset-0 option_store">			    			
 				    				<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>
-				    				<div style="font-size: 10px;">Informacion de interes</div>
+				    				<div style="font-size: 10px;">Descripciòn</div>
 				    			</div>
 				    			<div class="col-md-4 col-mx-offset-0 option_store option_add_product" id ="{{$producto->name}}_{{$producto->id}}">			    			
 				    				<span class="glyphicon glyphicon-shopping-cart option_store_icon" aria-hidden="true"></span>
-				    				<div style="font-size: 10px;">Agregar al Carrito</div>
+				    				<div style="font-size: 10px;">Al Carrito</div>
 				    			</div>	
 				    		</div>
 				    	</div>
@@ -179,9 +179,9 @@
 				<div class = "alerts-module"></div>				
 				<div class="modal-body">
 				</div>
-				 <div class="modal-footer">
-			         <button type="submit" class="btn btn-default" >Agregar</button>
-			         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				<div class="modal-footer">
+				    <button type="submit" class="btn btn-default" >Agregar</button>
+				    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 		        </div> 
 		 	</div>
 		 </div>
