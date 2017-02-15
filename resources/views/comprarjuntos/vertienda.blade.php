@@ -192,21 +192,42 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="col-md-12">
-								<label for="price_cart_modal_for" class="col-md-4 control-label">Precio:</label>
-								<label for="price_cart_modal" class="col-md-8 control-label"></label>
+								<label for="price_cart_modal_for" class="col-md-3 control-label">Precio:</label>
+								<label for="price_cart_modal" class="col-md-9 control-label"></label>
 							</div>
-							<div id="unity_cart_modal" class="col-md-12"></div>
+							<div class="col-md-12">
+								<div id="unity_cart_modal" class="col-md-12"></div>
+							</div>
 							<div id="div_cart_colors" class="col-md-12">
-								<label for="color_cart_modal_for" class="col-md-12 control-label">Color</label>
-								{!! Form::select('colores_select',array('Amarillo'=>'Amarillo','Azùl'=>'Azùl','Rojo'=>'Rojo','Verde'=>'Verde','Naranjado'=>'Naranjado','Violeta'=>'Violeta','Rosado'=>'Rosado','Blanco'=>'Blanco','Negro'=>'Negro','Gris'=>'Gris','Cafe'=>'Cafe','Beis'=>'Beis'),old('colores_select'), array('id'=>'colores_select','class' => 'form-control chosen-select' ,'data-placeholder'=>'Selecciona los colores','tabindex'=>'4')) !!}
-
+								<label for="color_cart_modal_for" class="col-md-3 control-label">Color</label>
+								<div class="col-md-9">
+									{!! Form::select('colores_cart_select',array('0'=>'Elije un color','Amarillo'=>'Amarillo'),array(), array('id'=>'colores_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un color','tabindex'=>'4')) !!}
+								</div>
+							</div>
+							<div id="div_cart_sizes" class="col-md-12">
+								<label for="sizes_cart_modal_for" class="col-md-3 control-label">Talla</label>
+								<div class="col-md-9">
+									{!! Form::select('sizes_cart_select',array('0'=>'Elije una talla','Grande'=>'Grande'),array(), array('id'=>'sizes_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije una talla','tabindex'=>'4')) !!}
+								</div>
+							</div>
+							<div id="div_cart_flavors" class="col-md-12">
+								<label for="flavors_cart_modal_for" class="col-md-3 control-label">Sabor</label>
+								<div class="col-md-9">
+									{!! Form::select('flavors_cart_select',array('0'=>'Elije un sabor','Agridulce'=>'Agridulce'),array(), array('id'=>'flavors_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un sabor','tabindex'=>'4')) !!}
+								</div>
+							</div>
+							<div id="div_cart_materials" class="col-md-12">
+								<label for="materials_cart_modal_for" class="col-md-3 control-label">Material</label>
+								<div class="col-md-9">
+									{!! Form::select('materials_cart_select',array('0'=>'Elije un material','Metal'=>'Metal'),array(), array('id'=>'materials_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un material','tabindex'=>'4')) !!}
+								</div>
 							</div>
 							
 						</div>
 						<div class="col-md-6">
 							<div class="col-md-12" style="text-align: center;font-size: 14px;">
 								<label for="prod_cart_modal_for" class="col-md-12 control-label"></label>
-								{{ Html::image('users/'.$tendero[0]->user_name.'/products/default.png','Imagen no disponible',array('id'=>'prod_img_cart_modal','style'=>'width: 100%;;border-radius: 0%;'))}}
+								{{ Html::image('users/'.$tendero[0]->user_name.'/products/default.png','Imagen no disponible',array('id'=>'prod_img_cart_modal','style'=>'width: 100%;'))}}
 							</div>
 							<div class="col-md-12">
 								<label for="description_cart_modal_for" class="col-md-12 control-label">Descripción</label>

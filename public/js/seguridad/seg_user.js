@@ -338,7 +338,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
     $('#prod_img_cart_modal').attr('src',$('#prod_img_cart_modal').attr('src').replace($('#prod_img_cart_modal').attr('src').split('/')[$('#prod_img_cart_modal').attr('src').split('/').length-1],result.data[0].image1));
     $("label[for='price_cart_modal']").html('$'+result.data[0].price);
     $('#dercription_cart_modal').html(result.data[0].description);
-    $('#unity_cart_modal').html('De venta por: '+result.data[0].unity_measure);
+    $('#unity_cart_modal').html('Unidad de venta: '+result.data[0].unity_measure);
     
 
     $('#add_cart_modal').modal(); 
