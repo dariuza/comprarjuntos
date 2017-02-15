@@ -29,6 +29,18 @@
 		text-align: center;
 		cursor:pointer;			
 	}
+	.chosen-container .chosen-container-multi{
+		border: 1px solid #ccc !important;
+		border-radius: 4px !important;
+	}
+	.categorias{
+		width: 100% !important;
+		border-radius: 4px !important;
+		position: relative !important;
+		min-height: 1px !important;
+		padding-right: 15px !important;
+		padding-left: 15px !important;			
+	}
 
 	</style>
 	<div class="row">	
@@ -143,8 +155,7 @@
 			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 175px;border-radius: 0%;' ))}}				    							    			
 				    		</div>
 
-				    		<div class="col-md-12 panel-footer"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:
-				    	{{$tienda[0]->color_two}};padding: 2px;">				    			
+				    		<div class="col-md-12 panel-footer"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:{{$tienda[0]->color_two}};padding: 2px;">				    			
 				    			<div class="col-md-4 col-mx-offset-0" style="font-size: 14px;">
 					    			{{$producto->name}}				    			
 				    			</div>	
@@ -178,6 +189,31 @@
 				</div>
 				<div class = "alerts-module"></div>				
 				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="col-md-12">
+								<label for="price_cart_modal_for" class="col-md-4 control-label">Precio:</label>
+								<label for="price_cart_modal" class="col-md-8 control-label"></label>
+							</div>
+							<div id="unity_cart_modal" class="col-md-12"></div>
+							<div id="div_cart_colors" class="col-md-12">
+								<label for="color_cart_modal_for" class="col-md-12 control-label">Color</label>
+								{!! Form::select('colores_select',array('Amarillo'=>'Amarillo','Azùl'=>'Azùl','Rojo'=>'Rojo','Verde'=>'Verde','Naranjado'=>'Naranjado','Violeta'=>'Violeta','Rosado'=>'Rosado','Blanco'=>'Blanco','Negro'=>'Negro','Gris'=>'Gris','Cafe'=>'Cafe','Beis'=>'Beis'),old('colores_select'), array('id'=>'colores_select','class' => 'form-control chosen-select' ,'data-placeholder'=>'Selecciona los colores','tabindex'=>'4')) !!}
+
+							</div>
+							
+						</div>
+						<div class="col-md-6">
+							<div class="col-md-12" style="text-align: center;font-size: 14px;">
+								<label for="prod_cart_modal_for" class="col-md-12 control-label"></label>
+								{{ Html::image('users/'.$tendero[0]->user_name.'/products/default.png','Imagen no disponible',array('id'=>'prod_img_cart_modal','style'=>'width: 100%;;border-radius: 0%;'))}}
+							</div>
+							<div class="col-md-12">
+								<label for="description_cart_modal_for" class="col-md-12 control-label">Descripción</label>
+								<div id="dercription_cart_modal" class="col-md-12" ></div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
 				    <button type="submit" class="btn btn-default" >Agregar</button>
@@ -327,6 +363,7 @@
 @endsection
 
 @section('script')
+	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript">
 		$('.option_add_product').on('click', function (e) {
 			var datos = new Array();
@@ -334,6 +371,9 @@
 			datos['name'] = this.id.split('_')[0];
 			seg_ajaxobject.peticionajax($('#form_add_product').attr('action'),datos,"seg_user.consultaRespuestaAddCart");					
 		});
+
+		//$('.chosen-select').chosen();
+		//$('.chosen-container').width('100%');
 
 	</script>
 @endsection

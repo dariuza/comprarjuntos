@@ -58,7 +58,7 @@
 						</ul>
 					</li>				
 					</ul>
-					<form class="navbar-form navbar-left visible-lg" >
+					<form class="navbar-form navbar-left visible-lg" method="GET" action="{{url('/')}}">
 					   <div class="input-group" style="width: 35%;position: absolute;margin-left: 15%;">
 							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
 							<span class="input-group-btn">
@@ -66,7 +66,7 @@
 							</span>
 						</div>
 				    </form>
-				    <form class="navbar-form navbar-left visible-md" >
+				    <form class="navbar-form navbar-left visible-md" method="GET" action="{{url('/')}}">
 					   <div class="input-group" style="width: 30%;position: absolute;margin-left: 10%;">
 							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
 							<span class="input-group-btn">
@@ -74,7 +74,7 @@
 							</span>
 						</div>
 				    </form>
-				    <form class="navbar-form navbar-left visible-sm" >
+				    <form class="navbar-form navbar-left visible-sm" method="GET" action="{{url('/')}}">
 					   <div class="input-group" style="width: 25%;position: absolute;margin-left: 0%;">
 							<input type="text" class="form-control" placeholder="Productos o Tiendas" style="text-align: center;">
 							<span class="input-group-btn">
@@ -134,7 +134,7 @@
 						</li>
 					@endforeach				
 					</ul>
-					<form class="navbar-form navbar-left visible-lg" >
+					<form class="navbar-form navbar-left visible-lg" method="GET" action="{{url('/')}}">
 					   <div class="input-group" style="width: 35%;position: absolute;margin-left: 15%;">
 							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
 							<span class="input-group-btn">
@@ -142,7 +142,7 @@
 							</span>
 						</div>
 				    </form>
-				    <form class="navbar-form navbar-left visible-md" >
+				    <form class="navbar-form navbar-left visible-md" method="GET" action="{{url('/')}}">
 					   <div class="input-group" style="width: 30%;position: absolute;margin-left: 10%;">
 							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
 							<span class="input-group-btn">
@@ -150,7 +150,7 @@
 							</span>
 						</div>
 				    </form>
-				    <form class="navbar-form navbar-left visible-sm" >
+				    <form class="navbar-form navbar-left visible-sm" method="GET" action="{{url('/')}}">
 					   <div class="input-group" style="width: 25%;position: absolute;margin-left: 0%;">
 							<input type="text" class="form-control" placeholder="Productos o Tiendas" style="text-align: center;">
 							<span class="input-group-btn">

@@ -118,7 +118,7 @@
 		<div class="btn-group" role="group">
 		@php ($i=1)	
 		@foreach ($categorias as $llave_categoria => $categoria)			
-			@if($i < 17)
+			@if($i < 15)
 				<button type="button" class="btn btn-default" data-toggle="popover" title="{{$llave_categoria}}" data-placement="bottom" data-content="{{ Html::ul($categoria)}}" data-html="true">{{$llave_categoria}}</button>			
 			@endif			
 			@php ($i++)	
