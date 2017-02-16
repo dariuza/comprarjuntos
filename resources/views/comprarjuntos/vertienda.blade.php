@@ -190,7 +190,9 @@
 				<div class = "alerts-module"></div>				
 				<div class="modal-body">
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-7">
+							{!! Form::hidden('id_store_cart_modal',null,array('id'=>'id_store_cart_modal')) !!}
+							{!! Form::hidden('id_product_cart_modal',null,array('id'=>'id_product_cart_modal')) !!}
 							<div class="col-md-12">
 								<label for="price_cart_modal_for" class="col-md-3 control-label">Precio:</label>
 								<label for="price_cart_modal" class="col-md-9 control-label"></label>
@@ -198,46 +200,53 @@
 							<div class="col-md-12">
 								<div id="unity_cart_modal" class="col-md-12"></div>
 							</div>
-							<div id="div_cart_colors" class="col-md-12">
+							<div class="col-md-12" style="margin-bottom: 5%;">
+								{!! Form::text('volume_cart_modal',1, array('id'=>'volume_cart_modal', 'class' => 'form-control solo_numeros','placeholder'=>'Cantidad a comprar')) !!}
+							</div>
+							<div id="div_cart_colors" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="color_cart_modal_for" class="col-md-3 control-label">Color</label>
 								<div class="col-md-9">
 									{!! Form::select('colores_cart_select',array('0'=>'Elije un color','Amarillo'=>'Amarillo'),array(), array('id'=>'colores_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un color','tabindex'=>'4')) !!}
 								</div>
 							</div>
-							<div id="div_cart_sizes" class="col-md-12">
+							<div id="div_cart_sizes" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="sizes_cart_modal_for" class="col-md-3 control-label">Talla</label>
 								<div class="col-md-9">
 									{!! Form::select('sizes_cart_select',array('0'=>'Elije una talla','Grande'=>'Grande'),array(), array('id'=>'sizes_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije una talla','tabindex'=>'4')) !!}
 								</div>
 							</div>
-							<div id="div_cart_flavors" class="col-md-12">
+							<div id="div_cart_flavors" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="flavors_cart_modal_for" class="col-md-3 control-label">Sabor</label>
 								<div class="col-md-9">
 									{!! Form::select('flavors_cart_select',array('0'=>'Elije un sabor','Agridulce'=>'Agridulce'),array(), array('id'=>'flavors_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un sabor','tabindex'=>'4')) !!}
 								</div>
 							</div>
-							<div id="div_cart_materials" class="col-md-12">
+							<div id="div_cart_materials" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="materials_cart_modal_for" class="col-md-3 control-label">Material</label>
 								<div class="col-md-9">
 									{!! Form::select('materials_cart_select',array('0'=>'Elije un material','Metal'=>'Metal'),array(), array('id'=>'materials_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un material','tabindex'=>'4')) !!}
 								</div>
 							</div>
+							<div id="div_cart_model" class="col-md-12">
+								<label for="model_cart_modal_for" class="col-md-3 control-label">Modelo:</label>
+								<div id="model_cart_modal" class="col-md-9" ></div>
+							</div>
 							
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-5">
 							<div class="col-md-12" style="text-align: center;font-size: 14px;">
 								<label for="prod_cart_modal_for" class="col-md-12 control-label"></label>
 								{{ Html::image('users/'.$tendero[0]->user_name.'/products/default.png','Imagen no disponible',array('id'=>'prod_img_cart_modal','style'=>'width: 100%;'))}}
 							</div>
-							<div class="col-md-12">
+							<div id="div_cart_description" class="col-md-12">
 								<label for="description_cart_modal_for" class="col-md-12 control-label">Descripción</label>
 								<div id="dercription_cart_modal" class="col-md-12" ></div>
-							</div>
+							</div>							
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-				    <button type="submit" class="btn btn-default" >Agregar</button>
+				    <button type="submit" id="button_cart_modal" class="btn btn-default" >Agregar</button>
 				    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 		        </div> 
 		 	</div>
@@ -391,6 +400,89 @@
 			datos['id'] = this.id.split('_')[1];
 			datos['name'] = this.id.split('_')[0];
 			seg_ajaxobject.peticionajax($('#form_add_product').attr('action'),datos,"seg_user.consultaRespuestaAddCart");					
+		});
+
+		$('#button_cart_modal').on('click', function (e) {
+			//primero verifficamos la esistencia de la cantidad
+			if(!$('#volume_cart_modal').val() != ''){
+				$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!Problemas al agregar el producto!</strong> Debes agregar una cantidad en el campo: Cantidad a comprar.</div>');
+			}else{
+				var add = true;
+				//verificamos el objeto carrito, id_tienda, aun no funcional
+
+				
+				//verificar que el objeto no este previament agregado
+				if(seg_user.cart_products.length){					
+					for(var i=0; i < seg_user.cart_products.length;i++){
+						if(seg_user.cart_products[i][0] == $('#id_product_cart_modal').val()){
+							add = false;
+							break;
+						}
+					}
+					if(add){
+						//hay un nuevo producto por agregar
+						var prod = new Array();
+						prod[0] = $('#id_product_cart_modal').val();
+						seg_user.cart_products[seg_user.cart_products.length] = prod;
+						add = true;
+
+					}
+				}else{
+					//primer producto que agregar
+					var prod = new Array();
+					prod[0] = $('#id_product_cart_modal').val();
+					seg_user.cart_products[0] = prod;					
+				}
+				
+				//agregamos el nuevo producto al objetot carrito
+
+
+				//agregamos el brand al carrito
+				if(add){
+					if($('#bange_cart').html() == ""){
+						$('#bange_cart').html(1);	
+					}else{
+						$('#bange_cart').html(parseInt($('#bange_cart').html())+1);
+					}
+				}
+				
+
+				//cerrar el modal				
+				$('#add_cart_modal').modal('toggle'); 
+				
+			}
+			
+			
+
+
+			
+		});
+
+		//ocultamos los div de caracteristicas de los productos
+		$('#div_cart_colors').hide();
+		$('#div_cart_sizes').hide();
+		$('#div_cart_flavors').hide();
+		$('#div_cart_materials').hide();
+		$('#div_cart_model').hide();
+		$('#div_cart_description').hide();
+
+		//ocultamos los div luego de una cierre del modal
+		$('#add_cart_modal').on('hidden.bs.modal', function () {
+			$('#div_cart_colors').hide();
+			$('#div_cart_sizes').hide();
+			$('#div_cart_flavors').hide();
+			$('#div_cart_materials').hide();			
+			$('#div_cart_model').hide();
+			$('#div_cart_description').hide();
+		});
+
+		$( ".solo_numeros" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
 		});
 
 		//$('.chosen-select').chosen();

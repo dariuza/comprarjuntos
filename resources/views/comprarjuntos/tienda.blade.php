@@ -588,7 +588,7 @@
 													<span class="input-group-addon" data-toggle="tooltip" title="Los diferentes materiales en los cuales se puede adquirir el producto; por ejemplo, en una floristeria se vende un mismo diseño de florero en dos materiales diferentes: barro y metal.">?</span>
 												</div>
 
-												{!! Form::label('modelos', 'Modelos', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::label('modelos', 'Modelo', array('class' => 'col-md-12 control-label')) !!}
 												<div class="col-md-12">
 													<div class="input-group">
 														{!! Form::text('modelos',old('modelos'), array('class' => 'form-control','placeholder'=>'Ingresa el o los modelos en los cuales esta disponible el producto.')) !!}
@@ -665,7 +665,7 @@
 		    $('.nav-tabs a[href="#tab_prod2"]').tab('show');
 		});
 
-		//Consultar los productos de la tienda
+		//Consultar los productos de la tienda, listado
 		$('.option_products').on('click', function (e) {
 			var datos = new Array();
 			datos['id'] = this.id.split('_')[1];

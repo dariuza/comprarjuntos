@@ -1,6 +1,9 @@
 function seg_user() {
 	
 	this.btn_editar = 1 ;
+    this.cart_store_id;//esta variable de momento no se usara, incapasidad de ser global
+    this.cart_products = new Array();
+    //refrescamos el brand del carrito de compras, ante el refresh de seg_user
 }
 	
 seg_user.prototype.onjquery = function() {	
@@ -333,12 +336,105 @@ seg_user.prototype.consultaRespuestaCity = function(result) {
 };
 
 seg_user.prototype.consultaRespuestaAddCart = function(result) {
+    $('#id_store_cart_modal').val(result.data[0].store_id);
+    $('#id_product_cart_modal').val(result.data[0].id);       
     $('#add_cart_modal .modal-title').html('Agregar '+result.request.name+' al Carrito de Compras');
     $("label[for='prod_cart_modal_for']").html(result.request.name);
     $('#prod_img_cart_modal').attr('src',$('#prod_img_cart_modal').attr('src').replace($('#prod_img_cart_modal').attr('src').split('/')[$('#prod_img_cart_modal').attr('src').split('/').length-1],result.data[0].image1));
     $("label[for='price_cart_modal']").html('$'+result.data[0].price);
-    $('#dercription_cart_modal').html(result.data[0].description);
+    if(result.data[0].description != ''){
+        $('#div_cart_description').show();
+        $('#dercription_cart_modal').html(result.data[0].description);
+    }
+    if(result.data[0].models != ''){
+        $('#div_cart_model').show();
+        $('#model_cart_modal').html(result.data[0].models);
+    }
+    
     $('#unity_cart_modal').html('Unidad de venta: '+result.data[0].unity_measure);
+    
+    //mostramos los div en caso de ser aplicables
+    var options;
+    var opt;
+    var list;
+
+    if(result.data[0].colors != ''){
+        //construimos el select        
+        list = document.getElementById("colores_cart_select");
+        fistChild=list.firstChild;        
+        while (list.hasChildNodes()) {   
+            list.removeChild(list.firstChild);
+        }        
+        list.appendChild(fistChild);
+
+        options = result.data[0].colors.split(',');
+        
+        for(var i=0;i<=options.length;i++){
+            opt = document.createElement("option");
+            opt.value = options[i];
+            opt.textContent = options[i];
+            list.appendChild(opt);
+        }
+        $('#div_cart_colors').show();
+    }
+    if(result.data[0].sizes != ''){
+        //construimos el select        
+        list = document.getElementById("sizes_cart_select");
+        fistChild=list.firstChild;        
+        while (list.hasChildNodes()) {   
+            list.removeChild(list.firstChild);
+        }        
+        list.appendChild(fistChild);
+
+        options = result.data[0].sizes.split(',');
+        
+        for(var i=0;i<=options.length;i++){
+            opt = document.createElement("option");
+            opt.value = options[i];
+            opt.textContent = options[i];
+            list.appendChild(opt);
+        }
+        $('#div_cart_zises').show();
+    }
+    if(result.data[0].flavors != ''){
+        //construimos el select        
+        list = document.getElementById("flavors_cart_select");
+        fistChild=list.firstChild;        
+        while (list.hasChildNodes()) {   
+            list.removeChild(list.firstChild);
+        }        
+        list.appendChild(fistChild);
+
+        options = result.data[0].flavors.split(',');
+        
+        for(var i=0;i<=options.length;i++){
+            opt = document.createElement("option");
+            opt.value = options[i];
+            opt.textContent = options[i];
+            list.appendChild(opt);
+        }
+        $('#div_cart_flavors').show();
+    }
+    if(result.data[0].materials != ''){
+        //construimos el select        
+        list = document.getElementById("materials_cart_select");
+        fistChild=list.firstChild;        
+        while (list.hasChildNodes()) {   
+            list.removeChild(list.firstChild);
+        }        
+        list.appendChild(fistChild);
+
+        options = result.data[0].materials.split(',');
+        
+        for(var i=0;i<=options.length;i++){
+            opt = document.createElement("option");
+            opt.value = options[i];
+            opt.textContent = options[i];
+            list.appendChild(opt);
+        }
+        $('#div_cart_materials').show();
+    }
+    
     
 
     $('#add_cart_modal').modal(); 

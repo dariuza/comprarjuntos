@@ -110,7 +110,7 @@ clu_tienda.prototype.consultaRespuestaProduct = function(result) {
 				$('#sabores').val(clu_tienda.table.data()[i].flavors);
 				$('#materiales_select').val(clu_tienda.table.data()[i].flavors);
 				$('#materiales').val(clu_tienda.table.data()[i].materials);
-				$('#modelos').val(clu_tienda.table.data()[i].materials);
+				$('#modelos').val(clu_tienda.table.data()[i].models);
 				$('.estado-roduct').show();
 				$('input[name=estado_producto][value='+clu_tienda.table.data()[i].active+']').attr("checked", "checked");
 				$('#modal-button-product').html('Editar Producto')

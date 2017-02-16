@@ -33,8 +33,7 @@
 	
 	<body>
 		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-			
+			<div class="container-fluid">			
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 						<span class="sr-only">Toggle Navigation</span>
@@ -86,9 +85,10 @@
 						<li><a href="#" data-toggle="modal" data-target="#registry_modal" >Registrate</a></li>
 						<li><a href="#" data-toggle="modal" data-target="#login_modal" >Ingresa</a></li>
 						<li>
-							<a href="#">
+							<a href="#">								
 								<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" style = "font-size: 20px;"></span>
-								<span style = "font-size: 14px;" >Carro</span>
+								<span style = "font-size: 16px;" >Carro</span>
+								<span id="bange_cart" class="badge"></span>
 							</a>
 							
 						</li>												
@@ -185,9 +185,11 @@
 							</ul>
 						</li>
 						<li>
-							<a href="#">
+							<a href="#">																
 								<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" style = "font-size: 20px;"></span>
-								<span style = "font-size: 14px;" >Carro</span>
+								<span style = "font-size: 16px;">Carro</span>
+								<span id="bange_cart" class="badge"></span>
+																
 							</a>							
 						</li>				
 					</ul>	

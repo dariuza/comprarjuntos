@@ -378,7 +378,7 @@ class StoreController extends Controller {
 
 	public function postConsultarproducts(Request $request){
 		//total de productos
-		$productos=Producto::count();
+		$productos=Producto::where('store_id',$request->input('id'))->count();
 
 		//consultamos las categorias de la tienda seleccionada.
 		$categorias=array();
