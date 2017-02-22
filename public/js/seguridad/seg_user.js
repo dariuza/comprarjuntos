@@ -341,7 +341,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
     $('#add_cart_modal .modal-title').html('Agregar '+result.request.name+' al Carrito de Compras');
     $("label[for='prod_cart_modal_for']").html(result.request.name);
     $('#prod_img_cart_modal').attr('src',$('#prod_img_cart_modal').attr('src').replace($('#prod_img_cart_modal').attr('src').split('/')[$('#prod_img_cart_modal').attr('src').split('/').length-1],result.data[0].image1));
-    $("label[for='price_cart_modal']").html('$'+result.data[0].price);
+    $("#price_cart_modal_span").html(result.data[0].price);
     if(result.data[0].description != ''){
         $('#div_cart_description').show();
         $('#dercription_cart_modal').html(result.data[0].description);
@@ -369,7 +369,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
 
         options = result.data[0].colors.split(',');
         
-        for(var i=0;i<=options.length;i++){
+        for(var i=0;i<options.length;i++){
             opt = document.createElement("option");
             opt.value = options[i];
             opt.textContent = options[i];
@@ -388,13 +388,13 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
 
         options = result.data[0].sizes.split(',');
         
-        for(var i=0;i<=options.length;i++){
+        for(var i=0;i<options.length;i++){
             opt = document.createElement("option");
             opt.value = options[i];
             opt.textContent = options[i];
             list.appendChild(opt);
         }
-        $('#div_cart_zises').show();
+        $('#div_cart_sizes').show();
     }
     if(result.data[0].flavors != ''){
         //construimos el select        
@@ -407,7 +407,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
 
         options = result.data[0].flavors.split(',');
         
-        for(var i=0;i<=options.length;i++){
+        for(var i=0;i<options.length;i++){
             opt = document.createElement("option");
             opt.value = options[i];
             opt.textContent = options[i];
@@ -426,7 +426,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
 
         options = result.data[0].materials.split(',');
         
-        for(var i=0;i<=options.length;i++){
+        for(var i=0;i<options.length;i++){
             opt = document.createElement("option");
             opt.value = options[i];
             opt.textContent = options[i];

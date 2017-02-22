@@ -43,7 +43,7 @@
 	}
 
 	</style>
-	<div class="row">	
+	<div class="row" style="margin-top: 5%;">	
 		<div class="alerts col-md-12 col-md-offset-0">
 		<!-- $error llega si la función validator falla en autenticar los datos -->
 			@if (count($errors) > 0)
@@ -195,7 +195,9 @@
 							{!! Form::hidden('id_product_cart_modal',null,array('id'=>'id_product_cart_modal')) !!}
 							<div class="col-md-12">
 								<label for="price_cart_modal_for" class="col-md-3 control-label">Precio:</label>
-								<label for="price_cart_modal" class="col-md-9 control-label"></label>
+								<label for="price_cart_modal" class="col-md-9 control-label">
+									$<span id="price_cart_modal_span"></span>
+								</label>
 							</div>
 							<div class="col-md-12">
 								<div id="unity_cart_modal" class="col-md-12"></div>
@@ -206,25 +208,25 @@
 							<div id="div_cart_colors" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="color_cart_modal_for" class="col-md-3 control-label">Color</label>
 								<div class="col-md-9">
-									{!! Form::select('colores_cart_select',array('0'=>'Elije un color','Amarillo'=>'Amarillo'),array(), array('id'=>'colores_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un color','tabindex'=>'4')) !!}
+									{!! Form::select('colores_cart_select',array('0'=>'Elije un color'),array(), array('id'=>'colores_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un color','tabindex'=>'4')) !!}
 								</div>
 							</div>
 							<div id="div_cart_sizes" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="sizes_cart_modal_for" class="col-md-3 control-label">Talla</label>
 								<div class="col-md-9">
-									{!! Form::select('sizes_cart_select',array('0'=>'Elije una talla','Grande'=>'Grande'),array(), array('id'=>'sizes_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije una talla','tabindex'=>'4')) !!}
+									{!! Form::select('sizes_cart_select',array('0'=>'Elije un tamaño'),array(), array('id'=>'sizes_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije una talla','tabindex'=>'4')) !!}
 								</div>
 							</div>
 							<div id="div_cart_flavors" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="flavors_cart_modal_for" class="col-md-3 control-label">Sabor</label>
 								<div class="col-md-9">
-									{!! Form::select('flavors_cart_select',array('0'=>'Elije un sabor','Agridulce'=>'Agridulce'),array(), array('id'=>'flavors_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un sabor','tabindex'=>'4')) !!}
+									{!! Form::select('flavors_cart_select',array('0'=>'Elije un sabor'),array(), array('id'=>'flavors_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un sabor','tabindex'=>'4')) !!}
 								</div>
 							</div>
 							<div id="div_cart_materials" class="col-md-12" style="margin-bottom: 3%;">
 								<label for="materials_cart_modal_for" class="col-md-3 control-label">Material</label>
 								<div class="col-md-9">
-									{!! Form::select('materials_cart_select',array('0'=>'Elije un material','Metal'=>'Metal'),array(), array('id'=>'materials_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un material','tabindex'=>'4')) !!}
+									{!! Form::select('materials_cart_select',array('0'=>'Elije un material'),array(), array('id'=>'materials_cart_select','class' => 'form-control chosen-select col-md-12' ,'data-placeholder'=>'Elije un material','tabindex'=>'4')) !!}
 								</div>
 							</div>
 							<div id="div_cart_model" class="col-md-12">
@@ -403,59 +405,164 @@
 		});
 
 		$('#button_cart_modal').on('click', function (e) {
-			//primero verifficamos la esistencia de la cantidad
+			//primero verifficamos la existencia de la cantidad y de las caracteristicas
 			if(!$('#volume_cart_modal').val() != ''){
-				$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!Problemas al agregar el producto!</strong> Debes agregar una cantidad en el campo: Cantidad a comprar.</div>');
+				$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!Problemas al agregar el producto!</strong> Debes agregar una cantidad en el campo: Cantidad a comprar.</div>');				
 			}else{
-				var add = true;
-				//verificamos el objeto carrito, id_tienda, aun no funcional
 
-				
-				//verificar que el objeto no este previament agregado
-				if(seg_user.cart_products.length){					
-					for(var i=0; i < seg_user.cart_products.length;i++){
-						if(seg_user.cart_products[i][0] == $('#id_product_cart_modal').val()){
-							add = false;
-							break;
-						}
+				//verificamos la existecia de las caracteristicas
+				var add = true;
+				if($('#colores_cart_select option').length > 1){
+					//tiene varios colores
+					if($('#colores_cart_select').val() == "0"){
+						//no se selecciono ninguna opción
+						add = false;
+						$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El producto esta disponible en uno o varios colores!</strong> Debes elejir un color para continuar.</div>');	
+						
 					}
-					if(add){
-						//hay un nuevo producto por agregar
+				}
+				if($('#sizes_cart_select option').length > 1){
+					//tiene varios colores
+					if($('#sizes_cart_select').val() == "0"){
+						//no se selecciono ninguna opción
+						add = false;
+						$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El producto esta disponible en uno o varios tamaños!</strong> Debes elejir un tamaño para continuar.</div>');	
+						
+					}
+				}
+
+				if($('#flavors_cart_select option').length > 1){
+					//tiene varios colores
+					if($('#flavors_cart_select').val() == "0"){
+						//no se selecciono ninguna opción
+						add = false;
+						$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El producto esta disponible e uno o varios sabores!</strong> Debes elejir un sabor para continuar.</div>');	
+						
+					}
+				}
+
+				if($('#materials_cart_select option').length > 1){
+					//tiene varios colores
+					if($('#materials_cart_select').val() == "0"){
+						//no se selecciono ninguna opción
+						add = false;
+						$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El producto esta disponible e uno o varios matariales!</strong> Debes elejir un material para continuar.</div>');
+					}
+				}
+
+				var close_modal = true;
+				if(add){
+					//todas las caracteristicas esta devidamente diligenciadas
+					var add_prod = true;
+					//verificamos el objeto carrito, id_tienda, aun no funcional
+
+					
+					//verificar que el objeto no este previament agregado
+					if(seg_user.cart_products.length){					
+						for(var i=0; i < seg_user.cart_products.length;i++){
+							if(seg_user.cart_products[i][0] == $('#id_product_cart_modal').val()){
+								//ya exixte el producto id
+								var color = false;								
+								if(seg_user.cart_products[i][3] != ''){
+									//tiene color
+									if(seg_user.cart_products[i][3] == $('#colores_cart_select').val()){
+										//el color es el mismo
+										color = true;
+									}
+								}else{color =true;}
+
+								var size = false;								
+								if(seg_user.cart_products[i][4] != ''){
+									//tiene tamaño
+									if(seg_user.cart_products[i][4] == $('#sizes_cart_select').val()){
+										//el color es el mismo
+										size = true;
+									}
+								}else{size =true;}
+
+								var sabor = false;								
+								if(seg_user.cart_products[i][5] != ''){
+									//tiene tamaño
+									if(seg_user.cart_products[i][5] == $('#flavors_cart_select').val()){
+										//el color es el mismo
+										sabor = true;
+									}
+								}else{sabor =true;}
+
+								var material = false;								
+								if(seg_user.cart_products[i][6] != ''){
+									//tiene tamaño
+									if(seg_user.cart_products[i][6] == $('#materials_cart_select').val()){
+										//el color es el mismo
+										material = true;
+									}
+								}else{material =true;}
+								
+								if(color && size && sabor && material){
+									//todas las caracteristicas son las mismas
+									$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El producto ya se encuentra agregado!</strong> Para editar sus datos da click en el Carrito de compras.</div>');
+									close_modal = false;
+									add_prod = false;
+									break;						
+
+								}
+															
+							}
+						}
+
+						if(add_prod){
+							//hay un nuevo producto por agregar
+							var prod = new Array();
+							prod[0] = $('#id_product_cart_modal').val();
+							prod[1] = $("#price_cart_modal_span").html();
+							prod[2] = $('#volume_cart_modal').val();
+							prod[3] = '';
+							if($('#colores_cart_select option').length > 1)prod[3] = $('#colores_cart_select').val();
+							prod[4] = '';
+							if($('#sizes_cart_select option').length > 1)prod[4] = $('#sizes_cart_select').val();
+							prod[5] = '';
+							if($('#flavors_cart_select option').length > 1)prod[5] = $('#flavors_cart_select').val();
+							prod[6] = '';
+							if($('#materials_cart_select option').length > 1)prod[6] = $('#materials_cart_select').val();
+							
+							//agregamos el producto en la ultima posicion					
+							seg_user.cart_products[seg_user.cart_products.length] = prod;
+							add_prod = true;
+
+						}
+					}else{
+						//primer producto que agregar
 						var prod = new Array();
 						prod[0] = $('#id_product_cart_modal').val();
-						seg_user.cart_products[seg_user.cart_products.length] = prod;
-						add = true;
-
+						prod[1] = $("#price_cart_modal_span").html();
+						prod[2] = $('#volume_cart_modal').val();
+						prod[3] = '';
+							if($('#colores_cart_select option').length > 1)prod[3] = $('#colores_cart_select').val();
+						prod[4] = '';
+						if($('#sizes_cart_select option').length > 1)prod[4] = $('#sizes_cart_select').val();
+						prod[5] = '';
+						if($('#flavors_cart_select option').length > 1)prod[5] = $('#flavors_cart_select').val();
+						prod[6] = '';
+						if($('#materials_cart_select option').length > 1)prod[6] = $('#materials_cart_select').val();
+						seg_user.cart_products[0] = prod;					
 					}
-				}else{
-					//primer producto que agregar
-					var prod = new Array();
-					prod[0] = $('#id_product_cart_modal').val();
-					seg_user.cart_products[0] = prod;					
-				}
-				
-				//agregamos el nuevo producto al objetot carrito
+					
+					//agregamos el nuevo producto al objetot carrito
 
-
-				//agregamos el brand al carrito
-				if(add){
-					if($('#bange_cart').html() == ""){
-						$('#bange_cart').html(1);	
-					}else{
-						$('#bange_cart').html(parseInt($('#bange_cart').html())+1);
+					//agregamos el brand al carrito
+					if(add_prod){
+						if($('#bange_cart').html() == ""){
+							$('#bange_cart').html(1);	
+						}else{
+							$('#bange_cart').html(parseInt($('#bange_cart').html())+1);
+						}
 					}
-				}
-				
+					//cerrar el modal
+					if(close_modal)$('#add_cart_modal').modal('toggle');	
 
-				//cerrar el modal				
-				$('#add_cart_modal').modal('toggle'); 
-				
+				}
+							
 			}
-			
-			
-
-
-			
 		});
 
 		//ocultamos los div de caracteristicas de los productos
@@ -474,6 +581,33 @@
 			$('#div_cart_materials').hide();			
 			$('#div_cart_model').hide();
 			$('#div_cart_description').hide();
+			$('#volume_cart_modal').val(1);
+			//nulificamos los selects
+			list = document.getElementById("colores_cart_select");
+	        fistChild=list.firstChild;        
+	        while (list.hasChildNodes()) {   
+	            list.removeChild(list.firstChild);
+	        }        
+	        list.appendChild(fistChild);
+	        list = document.getElementById("sizes_cart_select");
+	        fistChild=list.firstChild;        
+	        while (list.hasChildNodes()) {   
+	            list.removeChild(list.firstChild);
+	        }        
+	        list.appendChild(fistChild);
+	        list = document.getElementById("flavors_cart_select");
+	        fistChild=list.firstChild;        
+	        while (list.hasChildNodes()) {   
+	            list.removeChild(list.firstChild);
+	        }        
+	        list.appendChild(fistChild);
+	        list = document.getElementById("materials_cart_select");
+	        fistChild=list.firstChild;        
+	        while (list.hasChildNodes()) {   
+	            list.removeChild(list.firstChild);
+	        }        
+	        list.appendChild(fistChild);
+			
 		});
 
 		$( ".solo_numeros" ).keypress(function(evt) {
