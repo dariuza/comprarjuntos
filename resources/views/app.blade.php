@@ -85,7 +85,7 @@
 						<li><a href="#" data-toggle="modal" data-target="#registry_modal" >Registrate</a></li>
 						<li><a href="#" data-toggle="modal" data-target="#login_modal" >Ingresa</a></li>
 						<li>
-							<a href="#">								
+							<a href="#" id="cart_modal_a">		
 								<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" style = "font-size: 20px;"></span>
 								<span style = "font-size: 16px;" >Carro</span>
 								<span id="bange_cart" class="badge"></span>
@@ -185,7 +185,7 @@
 							</ul>
 						</li>
 						<li>
-							<a href="#">																
+							<a href="#" id="cart_modal_a">																
 								<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true" style = "font-size: 20px;"></span>
 								<span style = "font-size: 16px;">Carro</span>
 								<span id="bange_cart" class="badge"></span>
@@ -219,6 +219,7 @@
 		<script type="text/javascript" src="{{ url('js/seguridad/seg_ajaxobject.js') }}"></script>
 		
 		<script type="text/javascript">	$('[data-submenu]').submenupicker();</script>
+		<script type="text/javascript">	$('#cart_modal_a').on('click', function (e) { seg_user.openModalCart();});</script>
 		@yield('modal')
 		@yield('script')
 		

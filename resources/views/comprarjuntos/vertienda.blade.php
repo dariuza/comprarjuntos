@@ -181,7 +181,7 @@
 @section('modal')
 	<!--Modal para agregar al carrito-->
 	<div class="modal fade" id="add_cart_modal" role="dialog" >
-		 <div class="modal-dialog">
+		<div class="modal-dialog">
 		 	<div class="modal-content">
 		 		<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -252,7 +252,30 @@
 				    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 		        </div> 
 		 	</div>
-		 </div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="cart_modal" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+		 		<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Carro de Compras</h4>
+				</div>
+				<div class = "alerts-module"></div>				
+				<div class="modal-body">
+					<div class="row">
+						{!! Form::open(array('url' => 'welcome/addorder','id'=>'cart_form','onsubmit'=>'javascript:return seg_user.validateCart()')) !!}
+							
+						{!! Form::close() !!}
+					</div>
+				</div>
+				<div class="modal-footer">
+				    <button type="submit"  form = "cart_form" id="submit_cart_modal" class="btn btn-default" >Enviar Pedido</button>
+				    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar Carro</button>
+		        </div>
+			</div>
+		</div>
 	</div>
 
 	@if (Auth::guest())
@@ -524,6 +547,9 @@
 							if($('#flavors_cart_select option').length > 1)prod[5] = $('#flavors_cart_select').val();
 							prod[6] = '';
 							if($('#materials_cart_select option').length > 1)prod[6] = $('#materials_cart_select').val();
+							prod[7] = $("label[for='prod_cart_modal_for']").html();
+							prod[8] = $("#dercription_cart_modal").html();
+							prod[9] = $('#prod_img_cart_modal')[0].src;
 							
 							//agregamos el producto en la ultima posicion					
 							seg_user.cart_products[seg_user.cart_products.length] = prod;
@@ -544,7 +570,10 @@
 						if($('#flavors_cart_select option').length > 1)prod[5] = $('#flavors_cart_select').val();
 						prod[6] = '';
 						if($('#materials_cart_select option').length > 1)prod[6] = $('#materials_cart_select').val();
-						seg_user.cart_products[0] = prod;					
+						prod[7] = $("label[for='prod_cart_modal_for']").html();
+						prod[8] = $("#dercription_cart_modal").html();
+						prod[9] = $('#prod_img_cart_modal')[0].src;
+						seg_user.cart_products[0] = prod;				
 					}
 					
 					//agregamos el nuevo producto al objetot carrito
@@ -608,6 +637,16 @@
 	        }        
 	        list.appendChild(fistChild);
 			
+		});
+
+		//ocultamos borramos todos los objetos del form menos en  token
+		$('#cart_modal').on('hidden.bs.modal', function () {
+			for(var i=0;i<$('#cart_form').children().length;i++){
+				if($('#cart_form').children()[i].name != "_token"){
+					$('#cart_form').children()[i].remove();
+				}
+			}			
+
 		});
 
 		$( ".solo_numeros" ).keypress(function(evt) {

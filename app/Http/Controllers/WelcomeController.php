@@ -146,6 +146,12 @@ class WelcomeController extends Controller {
 			->get();			
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$producto]);	
 	}
+
+	//este motodo es para mandar la orden de pedido
+	public function postAddorder(Request $request){
+		
+		return 'Pedido OK';	
+	}
 	
 
 }

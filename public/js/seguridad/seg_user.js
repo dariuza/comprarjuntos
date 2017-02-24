@@ -335,6 +335,53 @@ seg_user.prototype.consultaRespuestaCity = function(result) {
     }
 };
 
+seg_user.prototype.openModalCart = function(result) {
+    //se crean los objetos en el form cart
+    form = document.getElementById("cart_form");
+    row = document.createElement("div");
+    row.className = "row";
+    div_c1 = document.createElement("div");
+    div_c1.className = "col-md-12";
+    
+    formgpoup = document.createElement("div");
+    formgpoup.className = "form-group";
+
+    for(var i=0;i<seg_user.cart_products.length;i++){
+        div = document.createElement("div");
+        div.className = "col-md-12";
+        div.style.height = "85px";
+
+        img = document.createElement("img");
+        img.className = "col-md-2";
+        img.src = seg_user.cart_products[i][9];
+        img.style.height = "85px";
+        //img.style.borderRadius = "50%";
+
+        label = document.createElement("label");
+        label.className = "col-md-10";
+        label.innerHTML = seg_user.cart_products[i][7];
+
+        div.appendChild(img);
+        div.appendChild(label);
+
+        formgpoup.appendChild(div);        
+    }
+
+
+    
+    div_c1.appendChild(formgpoup);
+    row.appendChild(div_c1);
+
+    //para ubicar los totales
+    div_c2 = document.createElement("div");
+    div_c2.className = "col-md-6";
+
+    
+
+    form.appendChild(row);
+    $('#cart_modal').modal(); 
+};
+
 seg_user.prototype.consultaRespuestaAddCart = function(result) {
     $('#id_store_cart_modal').val(result.data[0].store_id);
     $('#id_product_cart_modal').val(result.data[0].id);       
@@ -437,7 +484,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
     
     
 
-    $('#add_cart_modal').modal(); 
+    $('#add_cart_modal').modal();
 };
 
 var seg_user = new seg_user();
