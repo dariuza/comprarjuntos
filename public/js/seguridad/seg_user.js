@@ -346,10 +346,49 @@ seg_user.prototype.openModalCart = function(result) {
     formgpoup = document.createElement("div");
     formgpoup.className = "form-group";
 
+    titulo1 = document.createElement("div");
+    titulo1.className = "col-md-2";
+
+    titulo11 = document.createElement("label");
+    titulo11.className = "col-md-2";
+    titulo11.innerHTML = "PRODUCTO";
+
+    titulo2 = document.createElement("label");
+    titulo2.className = "col-md-2";
+    titulo2.innerHTML = "PRECIO";
+
+    titulo3 = document.createElement("label");
+    titulo3.className = "col-md-2";
+    titulo3.innerHTML = "CANTIDAD";
+
+    titulo4 = document.createElement("label");
+    titulo4.className = "col-md-2";
+    titulo4.innerHTML = "TOTAL";
+
+    titulo5 = document.createElement("label");
+    titulo5.className = "col-md-2";
+    titulo5.innerHTML = "REMOVER";
+
+    div = document.createElement("div");
+    div.className = "col-md-12";
+    div.appendChild(titulo1);
+    div.appendChild(titulo11);
+    div.appendChild(titulo2);
+    div.appendChild(titulo3);
+    div.appendChild(titulo4);
+    div.appendChild(titulo5);
+
+    formgpoup.appendChild(div);
+
+    fondo_bandera = -1;
+
     for(var i=0;i<seg_user.cart_products.length;i++){
         div = document.createElement("div");
         div.className = "col-md-12";
-        div.style.height = "85px";
+        if(fondo_bandera==1){
+            div.style.backgroundColor = "#e7e7e7";
+        }
+        //div.style.height = "85px";        
 
         img = document.createElement("img");
         img.className = "col-md-2";
@@ -357,14 +396,47 @@ seg_user.prototype.openModalCart = function(result) {
         img.style.height = "85px";
         //img.style.borderRadius = "50%";
 
+        descripcion_div = document.createElement("div");
+        descripcion_div.className = "col-md-2";
         label = document.createElement("label");
-        label.className = "col-md-10";
+        label.className = "col-md-12";
         label.innerHTML = seg_user.cart_products[i][7];
+        descripcion = document.createElement("div");
+        descripcion.innerHTML = seg_user.cart_products[i][8];
+        descripcion_div.appendChild(label);
+        //descripcion_div.appendChild(descripcion);        
 
+        precio = document.createElement("div");
+        precio.className = "col-md-2";
+        precio.innerHTML = "$"+seg_user.cart_products[i][1];
+        precio.style.marginTop = "2%";
+
+        volumen = document.createElement("div");
+        volumen.className = "col-md-2";
+        volumen.style.marginTop = "2%";
+
+        cantidad = document.createElement("input");
+        cantidad.className = "form-control";
+        cantidad.setAttribute("name", "volume_"+seg_user.cart_products[i][0]);
+        cantidad.value = seg_user.cart_products[i][2];
+        volumen.appendChild(cantidad);
+
+        total = document.createElement("div");
+        total.className = "col-md-2";
+        total.style.marginTop = "2%";        
+        total.setAttribute("id", "total_"+seg_user.cart_products[i][0]);
+        total.innerHTML = "$"+( parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
+
+        
         div.appendChild(img);
-        div.appendChild(label);
+        div.appendChild(descripcion_div);
+        div.appendChild(precio);
+        div.appendChild(volumen);
+        div.appendChild(total);
 
-        formgpoup.appendChild(div);        
+        formgpoup.appendChild(div);
+
+        fondo_bandera = fondo_bandera*-1;       
     }
 
 
