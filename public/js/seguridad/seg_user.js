@@ -464,9 +464,18 @@ seg_user.prototype.openModalCart = function(result) {
 
     //eventos
     $(".remove").on('click', function (e) {
-        //remover de objeto
+        //remover de objeto, corremos el objeto
+        for(var i=0;i<seg_user.cart_products.length;i++){
+            if(seg_user.cart_products[i][10] == this.id.split('_')[1])
+            {                
+                seg_user.cart_products.splice( i, 1 );
+            }
+        }
         //remover de modal
-        this.parentNode,remove()
+        this.parentNode.remove();
+
+        //reducir el brage del carrito
+        $('#bange_cart').html(parseInt($('#bange_cart').html())-1);
     });
 };
 
