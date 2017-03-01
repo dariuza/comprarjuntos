@@ -3,6 +3,7 @@ function seg_user() {
 	this.btn_editar = 1 ;
     this.cart_store_id;//esta variable de momento no se usara, incapasidad de ser global
     this.cart_products = new Array();
+    this.cart_contador = 1;
     //refrescamos el brand del carrito de compras, ante el refresh de seg_user
 }
 	
@@ -367,7 +368,7 @@ seg_user.prototype.openModalCart = function(result) {
 
     titulo5 = document.createElement("label");
     titulo5.className = "col-md-2";
-    titulo5.innerHTML = "REMOVER";
+    titulo5.innerHTML = "";
 
     div = document.createElement("div");
     div.className = "col-md-12";
@@ -383,8 +384,10 @@ seg_user.prototype.openModalCart = function(result) {
     fondo_bandera = -1;
 
     for(var i=0;i<seg_user.cart_products.length;i++){
+
         div = document.createElement("div");
         div.className = "col-md-12";
+        div.setAttribute("id", "producto_"+seg_user.cart_contador);
         if(fondo_bandera==1){
             div.style.backgroundColor = "#e7e7e7";
         }
@@ -423,35 +426,48 @@ seg_user.prototype.openModalCart = function(result) {
 
         total = document.createElement("div");
         total.className = "col-md-2";
-        total.style.marginTop = "2%";        
+        total.style.marginTop = "2%";    
         total.setAttribute("id", "total_"+seg_user.cart_products[i][0]);
         total.innerHTML = "$"+( parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
 
-        
+        boton = document.createElement("button");
+        boton.className = "btn btn-default remove";
+        boton.style.marginTop = "2%";
+        boton.innerHTML = "Remover";
+        boton.setAttribute("id", "prod_"+seg_user.cart_contador);
+        boton.setAttribute("form", "null_form");
+
         div.appendChild(img);
         div.appendChild(descripcion_div);
         div.appendChild(precio);
         div.appendChild(volumen);
         div.appendChild(total);
+        div.appendChild(boton);
 
         formgpoup.appendChild(div);
 
-        fondo_bandera = fondo_bandera*-1;       
+        fondo_bandera = fondo_bandera*-1;
+        seg_user.cart_products[i][10] = seg_user.cart_contador;
+
+        seg_user.cart_contador = seg_user.cart_contador++;
     }
 
-
-    
     div_c1.appendChild(formgpoup);
     row.appendChild(div_c1);
 
     //para ubicar los totales
     div_c2 = document.createElement("div");
-    div_c2.className = "col-md-6";
-
-    
+    div_c2.className = "col-md-12";
 
     form.appendChild(row);
-    $('#cart_modal').modal(); 
+    $('#cart_modal').modal();
+
+    //eventos
+    $(".remove").on('click', function (e) {
+        //remover de objeto
+        //remover de modal
+        this.parentNode,remove()
+    });
 };
 
 seg_user.prototype.consultaRespuestaAddCart = function(result) {
@@ -496,6 +512,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
         }
         $('#div_cart_colors').show();
     }
+
     if(result.data[0].sizes != ''){
         //construimos el select        
         list = document.getElementById("sizes_cart_select");
@@ -515,6 +532,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
         }
         $('#div_cart_sizes').show();
     }
+
     if(result.data[0].flavors != ''){
         //construimos el select        
         list = document.getElementById("flavors_cart_select");
@@ -534,6 +552,7 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
         }
         $('#div_cart_flavors').show();
     }
+
     if(result.data[0].materials != ''){
         //construimos el select        
         list = document.getElementById("materials_cart_select");
@@ -553,8 +572,6 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
         }
         $('#div_cart_materials').show();
     }
-    
-    
 
     $('#add_cart_modal').modal();
 };
