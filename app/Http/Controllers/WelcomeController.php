@@ -149,8 +149,10 @@ class WelcomeController extends Controller {
 
 	//este motodo es para mandar la orden de pedido
 	public function postAddorder(Request $request){
-		dd($request->input());
-		return 'Pedido OK';	
+		
+		//guardado de pedido en base
+		//envio de correo a tendero de pedido
+		//envio a buzon interno de pedido, con estado inicaial, pedido no visto	
 	}
 	
 

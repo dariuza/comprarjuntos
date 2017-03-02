@@ -93,6 +93,7 @@
 							
 						</li>												
 					</ul>
+					<input type="hidden" name="value_login" id="value_login" value="0">
 				@else
 					<!-- Usuario Logueado -->
 					<ul class="nav navbar-nav">
@@ -192,7 +193,8 @@
 																
 							</a>							
 						</li>				
-					</ul>	
+					</ul>
+					<input type="hidden" name="value_login" id="value_login" value="1">
 				@endif				
 				</div>
 				

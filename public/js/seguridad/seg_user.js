@@ -63,6 +63,12 @@ seg_user.prototype.validateEditPerfil = function(){
 	return true;
 };
 
+seg_user.prototype.validateCart = function(){
+    //verificacmos que se halle logueado, que sea un usuario de la aplicaciòn
+     return false;
+};
+
+
 seg_user.prototype.lugarRespuesta = function(result) {
 	//se evalua la respuesta
 	if(result.respuesta){		
@@ -428,8 +434,8 @@ seg_user.prototype.openModalCart = function(result) {
         volumen.style.marginTop = "2%";
 
         cantidad = document.createElement("input");
-        cantidad.className = "form-control solo_numeros";
-        cantidad.setAttribute("name", "volume_"+seg_user.cart_products[i][0]);
+        cantidad.className = "form-control solo_numeros volumen_cart";
+        cantidad.setAttribute("name", "volume_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
         cantidad.value = seg_user.cart_products[i][2];
         volumen.appendChild(cantidad);
 
@@ -466,7 +472,7 @@ seg_user.prototype.openModalCart = function(result) {
         fondo_bandera = fondo_bandera*-1;
         seg_user.cart_products[i][10] = seg_user.cart_contador;
         cantidad_total = parseInt(cantidad_total) + parseInt(seg_user.cart_products[i][2]);
-        precio_total = parseInt(precio_total) + parseInt(seg_user.cart_products[i][1]);
+        precio_total = parseInt(precio_total) + (parseInt(seg_user.cart_products[i][1])*cantidad_total);
 
         seg_user.cart_contador = seg_user.cart_contador+1;
 
@@ -498,10 +504,12 @@ seg_user.prototype.openModalCart = function(result) {
 
     titulo3 = document.createElement("label");
     titulo3.className = "col-md-2";
+    titulo3.setAttribute("id", "cantidad_cart");
     titulo3.innerHTML = cantidad_total;
 
     titulo4 = document.createElement("label");
     titulo4.className = "col-md-2";
+    titulo4.setAttribute("id", "precio_total");
     titulo4.innerHTML = "$"+precio_total;
 
     titulo5 = document.createElement("label");
@@ -541,6 +549,17 @@ seg_user.prototype.openModalCart = function(result) {
 
         //reducir el brage del carrito
         $('#bange_cart').html(parseInt($('#bange_cart').html())-1);
+
+        //recalculamos los totales
+        cantidad_total = 0;
+        precio_total = 0;
+        for(var i=0;i<seg_user.cart_products.length;i++){
+            cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
+            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * cantidad_total );
+        }
+        $('#cantidad_cart').html(cantidad_total);
+        $('#precio_total').html("$"+precio_total);
+
     });
 
     $(".solo_numeros" ).keypress(function(evt) {
@@ -550,6 +569,31 @@ seg_user.prototype.openModalCart = function(result) {
             return false;
         }
         return true;
+    });
+
+    $(".volumen_cart").keyup(function(e) {              
+        if(this.value == ""){
+            cantidad = 0;
+        }else{
+            cantidad = this.value;
+        }
+       for(var i=0;i<seg_user.cart_products.length;i++){
+            if(seg_user.cart_products[i][10] == this.name.split('_')[2])
+            {                
+               seg_user.cart_products[i][2] = cantidad;
+            }
+        }
+
+        //recalculamos los totales
+        cantidad_total = 0;
+        precio_total = 0;
+        for(var i=0;i<seg_user.cart_products.length;i++){
+            cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
+            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * cantidad_total );
+        }
+        $('#cantidad_cart').html(cantidad_total);
+        $('#precio_total').html("$"+precio_total);
+        
     });
 };
 
