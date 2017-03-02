@@ -341,6 +341,7 @@ seg_user.prototype.openModalCart = function(result) {
     form = document.getElementById("cart_form");
     row = document.createElement("div");
     row.className = "row";
+    row.style.textAlign = "center";
     div_c1 = document.createElement("div");
     div_c1.className = "col-md-12";
     
@@ -382,6 +383,8 @@ seg_user.prototype.openModalCart = function(result) {
     formgpoup.appendChild(div);
 
     fondo_bandera = -1;
+    cantidad_total = 0;
+    precio_total = 0;
 
     for(var i=0;i<seg_user.cart_products.length;i++){
 
@@ -391,7 +394,7 @@ seg_user.prototype.openModalCart = function(result) {
         if(fondo_bandera==1){
             div.style.backgroundColor = "#e7e7e7";
         }
-        //div.style.height = "85px";        
+        //div.style.height = "85px";
 
         img = document.createElement("img");
         img.className = "col-md-2";
@@ -414,15 +417,27 @@ seg_user.prototype.openModalCart = function(result) {
         precio.innerHTML = "$"+seg_user.cart_products[i][1];
         precio.style.marginTop = "2%";
 
+        //caracteristicas
+        in_precio = document.createElement("input");
+        in_precio.setAttribute("type", "hidden");
+        in_precio.setAttribute("name", "precio_"+seg_user.cart_products[i][0]);
+        in_precio.value = seg_user.cart_products[i][1];
+
         volumen = document.createElement("div");
         volumen.className = "col-md-2";
         volumen.style.marginTop = "2%";
 
         cantidad = document.createElement("input");
-        cantidad.className = "form-control";
+        cantidad.className = "form-control solo_numeros";
         cantidad.setAttribute("name", "volume_"+seg_user.cart_products[i][0]);
         cantidad.value = seg_user.cart_products[i][2];
         volumen.appendChild(cantidad);
+
+        //caracteristicas
+        crtcs = document.createElement("input");
+        crtcs.setAttribute("type", "hidden");
+        crtcs.setAttribute("name", "crtrcs_"+seg_user.cart_products[i][0]);
+        crtcs.value = ""+seg_user.cart_products[i][3]+","+seg_user.cart_products[i][4]+","+seg_user.cart_products[i][5]+","+seg_user.cart_products[i][6]+",";
 
         total = document.createElement("div");
         total.className = "col-md-2";
@@ -440,7 +455,9 @@ seg_user.prototype.openModalCart = function(result) {
         div.appendChild(img);
         div.appendChild(descripcion_div);
         div.appendChild(precio);
+        div.appendChild(in_precio);
         div.appendChild(volumen);
+        div.appendChild(crtcs);
         div.appendChild(total);
         div.appendChild(boton);
 
@@ -448,16 +465,64 @@ seg_user.prototype.openModalCart = function(result) {
 
         fondo_bandera = fondo_bandera*-1;
         seg_user.cart_products[i][10] = seg_user.cart_contador;
+        cantidad_total = parseInt(cantidad_total) + parseInt(seg_user.cart_products[i][2]);
+        precio_total = parseInt(precio_total) + parseInt(seg_user.cart_products[i][1]);
 
-        seg_user.cart_contador = seg_user.cart_contador++;
+        seg_user.cart_contador = seg_user.cart_contador+1;
+
     }
 
     div_c1.appendChild(formgpoup);
     row.appendChild(div_c1);
 
     //para ubicar los totales
+    hr = document.createElement("hr");
+    hr.className = "col-md-12";
+
     div_c2 = document.createElement("div");
     div_c2.className = "col-md-12";
+
+    formgpoup = document.createElement("div");
+    formgpoup.className = "form-group";
+
+    titulo1 = document.createElement("div");
+    titulo1.className = "col-md-2";
+
+    titulo11 = document.createElement("label");
+    titulo11.className = "col-md-2";
+    titulo11.innerHTML = "";
+
+    titulo2 = document.createElement("label");
+    titulo2.className = "col-md-2";
+    titulo2.innerHTML = "";
+
+    titulo3 = document.createElement("label");
+    titulo3.className = "col-md-2";
+    titulo3.innerHTML = cantidad_total;
+
+    titulo4 = document.createElement("label");
+    titulo4.className = "col-md-2";
+    titulo4.innerHTML = "$"+precio_total;
+
+    titulo5 = document.createElement("label");
+    titulo5.className = "col-md-2";
+    titulo5.innerHTML = "";
+
+    div = document.createElement("div");
+    div.className = "col-md-12";
+    div.appendChild(titulo1);
+    div.appendChild(titulo11);
+    div.appendChild(titulo2);
+    div.appendChild(titulo3);
+    div.appendChild(titulo4);
+    div.appendChild(titulo5);
+
+    formgpoup.appendChild(hr);
+    formgpoup.appendChild(div);
+
+    div_c2.appendChild(formgpoup);
+    
+    row.appendChild(div_c2);
 
     form.appendChild(row);
     $('#cart_modal').modal();
@@ -476,6 +541,15 @@ seg_user.prototype.openModalCart = function(result) {
 
         //reducir el brage del carrito
         $('#bange_cart').html(parseInt($('#bange_cart').html())-1);
+    });
+
+    $(".solo_numeros" ).keypress(function(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
     });
 };
 

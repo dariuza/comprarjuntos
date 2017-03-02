@@ -149,7 +149,7 @@ class WelcomeController extends Controller {
 
 	//este motodo es para mandar la orden de pedido
 	public function postAddorder(Request $request){
-		
+		dd($request->input());
 		return 'Pedido OK';	
 	}
 	
