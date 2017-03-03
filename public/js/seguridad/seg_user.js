@@ -65,7 +65,14 @@ seg_user.prototype.validateEditPerfil = function(){
 
 seg_user.prototype.validateCart = function(){
     //verificacmos que se halle logueado, que sea un usuario de la aplicaciòn
-     return false;
+    if($('#value_login').val() == "0"){
+        alert('has parte de comprarjuntos');
+        return false;
+    }
+
+    alert('todo muy bien');
+    return false;
+    
 };
 
 
@@ -434,6 +441,8 @@ seg_user.prototype.openModalCart = function(result) {
         volumen.style.marginTop = "2%";
 
         cantidad = document.createElement("input");
+        cantidad.setAttribute("type", "number");
+        cantidad.setAttribute("min", "0");
         cantidad.className = "form-control solo_numeros volumen_cart";
         cantidad.setAttribute("name", "volume_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
         cantidad.value = seg_user.cart_products[i][2];
@@ -478,59 +487,11 @@ seg_user.prototype.openModalCart = function(result) {
 
     }
 
+    $('#cantidad_cart').html(cantidad_total);
+    $('#precio_total').html("$"+precio_total);
+
     div_c1.appendChild(formgpoup);
-    row.appendChild(div_c1);
-
-    //para ubicar los totales
-    hr = document.createElement("hr");
-    hr.className = "col-md-12";
-
-    div_c2 = document.createElement("div");
-    div_c2.className = "col-md-12";
-
-    formgpoup = document.createElement("div");
-    formgpoup.className = "form-group";
-
-    titulo1 = document.createElement("div");
-    titulo1.className = "col-md-2";
-
-    titulo11 = document.createElement("label");
-    titulo11.className = "col-md-2";
-    titulo11.innerHTML = "";
-
-    titulo2 = document.createElement("label");
-    titulo2.className = "col-md-2";
-    titulo2.innerHTML = "";
-
-    titulo3 = document.createElement("label");
-    titulo3.className = "col-md-2";
-    titulo3.setAttribute("id", "cantidad_cart");
-    titulo3.innerHTML = cantidad_total;
-
-    titulo4 = document.createElement("label");
-    titulo4.className = "col-md-2";
-    titulo4.setAttribute("id", "precio_total");
-    titulo4.innerHTML = "$"+precio_total;
-
-    titulo5 = document.createElement("label");
-    titulo5.className = "col-md-2";
-    titulo5.innerHTML = "";
-
-    div = document.createElement("div");
-    div.className = "col-md-12";
-    div.appendChild(titulo1);
-    div.appendChild(titulo11);
-    div.appendChild(titulo2);
-    div.appendChild(titulo3);
-    div.appendChild(titulo4);
-    div.appendChild(titulo5);
-
-    formgpoup.appendChild(hr);
-    formgpoup.appendChild(div);
-
-    div_c2.appendChild(formgpoup);
-    
-    row.appendChild(div_c2);
+    row.appendChild(div_c1);   
 
     form.appendChild(row);
     $('#cart_modal').modal();
@@ -572,6 +533,30 @@ seg_user.prototype.openModalCart = function(result) {
     });
 
     $(".volumen_cart").keyup(function(e) {              
+        if(this.value == ""){
+            cantidad = 0;
+        }else{
+            cantidad = this.value;
+        }
+       for(var i=0;i<seg_user.cart_products.length;i++){
+            if(seg_user.cart_products[i][10] == this.name.split('_')[2])
+            {                
+               seg_user.cart_products[i][2] = cantidad;
+            }
+        }
+
+        //recalculamos los totales
+        cantidad_total = 0;
+        precio_total = 0;
+        for(var i=0;i<seg_user.cart_products.length;i++){
+            cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
+            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * cantidad_total );
+        }
+        $('#cantidad_cart').html(cantidad_total);
+        $('#precio_total').html("$"+precio_total);
+        
+    });
+    $(".volumen_cart").change(function(e) {              
         if(this.value == ""){
             cantidad = 0;
         }else{

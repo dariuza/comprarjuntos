@@ -271,8 +271,14 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-				    <button type="submit"  form = "cart_form" id="submit_cart_modal" class="btn btn-default" >Enviar Pedido</button>
-				    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar Carro</button>
+					<div class="col-md-8" id="totales" style="text-align: left;">
+						<span>Cantidad de productos a llevar: <label id="cantidad_cart" ></label>. Total a pagar: <label id="precio_total" ></label></span>
+					</div>
+					<div class="col-md-4">
+						<button type="submit"  form = "cart_form" id="submit_cart_modal" class="btn btn-default" >Enviar Pedido</button>
+				    	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar Carro</button>
+					</div>
+				    
 		        </div>
 			</div>
 		</div>
