@@ -66,12 +66,48 @@ seg_user.prototype.validateEditPerfil = function(){
 seg_user.prototype.validateCart = function(){
     //verificacmos que se halle logueado, que sea un usuario de la aplicaciòn
     if($('#value_login').val() == "0"){
-        alert('has parte de comprarjuntos');
-        return false;
-    }
+        //verificamos los inputs
+        if( $('#name_invitado').val() && $('#dir_invitado').val() && $('#email_invitado').val()){
+            return true;
+        }
 
-    alert('todo muy bien');
-    return false;
+        if( $('#name_invitado').val() && $('#dir_invitado').val() && $('#tel_invitado').val()){
+            return true;
+        }
+        
+        //desplegamos el modal de captura de información basica
+        //$('#invitado_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!Aún no haces parte de ComprarJuntos!</strong> Diligencia el siguiente formulario para continuar con el pedido.</div>');
+        $('#invitado_cart_modal').modal();
+
+        //vinculamos los datos
+        $("#name_invitado_modal").change(function(e) {
+            $("#name_invitado").val(this.value);
+        });
+        $("#name_invitado_modal").keyup(function(e) {
+           $("#name_invitado").val(this.value); 
+        });
+        $("#dir_invitado_modal").change(function(e) {
+            $("#dir_invitado").val(this.value);
+        });
+        $("#dir_invitado_modal").keyup(function(e) {
+           $("#dir_invitado").val(this.value); 
+        });
+        $("#email_invitado_modal").change(function(e) {
+            $("#email_invitado").val(this.value);
+        });
+        $("#email_invitado_modal").keyup(function(e) {
+           $("#email_invitado").val(this.value); 
+        });
+        $("#tel_invitado_modal").change(function(e) {
+            $("#tel_invitado").val(this.value);
+        });
+        $("#tel_invitado_modal").keyup(function(e) {
+           $("#tel_invitado").val(this.value); 
+        });
+
+        return false;
+    }    
+    return true;
     
 };
 
@@ -481,7 +517,7 @@ seg_user.prototype.openModalCart = function(result) {
         fondo_bandera = fondo_bandera*-1;
         seg_user.cart_products[i][10] = seg_user.cart_contador;
         cantidad_total = parseInt(cantidad_total) + parseInt(seg_user.cart_products[i][2]);
-        precio_total = parseInt(precio_total) + (parseInt(seg_user.cart_products[i][1])*cantidad_total);
+        precio_total = parseInt(precio_total) + (parseInt(seg_user.cart_products[i][1])*parseInt(seg_user.cart_products[i][2]));
 
         seg_user.cart_contador = seg_user.cart_contador+1;
 
@@ -491,7 +527,38 @@ seg_user.prototype.openModalCart = function(result) {
     $('#precio_total').html("$"+precio_total);
 
     div_c1.appendChild(formgpoup);
-    row.appendChild(div_c1);   
+    row.appendChild(div_c1);
+
+    //construimos el input para descripcion
+
+    //construimos los inputs para los invitados
+    if($('#value_login').val() == "0"){
+        nombre = document.createElement("input");
+        nombre.setAttribute("type", "hidden");
+        nombre.setAttribute("name", "name_invitado");
+        nombre.setAttribute("id", "name_invitado");
+
+        dir = document.createElement("input");
+        dir.setAttribute("type", "hidden");
+        dir.setAttribute("name", "dir_invitado");
+        dir.setAttribute("id", "dir_invitado");
+
+        email = document.createElement("input");
+        email.setAttribute("type", "hidden");
+        email.setAttribute("name", "email_invitado");
+        email.setAttribute("id", "email_invitado");
+
+        tel = document.createElement("input");
+        tel.setAttribute("type", "hidden");
+        tel.setAttribute("name", "tel_invitado");
+        tel.setAttribute("id", "tel_invitado");
+
+        form.appendChild(nombre);
+        form.appendChild(dir);
+        form.appendChild(email);
+        form.appendChild(tel);
+        
+    }
 
     form.appendChild(row);
     $('#cart_modal').modal();
@@ -516,7 +583,7 @@ seg_user.prototype.openModalCart = function(result) {
         precio_total = 0;
         for(var i=0;i<seg_user.cart_products.length;i++){
             cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
-            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * cantidad_total );
+            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
         }
         $('#cantidad_cart').html(cantidad_total);
         $('#precio_total').html("$"+precio_total);
@@ -550,7 +617,7 @@ seg_user.prototype.openModalCart = function(result) {
         precio_total = 0;
         for(var i=0;i<seg_user.cart_products.length;i++){
             cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
-            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * cantidad_total );
+            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
         }
         $('#cantidad_cart').html(cantidad_total);
         $('#precio_total').html("$"+precio_total);
@@ -574,7 +641,7 @@ seg_user.prototype.openModalCart = function(result) {
         precio_total = 0;
         for(var i=0;i<seg_user.cart_products.length;i++){
             cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
-            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * cantidad_total );
+            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
         }
         $('#cantidad_cart').html(cantidad_total);
         $('#precio_total').html("$"+precio_total);

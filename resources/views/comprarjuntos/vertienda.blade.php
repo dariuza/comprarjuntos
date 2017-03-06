@@ -284,6 +284,49 @@
 		</div>
 	</div>
 
+	<!--Para captar los datos de los invitados que desean comprar-->
+	<div class="modal fade" id="invitado_cart_modal" role="dialog">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Información de contacto</h4>
+				</div>
+				<div class = "alerts-module" style="font-size: 14px;"></div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							{!! Form::label('nombres', 'Nombres', array('class' => 'col-md-12 control-label')) !!}
+							{!! Form::text('name_invitado_modal',null, array('id'=>'name_invitado_modal', 'class' => 'form-control','placeholder'=>'Ingresa tus Nombres')) !!}
+						</div>
+
+						<div class="col-md-12">
+							{!! Form::label('direccion', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
+							{!! Form::text('dir_invitado_modal',null, array('id'=>'dir_invitado_modal', 'class' => 'form-control','placeholder'=>'Dirección de recidencia')) !!}
+						</div>
+
+						<div class="col-md-12">
+							{!! Form::label('email', 'Correo Electrónico', array('class' => 'col-md-12 control-label')) !!}
+							{!! Form::email('email_invitado_modal',null, array('id'=>'email_invitado_modal', 'class' => 'form-control','placeholder'=>'Ingresa tus correo electrónico')) !!}
+						</div>
+
+						<div class="col-md-12">
+							{!! Form::label('numero', 'Número Teléfonico', array('class' => 'col-md-12 control-label')) !!}
+							{!! Form::text('tel_invitado_modal',null, array('id'=>'tel_invitado_modal', 'class' => 'form-control solo_numeros','placeholder'=>'Ingres un fijo o un móvil')) !!}
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<div class="col-md-12">
+						<button type="submit"  form = "cart_form" id="submit_cart_modal" class="btn btn-default" >Enviar Pedido</button>
+				    	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar Carro</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	@if (Auth::guest())
 	<!-- Modals para invitados -->
 
