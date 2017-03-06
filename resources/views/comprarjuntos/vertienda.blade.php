@@ -266,7 +266,7 @@
 				<div class="modal-body">
 					<div class="row">
 						{!! Form::open(array('url' => 'welcome/addorder','id'=>'cart_form','onsubmit'=>'javascript:return seg_user.validateCart()')) !!}
-							
+							<div id="inputs_info"></div>
 						{!! Form::close() !!}
 					</div>
 				</div>
@@ -692,7 +692,9 @@
 		$('#cart_modal').on('hidden.bs.modal', function () {
 			for(var i=0;i<$('#cart_form').children().length;i++){
 				if($('#cart_form').children()[i].name != "_token"){
-					$('#cart_form').children()[i].remove();
+					if($('#cart_form').children()[i].id != "inputs_info"){
+						$('#cart_form').children()[i].remove();	
+					}					
 				}
 			}			
 
@@ -705,6 +707,11 @@
 		        return false;
 		    }
 		    return true;
+		});
+
+		//al cerrar el modal de captacion de informaciòn se cierre el modal de carrito
+		$('#invitado_cart_modal').on('hidden.bs.modal', function () {			
+			$('#cart_modal').modal('hide');			
 		});
 
 		//$('.chosen-select').chosen();

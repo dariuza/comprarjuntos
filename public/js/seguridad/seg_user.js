@@ -445,6 +445,12 @@ seg_user.prototype.openModalCart = function(result) {
         }
         //div.style.height = "85px";
 
+        //caracteristicas
+        crtcs = document.createElement("input");
+        crtcs.setAttribute("type", "hidden");
+        crtcs.setAttribute("name", "crtrcs_"+seg_user.cart_products[i][0]);
+        crtcs.value = ""+seg_user.cart_products[i][3]+","+seg_user.cart_products[i][4]+","+seg_user.cart_products[i][5]+","+seg_user.cart_products[i][6]+",";
+
         img = document.createElement("img");
         img.className = "col-md-2";
         img.src = seg_user.cart_products[i][9];
@@ -457,9 +463,10 @@ seg_user.prototype.openModalCart = function(result) {
         label.className = "col-md-12";
         label.innerHTML = seg_user.cart_products[i][7];
         descripcion = document.createElement("div");
-        descripcion.innerHTML = seg_user.cart_products[i][8];
+        //descripcion.innerHTML = seg_user.cart_products[i][8] + crtcs.value;
+        descripcion.innerHTML =  crtcs.value.replace(/,,/g, '');
         descripcion_div.appendChild(label);
-        //descripcion_div.appendChild(descripcion);        
+        descripcion_div.appendChild(descripcion);        
 
         precio = document.createElement("div");
         precio.className = "col-md-2";
@@ -483,12 +490,6 @@ seg_user.prototype.openModalCart = function(result) {
         cantidad.setAttribute("name", "volume_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
         cantidad.value = seg_user.cart_products[i][2];
         volumen.appendChild(cantidad);
-
-        //caracteristicas
-        crtcs = document.createElement("input");
-        crtcs.setAttribute("type", "hidden");
-        crtcs.setAttribute("name", "crtrcs_"+seg_user.cart_products[i][0]);
-        crtcs.value = ""+seg_user.cart_products[i][3]+","+seg_user.cart_products[i][4]+","+seg_user.cart_products[i][5]+","+seg_user.cart_products[i][6]+",";
 
         total = document.createElement("div");
         total.className = "col-md-2";
@@ -532,6 +533,8 @@ seg_user.prototype.openModalCart = function(result) {
     //construimos el input para descripcion
 
     //construimos los inputs para los invitados
+    inputs = document.getElementById("inputs_info");
+    inputs.innerHTML = "";
     if($('#value_login').val() == "0"){
         nombre = document.createElement("input");
         nombre.setAttribute("type", "hidden");
@@ -553,11 +556,12 @@ seg_user.prototype.openModalCart = function(result) {
         tel.setAttribute("name", "tel_invitado");
         tel.setAttribute("id", "tel_invitado");
 
-        form.appendChild(nombre);
-        form.appendChild(dir);
-        form.appendChild(email);
-        form.appendChild(tel);
-        
+        inputs.appendChild(nombre);
+        inputs.appendChild(dir);
+        inputs.appendChild(email);
+        inputs.appendChild(tel);
+
+        form.appendChild(inputs);        
     }
 
     form.appendChild(row);
