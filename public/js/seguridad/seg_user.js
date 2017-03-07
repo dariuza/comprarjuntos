@@ -389,11 +389,11 @@ seg_user.prototype.openModalCart = function(result) {
     //se crean los objetos en el form cart
     form = document.getElementById("cart_form");
     row = document.createElement("div");
-    row.className = "row";
+    row.className = "row col-md-12";
     row.style.textAlign = "center";
     div_c1 = document.createElement("div");
     div_c1.className = "col-md-12";
-    
+
     formgpoup = document.createElement("div");
     formgpoup.className = "form-group";
 
@@ -448,7 +448,7 @@ seg_user.prototype.openModalCart = function(result) {
         //caracteristicas
         crtcs = document.createElement("input");
         crtcs.setAttribute("type", "hidden");
-        crtcs.setAttribute("name", "crtrcs_"+seg_user.cart_products[i][0]);
+        crtcs.setAttribute("name", "crtrcs_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
         crtcs.value = ""+seg_user.cart_products[i][3]+","+seg_user.cart_products[i][4]+","+seg_user.cart_products[i][5]+","+seg_user.cart_products[i][6]+",";
 
         img = document.createElement("img");
@@ -529,6 +529,28 @@ seg_user.prototype.openModalCart = function(result) {
 
     div_c1.appendChild(formgpoup);
     row.appendChild(div_c1);
+
+    hr = document.createElement("hr");
+    hr.className = "col-md-12";
+
+    div_c2 = document.createElement("div");
+    div_c2.className = "col-md-6 col-md-offset-0";
+
+    div_c2_t = document.createElement("div");
+    div_c2_t.innerHTML = "Indicaciones o Sugerencias";
+    div_c2_t.style.textAlign = "left";
+    
+    descript = document.createElement("textarea");
+    descript.className = "form-control";
+    descript.setAttribute("name", "description");
+    descript.setAttribute("row", 5);
+    descript.setAttribute("placeholder", "Ingresa, las sugerencias o indicaciones que el tendero deba tener encuenta con tu pedido. Ejemplo: mejor fecha de entrega, dirección alternativa, número de contacto, etc.");
+
+    div_c2.appendChild(div_c2_t);
+    div_c2.appendChild(descript);
+
+    row.appendChild(hr);
+    row.appendChild(div_c2);
 
     //construimos el input para descripcion
 

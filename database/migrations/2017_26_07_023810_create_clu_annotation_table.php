@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCluStageTable extends Migration
+class CreateCluAnnotationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,16 @@ class CreateCluStageTable extends Migration
      */
     public function up()
     {
-         Schema::create('clu_stage', function(Blueprint $table){
+        Schema::create('clu_order_annotation', function(Blueprint $table){
             $table->increments('id');
-            $table->string('stage',60)->unique();
+            $table->dateTime('date');
             $table->string('description');
             $table->boolean('active')->default(true);
+            $table->integer('order_id')->unsigned();            
+            $table->foreign('order_id')->references('id')->on('clu_order')->onDelete('cascade');            
             $table->timestamps();
-         });
+
+        });
     }
 
     /**
@@ -28,6 +31,6 @@ class CreateCluStageTable extends Migration
      */
     public function down()
     {
-         Schema::drop('clu_stage');
+        Schema::drop('clu_order_annotation');
     }
 }
