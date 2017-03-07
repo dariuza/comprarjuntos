@@ -302,7 +302,7 @@
 
 						<div class="col-md-12">
 							{!! Form::label('direccion', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
-							{!! Form::text('dir_invitado_modal',null, array('id'=>'dir_invitado_modal', 'class' => 'form-control','placeholder'=>'Dirección de recidencia')) !!}
+							{!! Form::text('dir_invitado_modal',null, array('id'=>'dir_invitado_modal', 'class' => 'form-control','placeholder'=>'Dirección Y Ciudad de recidencia')) !!}
 						</div>
 
 						<div class="col-md-12">

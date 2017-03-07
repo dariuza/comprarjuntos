@@ -15,7 +15,7 @@ class CreateCluAnnotationTable extends Migration
         Schema::create('clu_order_annotation', function(Blueprint $table){
             $table->increments('id');
             $table->dateTime('date');
-            $table->string('description');
+            $table->string('description');//entrada de texto
             $table->boolean('active')->default(true);
             $table->integer('order_id')->unsigned();            
             $table->foreign('order_id')->references('id')->on('clu_order')->onDelete('cascade');            

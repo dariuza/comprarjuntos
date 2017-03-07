@@ -19,6 +19,7 @@ class CreateCluOrderTable extends Migration
             $table->string('adress_client');
             $table->string('email_client');
             $table->string('number_client');            
+            $table->integer('client_id')->unsigned();//para que el cliente pueda ver sus pedidos
             $table->boolean('active')->default(true);
             $table->integer('stage_id')->unsigned();
             $table->foreign('stage_id')->references('id')->on('clu_stage')->onDelete('cascade');

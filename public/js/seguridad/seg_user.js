@@ -387,292 +387,297 @@ seg_user.prototype.consultaRespuestaCity = function(result) {
 
 seg_user.prototype.openModalCart = function(result) {
     //se crean los objetos en el form cart
-    form = document.getElementById("cart_form");
-    row = document.createElement("div");
-    row.className = "row col-md-12";
-    row.style.textAlign = "center";
-    div_c1 = document.createElement("div");
-    div_c1.className = "col-md-12";
+    if(seg_user.cart_products.length){        
+        form = document.getElementById("cart_form");
+        row = document.createElement("div");
+        row.className = "row col-md-12";
+        row.style.textAlign = "center";
+        div_c1 = document.createElement("div");
+        div_c1.className = "col-md-12";
 
-    formgpoup = document.createElement("div");
-    formgpoup.className = "form-group";
+        formgpoup = document.createElement("div");
+        formgpoup.className = "form-group";
 
-    titulo1 = document.createElement("div");
-    titulo1.className = "col-md-2";
+        titulo1 = document.createElement("div");
+        titulo1.className = "col-md-2";
 
-    titulo11 = document.createElement("label");
-    titulo11.className = "col-md-2";
-    titulo11.innerHTML = "PRODUCTO";
+        titulo11 = document.createElement("label");
+        titulo11.className = "col-md-2";
+        titulo11.innerHTML = "PRODUCTO";
 
-    titulo2 = document.createElement("label");
-    titulo2.className = "col-md-2";
-    titulo2.innerHTML = "PRECIO";
+        titulo2 = document.createElement("label");
+        titulo2.className = "col-md-2";
+        titulo2.innerHTML = "PRECIO";
 
-    titulo3 = document.createElement("label");
-    titulo3.className = "col-md-2";
-    titulo3.innerHTML = "CANTIDAD";
+        titulo3 = document.createElement("label");
+        titulo3.className = "col-md-2";
+        titulo3.innerHTML = "CANTIDAD";
 
-    titulo4 = document.createElement("label");
-    titulo4.className = "col-md-2";
-    titulo4.innerHTML = "TOTAL";
+        titulo4 = document.createElement("label");
+        titulo4.className = "col-md-2";
+        titulo4.innerHTML = "TOTAL";
 
-    titulo5 = document.createElement("label");
-    titulo5.className = "col-md-2";
-    titulo5.innerHTML = "";
-
-    div = document.createElement("div");
-    div.className = "col-md-12";
-    div.appendChild(titulo1);
-    div.appendChild(titulo11);
-    div.appendChild(titulo2);
-    div.appendChild(titulo3);
-    div.appendChild(titulo4);
-    div.appendChild(titulo5);
-
-    formgpoup.appendChild(div);
-
-    fondo_bandera = -1;
-    cantidad_total = 0;
-    precio_total = 0;
-
-    for(var i=0;i<seg_user.cart_products.length;i++){
+        titulo5 = document.createElement("label");
+        titulo5.className = "col-md-2";
+        titulo5.innerHTML = "";
 
         div = document.createElement("div");
         div.className = "col-md-12";
-        div.setAttribute("id", "producto_"+seg_user.cart_contador);
-        if(fondo_bandera==1){
-            div.style.backgroundColor = "#e7e7e7";
-        }
-        //div.style.height = "85px";
-
-        //caracteristicas
-        crtcs = document.createElement("input");
-        crtcs.setAttribute("type", "hidden");
-        crtcs.setAttribute("name", "crtrcs_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
-        crtcs.value = ""+seg_user.cart_products[i][3]+","+seg_user.cart_products[i][4]+","+seg_user.cart_products[i][5]+","+seg_user.cart_products[i][6]+",";
-
-        img = document.createElement("img");
-        img.className = "col-md-2";
-        img.src = seg_user.cart_products[i][9];
-        img.style.height = "85px";
-        //img.style.borderRadius = "50%";
-
-        descripcion_div = document.createElement("div");
-        descripcion_div.className = "col-md-2";
-        label = document.createElement("label");
-        label.className = "col-md-12";
-        label.innerHTML = seg_user.cart_products[i][7];
-        descripcion = document.createElement("div");
-        //descripcion.innerHTML = seg_user.cart_products[i][8] + crtcs.value;
-        descripcion.innerHTML =  crtcs.value.replace(/,,/g, '');
-        descripcion_div.appendChild(label);
-        descripcion_div.appendChild(descripcion);        
-
-        precio = document.createElement("div");
-        precio.className = "col-md-2";
-        precio.innerHTML = "$"+seg_user.cart_products[i][1];
-        precio.style.marginTop = "2%";
-
-        //caracteristicas
-        in_precio = document.createElement("input");
-        in_precio.setAttribute("type", "hidden");
-        in_precio.setAttribute("name", "precio_"+seg_user.cart_products[i][0]);
-        in_precio.value = seg_user.cart_products[i][1];
-
-        volumen = document.createElement("div");
-        volumen.className = "col-md-2";
-        volumen.style.marginTop = "2%";
-
-        cantidad = document.createElement("input");
-        cantidad.setAttribute("type", "number");
-        cantidad.setAttribute("min", "0");
-        cantidad.className = "form-control solo_numeros volumen_cart";
-        cantidad.setAttribute("name", "volume_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
-        cantidad.value = seg_user.cart_products[i][2];
-        volumen.appendChild(cantidad);
-
-        total = document.createElement("div");
-        total.className = "col-md-2";
-        total.style.marginTop = "2%";    
-        total.setAttribute("id", "total_"+seg_user.cart_products[i][0]);
-        total.innerHTML = "$"+( parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
-
-        boton = document.createElement("button");
-        boton.className = "btn btn-default remove";
-        boton.style.marginTop = "2%";
-        boton.innerHTML = "Remover";
-        boton.setAttribute("id", "prod_"+seg_user.cart_contador);
-        boton.setAttribute("form", "null_form");
-
-        div.appendChild(img);
-        div.appendChild(descripcion_div);
-        div.appendChild(precio);
-        div.appendChild(in_precio);
-        div.appendChild(volumen);
-        div.appendChild(crtcs);
-        div.appendChild(total);
-        div.appendChild(boton);
+        div.appendChild(titulo1);
+        div.appendChild(titulo11);
+        div.appendChild(titulo2);
+        div.appendChild(titulo3);
+        div.appendChild(titulo4);
+        div.appendChild(titulo5);
 
         formgpoup.appendChild(div);
 
-        fondo_bandera = fondo_bandera*-1;
-        seg_user.cart_products[i][10] = seg_user.cart_contador;
-        cantidad_total = parseInt(cantidad_total) + parseInt(seg_user.cart_products[i][2]);
-        precio_total = parseInt(precio_total) + (parseInt(seg_user.cart_products[i][1])*parseInt(seg_user.cart_products[i][2]));
-
-        seg_user.cart_contador = seg_user.cart_contador+1;
-
-    }
-
-    $('#cantidad_cart').html(cantidad_total);
-    $('#precio_total').html("$"+precio_total);
-
-    div_c1.appendChild(formgpoup);
-    row.appendChild(div_c1);
-
-    hr = document.createElement("hr");
-    hr.className = "col-md-12";
-
-    div_c2 = document.createElement("div");
-    div_c2.className = "col-md-6 col-md-offset-0";
-
-    div_c2_t = document.createElement("div");
-    div_c2_t.innerHTML = "Indicaciones o Sugerencias";
-    div_c2_t.style.textAlign = "left";
-    
-    descript = document.createElement("textarea");
-    descript.className = "form-control";
-    descript.setAttribute("name", "description");
-    descript.setAttribute("row", 5);
-    descript.setAttribute("placeholder", "Ingresa, las sugerencias o indicaciones que el tendero deba tener encuenta con tu pedido. Ejemplo: mejor fecha de entrega, dirección alternativa, número de contacto, etc.");
-
-    div_c2.appendChild(div_c2_t);
-    div_c2.appendChild(descript);
-
-    row.appendChild(hr);
-    row.appendChild(div_c2);
-
-    //construimos el input para descripcion
-
-    //construimos los inputs para los invitados
-    inputs = document.getElementById("inputs_info");
-    inputs.innerHTML = "";
-    if($('#value_login').val() == "0"){
-        nombre = document.createElement("input");
-        nombre.setAttribute("type", "hidden");
-        nombre.setAttribute("name", "name_invitado");
-        nombre.setAttribute("id", "name_invitado");
-
-        dir = document.createElement("input");
-        dir.setAttribute("type", "hidden");
-        dir.setAttribute("name", "dir_invitado");
-        dir.setAttribute("id", "dir_invitado");
-
-        email = document.createElement("input");
-        email.setAttribute("type", "hidden");
-        email.setAttribute("name", "email_invitado");
-        email.setAttribute("id", "email_invitado");
-
-        tel = document.createElement("input");
-        tel.setAttribute("type", "hidden");
-        tel.setAttribute("name", "tel_invitado");
-        tel.setAttribute("id", "tel_invitado");
-
-        inputs.appendChild(nombre);
-        inputs.appendChild(dir);
-        inputs.appendChild(email);
-        inputs.appendChild(tel);
-
-        form.appendChild(inputs);        
-    }
-
-    form.appendChild(row);
-    $('#cart_modal').modal();
-
-    //eventos
-    $(".remove").on('click', function (e) {
-        //remover de objeto, corremos el objeto
-        for(var i=0;i<seg_user.cart_products.length;i++){
-            if(seg_user.cart_products[i][10] == this.id.split('_')[1])
-            {                
-                seg_user.cart_products.splice( i, 1 );
-            }
-        }
-        //remover de modal
-        this.parentNode.remove();
-
-        //reducir el brage del carrito
-        $('#bange_cart').html(parseInt($('#bange_cart').html())-1);
-
-        //recalculamos los totales
+        fondo_bandera = -1;
         cantidad_total = 0;
         precio_total = 0;
+
         for(var i=0;i<seg_user.cart_products.length;i++){
-            cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
-            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
+
+            div = document.createElement("div");
+            div.className = "col-md-12";
+            div.setAttribute("id", "producto_"+seg_user.cart_contador);
+            if(fondo_bandera==1){
+                div.style.backgroundColor = "#e7e7e7";
+            }
+            //div.style.height = "85px";
+
+            //caracteristicas
+            crtcs = document.createElement("input");
+            crtcs.setAttribute("type", "hidden");
+            crtcs.setAttribute("name", "prod_crtrcs_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
+            crtcs.value = ""+seg_user.cart_products[i][3]+","+seg_user.cart_products[i][4]+","+seg_user.cart_products[i][5]+","+seg_user.cart_products[i][6]+",";
+
+            img = document.createElement("img");
+            img.className = "col-md-2";
+            img.src = seg_user.cart_products[i][9];
+            img.style.height = "85px";
+            //img.style.borderRadius = "50%";
+
+            descripcion_div = document.createElement("div");
+            descripcion_div.className = "col-md-2";
+            label = document.createElement("label");
+            label.className = "col-md-12";
+            label.innerHTML = seg_user.cart_products[i][7];
+            descripcion = document.createElement("div");
+            //descripcion.innerHTML = seg_user.cart_products[i][8] + crtcs.value;
+            descripcion.innerHTML =  crtcs.value.replace(/,,/g, '');
+            descripcion_div.appendChild(label);
+            descripcion_div.appendChild(descripcion);        
+
+            precio = document.createElement("div");
+            precio.className = "col-md-2";
+            precio.innerHTML = "$"+seg_user.cart_products[i][1];
+            precio.style.marginTop = "2%";
+
+            //caracteristicas
+            in_precio = document.createElement("input");
+            in_precio.setAttribute("type", "hidden");
+            in_precio.setAttribute("name", "prod_precio_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
+            in_precio.value = seg_user.cart_products[i][1];
+
+            volumen = document.createElement("div");
+            volumen.className = "col-md-2";
+            volumen.style.marginTop = "2%";
+
+            cantidad = document.createElement("input");
+            cantidad.setAttribute("type", "number");
+            cantidad.setAttribute("min", "0");
+            cantidad.className = "form-control solo_numeros volumen_cart";
+            cantidad.setAttribute("name", "prod_volume_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
+            cantidad.value = seg_user.cart_products[i][2];
+            volumen.appendChild(cantidad);
+
+            total = document.createElement("div");
+            total.className = "col-md-2";
+            total.style.marginTop = "2%";    
+            total.setAttribute("id", "total_"+seg_user.cart_products[i][0]);
+            total.innerHTML = "$"+( parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
+
+            boton = document.createElement("button");
+            boton.className = "btn btn-default remove";
+            boton.style.marginTop = "2%";
+            boton.innerHTML = "Remover";
+            boton.setAttribute("id", "prod_"+seg_user.cart_contador);
+            boton.setAttribute("form", "null_form");
+
+            div.appendChild(img);
+            div.appendChild(descripcion_div);
+            div.appendChild(precio);
+            div.appendChild(in_precio);
+            div.appendChild(volumen);
+            div.appendChild(crtcs);
+            div.appendChild(total);
+            div.appendChild(boton);
+
+            formgpoup.appendChild(div);
+
+            fondo_bandera = fondo_bandera*-1;
+            seg_user.cart_products[i][10] = seg_user.cart_contador;
+            cantidad_total = parseInt(cantidad_total) + parseInt(seg_user.cart_products[i][2]);
+            precio_total = parseInt(precio_total) + (parseInt(seg_user.cart_products[i][1])*parseInt(seg_user.cart_products[i][2]));
+
+            seg_user.cart_contador = seg_user.cart_contador+1;
+
+
         }
+
         $('#cantidad_cart').html(cantidad_total);
         $('#precio_total').html("$"+precio_total);
 
-    });
+        div_c1.appendChild(formgpoup);
+        row.appendChild(div_c1);
 
-    $(".solo_numeros" ).keypress(function(evt) {
-        evt = (evt) ? evt : window.event;
-        var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-        return true;
-    });
+        hr = document.createElement("hr");
+        hr.className = "col-md-12";
 
-    $(".volumen_cart").keyup(function(e) {              
-        if(this.value == ""){
-            cantidad = 0;
-        }else{
-            cantidad = this.value;
-        }
-       for(var i=0;i<seg_user.cart_products.length;i++){
-            if(seg_user.cart_products[i][10] == this.name.split('_')[2])
-            {                
-               seg_user.cart_products[i][2] = cantidad;
-            }
-        }
+        div_c2 = document.createElement("div");
+        div_c2.className = "col-md-6 col-md-offset-0";
 
-        //recalculamos los totales
-        cantidad_total = 0;
-        precio_total = 0;
-        for(var i=0;i<seg_user.cart_products.length;i++){
-            cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
-            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
-        }
-        $('#cantidad_cart').html(cantidad_total);
-        $('#precio_total').html("$"+precio_total);
+        div_c2_t = document.createElement("div");
+        div_c2_t.innerHTML = "Indicaciones o Sugerencias";
+        div_c2_t.style.textAlign = "left";
         
-    });
-    $(".volumen_cart").change(function(e) {              
-        if(this.value == ""){
-            cantidad = 0;
-        }else{
-            cantidad = this.value;
-        }
-       for(var i=0;i<seg_user.cart_products.length;i++){
-            if(seg_user.cart_products[i][10] == this.name.split('_')[2])
-            {                
-               seg_user.cart_products[i][2] = cantidad;
-            }
+        descript = document.createElement("textarea");
+        descript.className = "form-control";
+        descript.setAttribute("name", "description");
+        descript.setAttribute("row", 5);
+        descript.setAttribute("placeholder", "Ingresa, las sugerencias o indicaciones que el tendero deba tener encuenta con tu pedido. Ejemplo: mejor fecha de entrega, dirección alternativa, número de contacto, etc.");
+
+        div_c2.appendChild(div_c2_t);
+        div_c2.appendChild(descript);
+
+        row.appendChild(hr);
+        row.appendChild(div_c2);
+
+        //construimos el input para descripcion
+
+        //construimos los inputs para los invitados
+        inputs = document.getElementById("inputs_info");
+        inputs.innerHTML = "";
+        if($('#value_login').val() == "0"){
+            nombre = document.createElement("input");
+            nombre.setAttribute("type", "hidden");
+            nombre.setAttribute("name", "name_invitado");
+            nombre.setAttribute("id", "name_invitado");
+
+            dir = document.createElement("input");
+            dir.setAttribute("type", "hidden");
+            dir.setAttribute("name", "dir_invitado");
+            dir.setAttribute("id", "dir_invitado");
+
+            email = document.createElement("input");
+            email.setAttribute("type", "hidden");
+            email.setAttribute("name", "email_invitado");
+            email.setAttribute("id", "email_invitado");
+
+            tel = document.createElement("input");
+            tel.setAttribute("type", "hidden");
+            tel.setAttribute("name", "tel_invitado");
+            tel.setAttribute("id", "tel_invitado");
+
+            inputs.appendChild(nombre);
+            inputs.appendChild(dir);
+            inputs.appendChild(email);
+            inputs.appendChild(tel);
+
+            form.appendChild(inputs);        
         }
 
-        //recalculamos los totales
-        cantidad_total = 0;
-        precio_total = 0;
-        for(var i=0;i<seg_user.cart_products.length;i++){
-            cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
-            precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
-        }
-        $('#cantidad_cart').html(cantidad_total);
-        $('#precio_total').html("$"+precio_total);
+        form.appendChild(row);
+
+        $('#cart_modal').modal();
         
-    });
+
+        //eventos
+        $(".remove").on('click', function (e) {
+            //remover de objeto, corremos el objeto
+            for(var i=0;i<seg_user.cart_products.length;i++){
+                if(seg_user.cart_products[i][10] == this.id.split('_')[1])
+                {                
+                    seg_user.cart_products.splice( i, 1 );
+                }
+            }
+            //remover de modal
+            this.parentNode.remove();
+
+            //reducir el brage del carrito
+            $('#bange_cart').html(parseInt($('#bange_cart').html())-1);
+
+            //recalculamos los totales
+            cantidad_total = 0;
+            precio_total = 0;
+            for(var i=0;i<seg_user.cart_products.length;i++){
+                cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
+                precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
+            }
+            $('#cantidad_cart').html(cantidad_total);
+            $('#precio_total').html("$"+precio_total);
+
+        });
+
+        $(".solo_numeros" ).keypress(function(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        });
+
+        $(".volumen_cart").keyup(function(e) {              
+            if(this.value == ""){
+                cantidad = 0;
+            }else{
+                cantidad = this.value;
+            }
+           for(var i=0;i<seg_user.cart_products.length;i++){
+                if(seg_user.cart_products[i][10] == this.name.split('_')[2])
+                {                
+                   seg_user.cart_products[i][2] = cantidad;
+                }
+            }
+
+            //recalculamos los totales
+            cantidad_total = 0;
+            precio_total = 0;
+            for(var i=0;i<seg_user.cart_products.length;i++){
+                cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
+                precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
+            }
+            $('#cantidad_cart').html(cantidad_total);
+            $('#precio_total').html("$"+precio_total);
+            
+        });
+        $(".volumen_cart").change(function(e) {              
+            if(this.value == ""){
+                cantidad = 0;
+            }else{
+                cantidad = this.value;
+            }
+           for(var i=0;i<seg_user.cart_products.length;i++){
+                if(seg_user.cart_products[i][10] == this.name.split('_')[2])
+                {                
+                   seg_user.cart_products[i][2] = cantidad;
+                }
+            }
+
+            //recalculamos los totales
+            cantidad_total = 0;
+            precio_total = 0;
+            for(var i=0;i<seg_user.cart_products.length;i++){
+                cantidad_total = cantidad_total + parseInt(seg_user.cart_products[i][2]);
+                precio_total = precio_total + (parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
+            }
+            $('#cantidad_cart').html(cantidad_total);
+            $('#precio_total').html("$"+precio_total);
+            
+        });
+    }
 };
 
 seg_user.prototype.consultaRespuestaAddCart = function(result) {

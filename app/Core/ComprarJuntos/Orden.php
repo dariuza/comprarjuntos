@@ -2,15 +2,15 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categoria extends Model
+class Orden extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-	protected $table = 'clu_category';
+	protected $table = 'clu_order';
 	
-	protected $fillable = ['id','name','category_id'];
+	protected $fillable = ['id','date','name_client','adress_client','email_client','number_client','client_id','active','stage_id','store_id'];
 			
 }

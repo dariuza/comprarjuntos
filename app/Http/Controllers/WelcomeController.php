@@ -1,5 +1,10 @@
 <?php namespace App\Http\Controllers;
 
+use Mail;
+use DateTime;
+use App\Core\ComprarJuntos\Orden;
+use App\Core\ComprarJuntos\Anotacion;
+use App\Core\ComprarJuntos\Detalle;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -149,11 +154,131 @@ class WelcomeController extends Controller {
 
 	//este motodo es para mandar la orden de pedido
 	public function postAddorder(Request $request){
+				
+		$orden = new Orden();	
+		$hoy = new DateTime();
+		$orden->date = $hoy->format('Y-m-d H:i:s');
+		//miramos si es usuario o invitado
+		if(!empty($request->input('name_invitado')) && !empty($request->input('dir_invitado')) ){
+			//es invitado, captamos los datos de contacto
+			$orden->name_client = $request->input('name_invitado');
+			$orden->adress_client = $request->input('dir_invitado');
+			$orden->email_client = strtolower($request->input('email_invitado'));
+			$orden->number_client = $request->input('tel_invitado');
+			
+		}else{
+			//es usuario del sistema y esta logueado
+			//$cliente = User::find(Session::get('comjunplus.usuario.id'));
+			$cliente = \DB::table('seg_user_profile')			
+			->leftjoin('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
+			->where('seg_user.id',Session::get('comjunplus.usuario.id'))
+			->get();
+
+			$orden->name_client = $cliente[0]->names.' '.$cliente[0]->surnames;
+			$orden->adress_client = $cliente[0]->city.' - '.$cliente[0]->adress;
+			$orden->email_client = $cliente[0]->email;
+			$orden->number_client = $cliente[0]->movil_number.', ' .$cliente[0]->fix_number;
+			$orden->client_id = $cliente[0]->user_id;
+		}
+		$orden->active= true;
+		$orden->stage_id = 1;
+
+		$data = Array();
+		$productos = Array();
+		foreach($request->input() as $key=>$value){
+			if(strpos($key,'prod_') !== false){
+				$vector=explode('_',$key);
+				$n=count($vector);
+				$id_prod = end($vector);
+				
+				$productos[$vector[$n-2]][$id_prod][$vector[1]] = str_replace(",,","",$value);
+				$data['detalle'][$vector[$n-2]][$id_prod][$vector[1]] = str_replace(",,","",$value);
+			}
+		}
+
+		if(count($productos)){
+			//buscamos la tienda y su tendero
+			$tienda = \DB::table('clu_store')
+			->select('clu_store.*','seg_user.email','seg_user.name as uname')
+			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')			
+			->where('clu_store.id',key($productos))
+			->get();
+
+			$orden->store_id = key($productos);		
+			try {
+				//guardado de pedido en base
+				$orden->save();	
+			}catch (ModelNotFoundException $e) {				
+				return Redirect::back()->with('error',['No se pudo guardar la orden de pedido, Intentalo nuevamente.']);
+			}
+
+			//guardado de anotaciones
+			if(!empty($request->input('description'))){
+				$anotacion = new Anotacion();
+				$anotacion->date = $hoy->format('Y-m-d H:i:s');
+				$anotacion->description = $request->input('description');
+				$anotacion->active = true;
+				$anotacion->order_id = $orden->id;				
+				try {
+					//guardado de anotacion de pedido
+					$anotacion->save();
+				}catch (ModelNotFoundException $e) {				
+					return Redirect::back()->with('error',['No se pudo guardar la orden de pedido, Intentalo nuevamente. Error en guardar anotaciones ']);
+				}
+			}		
+			
+			//guardado de detalles
+			foreach ($productos as $id_prod => $prod) {
+				//de un producto pude haber diferentes configuraciones			
+				foreach ($prod as $key => $values) {					
+					$detalle = new Detalle();
+					$detalle->price = $values['precio'];
+					$detalle->volume = $values['volume'];
+					$detalle->description = $values['crtrcs'];
+					$detalle->order_id = $orden->id;
+					try{
+						$detalle->save();
+					}catch (ModelNotFoundException $e) {				
+						return Redirect::back()->with('error',['No se pudo guardar la orden de pedido, Intentalo nuevamente. Error en guardar detalles']);
+					}
+				}				
+			}
+
+			//envio de correo a tendero de pedido			
+			$data['tienda'] = $tienda[0]->name;
+			$data['email'] = $tienda[0]->email;
+			$data['direccion_tienda'] = $tienda[0]->adress;
+			$data['ciudad_tienda'] = $tienda[0]->city;
+			$data['orden_id'] = $orden->id;
+
+			$data['nombre_cliente'] = $orden->name_client;
+			$data['adress_client'] = $orden->adress_client;
+			$data['email_client'] = $orden->email_client;
+			$data['number_client'] = $orden->number_client;
+
+			$data['order_description'] = $request->input('description');
+
+			$data['url'] = $request->url();	
+			
+			Mail::send('email.order',$data,function($message) use ($tienda) {
+				$message->from(Session::get('mail'),Session::get('copy'));
+				$message->to($tienda[0]->email,$tienda[0]->name)->subject('Orden de Pedido.');
+			});		
+
+
+			//envio de correo a cliente, si falla notificar al tendero en mensage
+			//envio a buzon interno de pedido, con estado inicaial, pedido no visto
+			//retornar ala tienda con mensajes de ejecuciòn
+			//return Redirect::back()->withErrors($validator)->withInput()->with('modulo',$moduledata);
+			return Redirect::back()->with('message',['El pedido fue enviado con EXITO!, Con Consecutivo: '.$orden->id]);
+
+		}else{
+			//la tienda no tiene productos
+			return Redirect::back()->with('error',['Error Inesperado, no alcanzo a llegar ningun producto.']);
+		}
+
 		
-		dd($request->input());
-		//guardado de pedido en base
-		//envio de correo a tendero de pedido
-		//envio a buzon interno de pedido, con estado inicaial, pedido no visto	
+		
 	}
 	
 

@@ -2,15 +2,15 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Anotacion extends Model
+class Detalle extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-	protected $table = 'clu_order_annotation';
+	protected $table = 'clu_order_detail';
 	
-	protected $fillable = ['id','date','description','active','order_id'];
+	protected $fillable = ['id','price','volume','description','order_id'];
 			
 }
