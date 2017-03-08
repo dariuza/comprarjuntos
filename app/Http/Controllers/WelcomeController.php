@@ -243,13 +243,14 @@ class WelcomeController extends Controller {
 					}
 				}				
 			}
-
+			
 			//envio de correo a tendero de pedido			
 			$data['tienda'] = $tienda[0]->name;
 			$data['orden_id'] = $orden->id;
 			$data['email'] = $tienda[0]->email;
 			$data['direccion_tienda'] = $tienda[0]->adress;
-			$data['ciudad_tienda'] = $tienda[0]->city;			
+			$data['ciudad_tienda'] = $tienda[0]->city;
+			$data['imagen'] = 'users/'.$tienda[0]->uname.'/stores/'.$tienda[0]->image;		
 
 			$data['nombre_cliente'] = $orden->name_client;
 			$data['adress_client'] = $orden->adress_client;
@@ -258,7 +259,9 @@ class WelcomeController extends Controller {
 
 			$data['order_description'] = $request->input('description');
 
-			$data['url'] = $request->url();	
+			$data['url'] = $request->url();
+
+			return view('email/order')->with($data);
 			
 			Mail::send('email.order',$data,function($message) use ($tienda) {
 				$message->from(Session::get('mail'),Session::get('copy'));

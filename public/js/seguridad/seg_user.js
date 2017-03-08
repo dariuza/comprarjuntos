@@ -467,7 +467,12 @@ seg_user.prototype.openModalCart = function(result) {
             //descripcion.innerHTML = seg_user.cart_products[i][8] + crtcs.value;
             descripcion.innerHTML =  crtcs.value.replace(/,,/g, '');
             descripcion_div.appendChild(label);
-            descripcion_div.appendChild(descripcion);        
+            descripcion_div.appendChild(descripcion); 
+
+            nprod = document.createElement("input");
+            nprod.setAttribute("type", "hidden");
+            nprod.setAttribute("name", "prod_nprod_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
+            nprod.value =  seg_user.cart_products[i][7];
 
             precio = document.createElement("div");
             precio.className = "col-md-2";
@@ -507,6 +512,7 @@ seg_user.prototype.openModalCart = function(result) {
 
             div.appendChild(img);
             div.appendChild(descripcion_div);
+            div.appendChild(nprod);
             div.appendChild(precio);
             div.appendChild(in_precio);
             div.appendChild(volumen);
