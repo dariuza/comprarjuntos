@@ -246,10 +246,10 @@ class WelcomeController extends Controller {
 
 			//envio de correo a tendero de pedido			
 			$data['tienda'] = $tienda[0]->name;
+			$data['orden_id'] = $orden->id;
 			$data['email'] = $tienda[0]->email;
 			$data['direccion_tienda'] = $tienda[0]->adress;
-			$data['ciudad_tienda'] = $tienda[0]->city;
-			$data['orden_id'] = $orden->id;
+			$data['ciudad_tienda'] = $tienda[0]->city;			
 
 			$data['nombre_cliente'] = $orden->name_client;
 			$data['adress_client'] = $orden->adress_client;
