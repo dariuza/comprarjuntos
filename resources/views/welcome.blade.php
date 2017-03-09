@@ -237,7 +237,7 @@
 
 	</div>
 
-	<!--Div Productos de algunas Tiendas 4-->
+	<!--Div Productos de algunas Tiendas 8-->
 	<div class="col-md-12 col-md-offset-0" style="margin-top: 2%;">
 		<div class="row col-md-8">
 			<div class="col-md-12 col-md-offset-0">
@@ -291,7 +291,7 @@
 
 		<div class="row col-md-4">
 			<!--Div Que es ComprarJuntos-->		
-			<div class="col-md-12 col-md-offset-0 comprarjuntos">
+			<div class="col-md-12 col-md-offset-0 " style="border: 1px solid #449AA2;">
 				<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
 					<b>¿Que es ComprarJuntos?</b>
 				</div>
