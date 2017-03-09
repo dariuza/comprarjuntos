@@ -11,6 +11,6 @@ class Detalle extends Model
      */
 	protected $table = 'clu_order_detail';
 	
-	protected $fillable = ['id','price','volume','description','order_id'];
+	protected $fillable = ['id','product','price','volume','description','product_id','order_id'];
 			
 }

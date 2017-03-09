@@ -57,30 +57,30 @@
 						</ul>
 					</li>				
 					</ul>
-					<form class="navbar-form navbar-left visible-lg" method="GET" action="{{url('/')}}">
+					{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
 					   <div class="input-group" style="width: 35%;position: absolute;margin-left: 15%;">
-							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
+							{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;')) !!}
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button">Buscar!</button>
 							</span>
 						</div>
-				    </form>
-				    <form class="navbar-form navbar-left visible-md" method="GET" action="{{url('/')}}">
+				    {!! Form::close() !!}
+				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-md','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
 					   <div class="input-group" style="width: 30%;position: absolute;margin-left: 10%;">
-							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
+							{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;')) !!}
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button">Buscar!</button>
 							</span>
 						</div>
-				    </form>
-				    <form class="navbar-form navbar-left visible-sm" method="GET" action="{{url('/')}}">
+				    {!! Form::close() !!}
+				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}				    
 					   <div class="input-group" style="width: 25%;position: absolute;margin-left: 0%;">
-							<input type="text" class="form-control" placeholder="Productos o Tiendas" style="text-align: center;">
+							{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;')) !!}
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button">Buscar!</button>
 							</span>
 						</div>
-				    </form>
+				    {!! Form::close() !!}
 					<ul class="nav navbar-nav navbar-right">				
 						<li><a href="#" data-toggle="modal" data-target="#registry_modal" >Registrate</a></li>
 						<li><a href="#" data-toggle="modal" data-target="#login_modal" >Ingresa</a></li>
@@ -135,30 +135,30 @@
 						</li>
 					@endforeach				
 					</ul>
-					<form class="navbar-form navbar-left visible-lg" method="GET" action="{{url('/')}}">
+					{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
 					   <div class="input-group" style="width: 35%;position: absolute;margin-left: 15%;">
-							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
+							{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;')) !!}							
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button">Buscar!</button>
 							</span>
 						</div>
-				    </form>
-				    <form class="navbar-form navbar-left visible-md" method="GET" action="{{url('/')}}">
+				    {!! Form::close() !!}
+				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-md','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
 					   <div class="input-group" style="width: 30%;position: absolute;margin-left: 10%;">
-							<input type="text" class="form-control" placeholder="Busca Productos o Tiendas" style="text-align: center;">
+							{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;')) !!}
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button">Buscar!</button>
 							</span>
 						</div>
-				    </form>
-				    <form class="navbar-form navbar-left visible-sm" method="GET" action="{{url('/')}}">
+				    {!! Form::close() !!}
+				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}				    
 					   <div class="input-group" style="width: 25%;position: absolute;margin-left: 0%;">
-							<input type="text" class="form-control" placeholder="Productos o Tiendas" style="text-align: center;">
+							{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;')) !!}
 							<span class="input-group-btn">
 								<button class="btn btn-default" type="button">Buscar!</button>
 							</span>
 						</div>
-				    </form>
+				    {!! Form::close() !!}
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<a href="#" data-submenu="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" tabindex="0">{{Session::get('comjunplus.usuario.name')}}<span class="caret"></span></a>

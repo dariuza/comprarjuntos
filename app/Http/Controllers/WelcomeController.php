@@ -37,7 +37,14 @@ class WelcomeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index(){
+	public function index(Request $request){
+		
+		if(!empty($request->input())){
+			//si es el finder es el buscador inicial
+			if(array_key_exists('finder',$request->input())){
+				return redirect('/'.$request->input('finder'));
+			}
+		}
 
 		Session::put('app', env('APP_NAME','ComprarJuntos'));
 		Session::put('copy', env('APP_RIGTH','ComprarJuntos'));
@@ -96,9 +103,9 @@ class WelcomeController extends Controller {
 		->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
 		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 		->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
-		->where('clu_store.status','Activa')			
+		->where('clu_store.status','Activa')
 		->orderByRaw("RAND()")
-		->skip(0)->take(5)
+		->skip(0)->take(4)
 		->get();
 
 		//un tendero
@@ -110,6 +117,17 @@ class WelcomeController extends Controller {
 		->skip(0)->take(1)
 		->get();
 
+		//productos		
+		$moduledata['productos'] = \DB::table('clu_products')
+		->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
+		->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
+		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+		->where('clu_products.active',1)
+		->where('clu_store.status','Activa')
+		->orderByRaw("RAND()")
+		->skip(0)->take(8)
+		->get();	
+		
 		//return view('welcome',['modulo'=>$moduledata]);
 		return view('welcome')->with($moduledata);		
 	}
@@ -199,8 +217,9 @@ class WelcomeController extends Controller {
 		if(count($productos)){
 			//buscamos la tienda y su tendero
 			$tienda = \DB::table('clu_store')
-			->select('clu_store.*','seg_user.email','seg_user.name as uname')
-			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')			
+			->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.movil_number','seg_user_profile.fix_number')
+			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.id')			
 			->where('clu_store.id',key($productos))
 			->get();
 
@@ -232,9 +251,11 @@ class WelcomeController extends Controller {
 				//de un producto pude haber diferentes configuraciones			
 				foreach ($prod as $key => $values) {					
 					$detalle = new Detalle();
+					$detalle->product = $values['nprod'];
 					$detalle->price = $values['precio'];
 					$detalle->volume = $values['volume'];
 					$detalle->description = $values['crtrcs'];
+					$detalle->product_id = $id_prod;
 					$detalle->order_id = $orden->id;
 					try{
 						$detalle->save();
@@ -248,8 +269,9 @@ class WelcomeController extends Controller {
 			$data['tienda'] = $tienda[0]->name;
 			$data['orden_id'] = $orden->id;
 			$data['email'] = $tienda[0]->email;
-			$data['direccion_tienda'] = $tienda[0]->adress;
+			$data['direccion_tienda'] = $tienda[0]->city.' - '.$tienda[0]->adress;
 			$data['ciudad_tienda'] = $tienda[0]->city;
+			$data['telefono_tienda'] = $tienda[0]->movil_number.' - '.$tienda[0]->fix_number;
 			$data['imagen'] = 'users/'.$tienda[0]->uname.'/stores/'.$tienda[0]->image;		
 
 			$data['nombre_cliente'] = $orden->name_client;
@@ -261,26 +283,33 @@ class WelcomeController extends Controller {
 
 			$data['url'] = $request->url();
 
-			return view('email/order')->with($data);
+			$mensage;
 			
 			Mail::send('email.order',$data,function($message) use ($tienda) {
 				$message->from(Session::get('mail'),Session::get('copy'));
 				$message->to($tienda[0]->email,$tienda[0]->name)->subject('Orden de Pedido.');
-			});		
-
+			});
 
 			//envio de correo a cliente, si falla notificar al tendero en mensage
-			//envio a buzon interno de pedido, con estado inicaial, pedido no visto
-			//retornar ala tienda con mensajes de ejecuciòn
-			//return Redirect::back()->withErrors($validator)->withInput()->with('modulo',$moduledata);
-			return Redirect::back()->with('message',['El pedido fue enviado con EXITO!, Con Consecutivo: '.$orden->id]);
+			try{
+				Mail::send('email.order_client',$data,function($message) use ($orden) {
+					$message->from(Session::get('mail'),Session::get('copy'));
+					$message->to($orden->email_client,$orden->name_client)->subject('Orden de Pedido.');
+				});
+			}catch (\Exception  $e) {	
+				$mensage[]='El correo suministrado no es valido';				
+			}
 
+			//envio a buzon interno de pedido, con estado inicaial, pedido no visto
+
+
+			//retornar ala tienda con mensajes de ejecuciòn			
+			$mensage[]='El pedido fue enviado con EXITO!, Con Consecutivo: '.$orden->id;
+			return Redirect::back()->with('message',$mensage);
 		}else{
 			//la tienda no tiene productos
 			return Redirect::back()->with('error',['Error Inesperado, no alcanzo a llegar ningun producto.']);
 		}
-
-		
 		
 	}
 	

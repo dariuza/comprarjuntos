@@ -53,14 +53,13 @@
 					<div style="float: right;margin-right: 5%;">
 						<img src="{{url('/'.$imagen)}}" alt="Imagen Tienda" style="width: 70%;">
 					</div>
-					<div>Una nueva Orden de Pedido ha llegado a tu tienda.</div>
+					<div>Tu Orden de Pedido ha llegado a nuestra tienda.</div>
 					<div>Nùmero de Orden :{{ $orden_id }}</div>					
 					<ul>
-						<div>DATOS DEL CLIENTE</div>
-						<li>Nombre: {{$nombre_cliente}}</li>
-						<li>Dirección: {{$adress_client}}</li>
-						<li>Correo Electrónico: {{$email_client}}</li>
-						<li>Teléfono: {{$number_client}}</li>
+						<div>DATOS DE LA TIENDA</div>						
+						<li>Dirección: {{$direccion_tienda}}</li>
+						<li>Correo Electrónico: {{$email}}</li>
+						<li>Teléfono: {{$telefono_tienda}}</li>
 					</ul>
 					<div style="text-align: center;">
 						<div style="margin-bottom: 15px;margin-top: 15px;"><b>DETALLES DE ORDEN</b></div>

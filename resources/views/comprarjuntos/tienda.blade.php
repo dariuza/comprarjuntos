@@ -70,8 +70,11 @@
 	<link  rel="stylesheet" href="{{ url('css/bootstrap-colorpicker.min.css') }}" type="text/css" />
 	<link  rel="stylesheet" href="{{ url('css/chosen.css') }}" type="text/css" />
 	<link  rel="stylesheet" href="{{ url('css/bootstrap-social.css') }}" type="text/css" />
-	<link  rel="stylesheet" href="{{ url('css/font-awesome.css') }}" type="text/css" />	
-	<div class="row" style="margin-top: 5%;">	
+	<link  rel="stylesheet" href="{{ url('css/font-awesome.css') }}" type="text/css" />
+
+	<div class="row visible-lg" style="margin-top: 5%;"></div>
+	<div class="row visible-md" style="margin-top: 8%;"></div>
+	<div class="row">	
 		<div class="alerts col-md-12 col-md-offset-0">
 		<!-- $error llega si la función validator falla en autenticar los datos -->
 			@if (count($errors) > 0)

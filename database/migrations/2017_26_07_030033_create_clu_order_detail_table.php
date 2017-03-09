@@ -14,9 +14,11 @@ class CreateCluOrderDetailTable extends Migration
     {
         Schema::create('clu_order_detail', function(Blueprint $table){
             $table->increments('id');            
+            $table->string('product');
             $table->integer('price');
             $table->integer('volume');
             $table->string('description');//caracteristicas
+            $table->integer('product_id')->unsigned(); 
             $table->integer('order_id')->unsigned();            
             $table->foreign('order_id')->references('id')->on('clu_order')->onDelete('cascade');            
             $table->timestamps();
