@@ -285,15 +285,15 @@ class WelcomeController extends Controller {
 
 			$mensage;
 			
-			Mail::send('email.order',$data,function($message) use ($tienda) {
-				$message->from(Session::get('mail'),Session::get('copy'));
+			Mail::send('email.order',$data,function($message) use ($tienda,$orden) {
+				$message->from(Session::get('mail'),Session::get('copy').'-'.$orden->id);
 				$message->to($tienda[0]->email,$tienda[0]->name)->subject('Orden de Pedido.');
 			});
 
 			//envio de correo a cliente, si falla notificar al tendero en mensage
 			try{
 				Mail::send('email.order_client',$data,function($message) use ($orden) {
-					$message->from(Session::get('mail'),Session::get('copy'));
+					$message->from(Session::get('mail'),Session::get('copy').'-'.$orden->id);
 					$message->to($orden->email_client,$orden->name_client)->subject('Orden de Pedido.');
 				});
 			}catch (\Exception  $e) {	

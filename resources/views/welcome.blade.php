@@ -199,7 +199,7 @@
 			<!-- Div de tiendas-->
 			<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">
 				<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
-					<b>Encuentra Tiendas y Crear Redes de Consumo</b>
+					<b>Encuentra Tiendas y CrearRedes de Consumo</b>
 				</div>
 				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
 				@foreach($tiendas as $tienda)
@@ -213,7 +213,7 @@
 						    			</a>					    				    									    			
 						    		</div>
 						    		<a href="{{url('/'.$tienda->name)}}" class="visible-lg" style="color:{{$tienda->color_two}};font-size: 16px;"> 
-				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 35%;border-radius: 50%;float: right;position: absolute; margin-left: -40%;z-index: 99;' ))}}
+				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
 				    				</a>	
 						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
 						    	{{$tienda->color_two}};padding: 7px;">					    			
@@ -243,9 +243,9 @@
 
 			<!--Div Presentaciòn de una tienda-->
 			<div class="col-md-10 col-md-offset-1 comprarjuntos" style="margin-top: 3%;background-image: url('images/banner/banner_word.jpg');">
-				<div class="row col-md-8 col-md-offset-1" style="font-size: 30px;">
+				<div class="row col-md-7 col-md-offset-1" style="font-size: 30px;">
 					<div class="col-md-12 col-md-offset-0">
-						En cuentra lo que buscas
+						Encuentra lo que buscas
 					</div>
 					<div class="col-md-12 col-md-offset-0">
 						{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
@@ -259,7 +259,7 @@
 				    </div>		    
 				</div>
 
-				<div class="row col-md-3 col-md-offset-0" style="font-size: 22px;text-align: center;">
+				<div class="row col-md-4 col-md-offset-0" style="font-size: 22px;text-align: center;">
 					<div>Tiendas</div>
 					<div>Productos</div>
 					<div>Grupos de Consumo</div>
@@ -321,7 +321,7 @@
 			<!-- Div de tiendas-->
 			<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">
 				<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
-					<b>Encuentra Tiendas y Crear Redes de Consumo</b>
+					<b>Encuentra Tiendas y Crea Redes de Consumo</b>
 				</div>
 				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
 				@foreach($tiendas as $tienda)
@@ -335,7 +335,7 @@
 						    			</a>					    				    									    			
 						    		</div>
 						    		<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;"> 
-				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 35%;border-radius: 50%;float: right;position: absolute; margin-left: -40%;z-index: 99;' ))}}
+				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
 				    				</a>	
 						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
 						    	{{$tienda->color_two}};padding: 7px;">					    			
@@ -365,9 +365,9 @@
 
 			<!--Div Presentaciòn de una tienda-->
 			<div class="col-md-10 col-md-offset-1 comprarjuntos" style="margin-top: 3%;background-image: url('images/banner/banner_word.jpg');">
-				<div class="row col-md-8 col-md-offset-1" style="font-size: 30px;">
+				<div class="row col-md-7 col-md-offset-1" style="font-size: 30px;">
 					<div class="col-md-12 col-md-offset-0">
-						En cuentra lo que buscas
+						Encuentra lo que buscas
 					</div>
 					<div class="col-md-12 col-md-offset-0">
 						{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
@@ -381,7 +381,7 @@
 				    </div>		    
 				</div>
 
-				<div class="row col-md-3 col-md-offset-0" style="font-size: 22px;text-align: center;">
+				<div class="row col-md-4 col-md-offset-0" style="font-size: 22px;text-align: center;">
 					<div>Tiendas</div>
 					<div>Productos</div>
 					<div>Grupos de Consumo</div>
