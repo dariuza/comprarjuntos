@@ -1,6 +1,7 @@
 function clu_tienda() {
 	this.datos_pie = [];
-	this.table = '';
+	this.table_products = '';
+	this.table_orders = '';
 	this.fillable = ['Nombre','Precio','Categorìa','Descripciòn'];
 	
 }
@@ -68,7 +69,7 @@ clu_tienda.prototype.consultaRespuestaProducts = function(result) {
 		$('#productos_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La tienda aùn no tiene Productos!</strong></br> Para crear un nuevo producto, no esperes màs y crea un producto dando click en la opciòn <a href="#"><div class="" id="btn_nueva_tienda_a" data-toggle="modal" data-target="#nuevoproducto_modal"><b> Crear un Producto</b></div></a></div>');
 	}
 	$('#productos_modal').modal();
-	//llenamos el select de categorias
+	//llenamos el select de categorias, para la creación de nuevos productos, de esta tienda seleccionada
 	categoria_select=document.getElementById('categoria_select')
 	categoria_select.innerHTML = "";
 	for (var key in result.data) {
@@ -197,6 +198,12 @@ clu_tienda.prototype.format= function(d,r) {
     '</div>';
     return html;
 };
+
+clu_tienda.prototype.consultaRespuestaOrders = function(result) {
+	$('#odenes_modal').modal();
+};
+
+
 var clu_tienda = new clu_tienda();
 
 

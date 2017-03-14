@@ -177,11 +177,11 @@
 				    				<div style="font-size: 10px;">Editar Tienda</div>
 				    			</a>
 				    		</div>
-				    		<div class="col-md-3 col-mx-offset-0 option_store option_products" style="color:{{$tienda->color_two}};" id ="{{$tienda->name}}_{{$tienda->id}}"> 			
+				    		<div class="col-md-3 col-mx-offset-0 option_store option_products" style="color:{{$tienda->color_two}};" id ="prod_{{$tienda->name}}_{{$tienda->id}}">
 				    			<span class="glyphicon glyphicon-th option_store_icon" aria-hidden="true"></span>
 				    			<div style="font-size: 10px; margin-left: -10px;">Productos</div>
 				    		</div>
-				    		<div class="col-md-3 col-mx-offset-0 option_store" style="color:{{$tienda->color_two}};">				    			
+				    		<div class="col-md-3 col-mx-offset-0 option_store option_order" style="color:{{$tienda->color_two}};" id ="order_{{$tienda->name}}_{{$tienda->id}}">				    			
 				    			<span class="glyphicon glyphicon-book option_store_icon"  aria-hidden="true"></span>
 				    			<div style="font-size: 10px;">Pedidos</div>
 				    		</div>
@@ -446,38 +446,38 @@
 	<div class="modal fade" id="productos_modal" role="dialog" >
 		<div class="modal-dialog modal-lg">
 		 <!-- Modal content-->
-	      <div class="modal-content">
-	      	<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<h4 class="modal-title">Productos Tienda</h4>
-				<a href="#" style="text-decoration: none; color: #777">
-				<div class="" id="btn_nuevo_producto" data-toggle="modal" data-target="#nuevoproducto_modal">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true" style="font-size: 12px;"></span>
-					<span>Crear un Producto</span>
+	    	<div class="modal-content">
+		      	<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Productos Tienda</h4>
+					<a href="#" style="text-decoration: none; color: #777">
+					<div class="" id="btn_nuevo_producto" data-toggle="modal" data-target="#nuevoproducto_modal">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true" style="font-size: 12px;"></span>
+						<span>Crear un Producto</span>
+					</div>
+					</a>
 				</div>
-				</a>
-			</div>
-			<div class = "alerts-module"></div>
-			<div class="modal-body">
-				<div class="row ">
-					<div class="col-md-12 col-md-offset-0 row_init">
-						<table id="example" class="display responsive no-wrap " cellspacing="0" width="100%">
-					         <thead>
-					            <tr>
-					            	<th></th>					            	
-			            			<th>Nombre</th>
-			            			<th>Precio</th>
-			            			<th>Categorìa</th>
-			            			<th>Unidades de Venta</th>
-			            			<th>Estado</th>
-					            </tr>
-					        </thead>              
-					    </table> 
+				<div class = "alerts-module"></div>
+				<div class="modal-body">
+					<div class="row ">
+						<div class="col-md-12 col-md-offset-0 row_init">
+							<table id="table_prods" class="display responsive no-wrap " cellspacing="0" width="100%">
+						         <thead>
+						            <tr>
+						            	<th></th>					            	
+				            			<th>Nombre</th>
+				            			<th>Precio</th>
+				            			<th>Categorìa</th>
+				            			<th>Unidades de Venta</th>
+				            			<th>Estado</th>
+						            </tr>
+						        </thead>              
+						    </table> 
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="modal-footer">				
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
+				<div class="modal-footer">				
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 		        </div>
 	      	</div>
 		</div>
@@ -624,14 +624,50 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="odenes_modal" role="dialog" >
+		<div class="modal-dialog modal-lg">
+		 <!-- Modal content-->
+	    	<div class="modal-content">
+		      	<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Pedidos Tienda</h4>				
+				</div>
+				<div class = "alerts-module"></div>
+				<div class="modal-body">
+					<div class="row ">
+						<div class="col-md-12 col-md-offset-0 row_init">
+							<table id="table_prods" class="display responsive no-wrap " cellspacing="0" width="100%">
+						         <thead>
+						            <tr>
+						            	<th></th>					            	
+				            			<th>Número de Pedido</th>
+				            			<th>Fecha de Orden</th>
+				            			<th>Nombre Cliente</th>
+				            			<th>Dirección Cliente</th>
+				            			<th>Correo Cliente</th>
+				            			<th>Telefonos Cliente</th>
+						            </tr>
+						        </thead>              
+						    </table> 
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">				
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		        </div>
+	      	</div>
+		</div>
+	</div>
+
+
 	<!-- Form en blanco para consultar Ciudades -->
 	{!! Form::open(array('id'=>'form_consult_city','url' => 'user/consultarcity')) !!}		
     {!! Form::close() !!}
 
-    {!! Form::open(array('id'=>'form_consult_products','url' => 'mistiendas/consultarproducts')) !!}		
+    {!! Form::open(array('id'=>'form_consult_products','url' => 'mistiendas/consultarproducts')) !!}
     {!! Form::close() !!}
 
-    {!! Form::open(array('id'=>'form_consult_product','url' => 'mistiendas/consultarproduct')) !!}		
+    {!! Form::open(array('id'=>'form_consult_orders','url' => 'mistiendas/consultarorders')) !!}
     {!! Form::close() !!}
 
 
@@ -671,14 +707,14 @@
 		//Consultar los productos de la tienda, listado
 		$('.option_products').on('click', function (e) {
 			var datos = new Array();
-			datos['id'] = this.id.split('_')[1];
-			datos['name'] = this.id.split('_')[0];				
+			datos['id'] = this.id.split('_')[2];
+			datos['name'] = this.id.split('_')[1];				
 		    seg_ajaxobject.peticionajax($('#form_consult_products').attr('action'),datos,"clu_tienda.consultaRespuestaProducts",false);
 
 		    //llamado sincrono, para cambiar el id de tienda
 		    //la otra opciòn es retardar el listado de las los productos
 
-		    javascript:clu_tienda.table = $('#example').DataTable( {		
+		    javascript:clu_tienda.table = $('#table_prods').DataTable( {		
 			    "responsive": true,
 			    "columnDefs": [
 			        { responsivePriority: 1, targets: 0 },
@@ -745,6 +781,14 @@
 		            clu_tienda.tr.addClass('shown');
 		        }
 		    });		    
+		});
+
+		$('.option_order').on('click', function (e) {
+			var datos = new Array();
+			datos['id'] = this.id.split('_')[2];
+			datos['name'] = this.id.split('_')[1];			
+			seg_ajaxobject.peticionajax($('#form_consult_orders').attr('action'),datos,"clu_tienda.consultaRespuestaOrders",false);
+
 		});
 
 		$( ".solo_numeros" ).keypress(function(evt) {

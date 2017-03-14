@@ -599,5 +599,8 @@ class StoreController extends Controller {
 		}			
 			
 	}
+	public function postConsultarorders(Request $request){
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
+	}
 
 }
