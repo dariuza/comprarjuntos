@@ -203,6 +203,40 @@ clu_tienda.prototype.consultaRespuestaOrders = function(result) {
 	$('#odenes_modal').modal();
 };
 
+clu_tienda.prototype.consultaRespuestaOrder = function(result) {
+	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request)).show();
+};
+
+clu_tienda.prototype.formatorder= function(d,r) {
+	 var html = ''+
+    	'<div class="panel panel-default">'+
+    		'<div class="panel-heading">'+
+	    		'<a href="#" style="text-decoration: none; color: #777">'+
+					'<div class=" btn_editar_producto_'+d.id+'" id="btn_editar_producto" >'+
+						'<span class="glyphicon glyphicon-cog" aria-hidden="true" style=""></span>'+
+						'<span> Editar esta Orden</span>'+
+					'</div>'+
+				'</a>'+
+	    	'</div>'+
+	    	'<div class="panel-body">'+
+				'<div class="row">'+
+					'<div class="col-md-12">'+
+						'<div class="col-md-6 product_more">'+
+							'<div>'+					
+								'<label for="description" class="col-md-12 control-label">Descripciòn</label>'+
+								''+d.description+''+
+							'</div>';
+
+		  html = html +'</div>'+
+						'<div class="col-md-6" style="text-align: center;">'+
+							
+						'</div>'+
+					'</div>'+
+				'</div>'+
+	    	'</div>'+   
+   		'</div>';
+	 return html;
+};
 
 var clu_tienda = new clu_tienda();
 

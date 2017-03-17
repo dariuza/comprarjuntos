@@ -39,6 +39,15 @@ class StoreController extends Controller {
 	
 	public function getListar(){	
 		
+		$moduledata['detalles']=\DB::table('clu_order_detail')
+		->select('clu_order_detail.*')
+		->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')
+		->where('clu_order.id',3)		
+		->orderBy('id', 'asc')
+		->get();
+
+		dd($moduledata['detalles']);
+
 		$message =array();
 		//Control de perfil de usuario.
 		if(empty(Session::get('comjunplus.usuario.name')) || empty(Session::get('comjunplus.usuario.adress')) || empty(Session::get('comjunplus.usuario.state')) || empty(Session::get('comjunplus.usuario.city')) || empty(Session::get('comjunplus.usuario.birthdate')) || empty(Session::get('comjunplus.usuario.email'))){		
@@ -601,7 +610,22 @@ class StoreController extends Controller {
 			
 	}
 	public function postConsultarorders(Request $request){
+		//antes de enviar, asignamos el id de tienda par el listarajax
+		Session::put('store.id', $request->input('id'));
+		Session::put('store.name', $request->input('name'));
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
+	}
+
+	public function postConsultarorder(Request $request){
+		//consultamos, los detalles y las entradas del foro
+		$moduledata['detalles']=\DB::table('clu_order_detail')
+		->select('clu_order_detail.*')
+		->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')
+		->where('clu_order.id',$request->input('id_order'))		
+		->orderBy('id', 'asc')
+		->get();	
+
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
 	}
 
 	//LISTAR LOS PRODUCTOS

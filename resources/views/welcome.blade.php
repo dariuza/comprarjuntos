@@ -61,6 +61,12 @@
 			background-color: #dddddd;
 		}
 
+		@-moz-document url-prefix() {
+		    .img_tendero {
+		    	margin-left: -40% !important;
+		    } 
+		}
+
 
 	</style>		
 	<div class="row visible-lg" style="margin-top: 5%;"></div>
@@ -213,7 +219,7 @@
 						    			</a>					    				    									    			
 						    		</div>
 						    		<a href="{{url('/'.$tienda->name)}}" class="visible-lg" style="color:{{$tienda->color_two}};font-size: 16px;"> 
-				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
+				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array('class'=>'img_tendero', 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
 				    				</a>	
 						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
 						    	{{$tienda->color_two}};padding: 7px;">					    			
@@ -335,7 +341,7 @@
 						    			</a>					    				    									    			
 						    		</div>
 						    		<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;"> 
-				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array( 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
+				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array('class'=>'img_tendero', 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
 				    				</a>	
 						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
 						    	{{$tienda->color_two}};padding: 7px;">					    			

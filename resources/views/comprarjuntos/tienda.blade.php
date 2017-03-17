@@ -676,6 +676,9 @@
     {!! Form::open(array('id'=>'form_consult_orders','url' => 'mistiendas/consultarorders')) !!}
     {!! Form::close() !!}
 
+    {!! Form::open(array('id'=>'form_consult_order','url' => 'mistiendas/consultarorder')) !!}
+    {!! Form::close() !!}
+
 
 @endsection
 @section('script')
@@ -845,6 +848,38 @@
 			    },
 		    });
 
+		    //metodo para la tabla
+			$('#table_orders tbody').on('click', 'td.details-control', function () {
+
+				//cerramos el div anterior
+				if(clu_tienda.tr != undefined){
+					if(clu_tienda.row.data().id != clu_tienda.table_orders.row($(this).closest('tr')).data().id){
+						clu_tienda.row.child.hide();
+		        		clu_tienda.tr.removeClass('shown');
+					}					
+				}				
+
+		        clu_tienda.tr = $(this).closest('tr');
+		        clu_tienda.row = clu_tienda.table_orders.row( clu_tienda.tr );
+		 		
+		        if ( clu_tienda.row.child.isShown() ) {
+		            // la fila esta abierta
+		            clu_tienda.row.child.hide();
+		            clu_tienda.tr.removeClass('shown');
+		        }
+		        else {
+		            //la fila esta cerrada
+		            //llamado asincrono datos de producto
+		            var datos = new Array();
+		            datos['id_order'] = clu_tienda.row.data().id;
+		            datos['id_tienda'] = clu_tienda.row.data().store_id;
+		            datos['url'] = "{{url('/')}}";
+					datos['usuario'] = "{{Session::get('comjunplus.usuario.name')}}";
+		            seg_ajaxobject.peticionajax($('#form_consult_order').attr('action'),datos,"clu_tienda.consultaRespuestaOrder");
+		            clu_tienda.tr.addClass('shown');
+		        }
+				
+			});
 		});
 		
 		$( ".solo_numeros" ).keypress(function(evt) {
