@@ -3,6 +3,7 @@
 use App\Core\ComprarJuntos\Tienda;
 use App\Core\ComprarJuntos\Producto;
 use App\Core\ComprarJuntos\Categoria;
+use App\Core\ComprarJuntos\Orden;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -601,6 +602,47 @@ class StoreController extends Controller {
 	}
 	public function postConsultarorders(Request $request){
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
+	}
+
+	//LISTAR LOS PRODUCTOS
+	public function getListarajaxorders(Request $request){
+		//Tienda id
+		if(empty(Session::get('store.id'))){
+			//algo anda muy mal, no se udo asignar el id de tienda en la funcion Consultarproductos
+			return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]]);
+		}
+
+		$moduledata['total']=Orden::count();
+
+		if(!empty($request->input('search')['value'])){
+			Session::flash('search', $request->input('search')['value']);			
+			
+			$moduledata['ordenes']=
+			Orden::
+			select('clu_order.*')			
+			->where('clu_order.store_id',Session::get('store.id'))		
+			->where(function ($query) {
+				$query->where('clu_order.id', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_order.name_client', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_order.number_client', 'like', '%'.Session::get('search').'%');								
+			})
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();		
+			$moduledata['filtro'] = count($moduledata['ordenes']);
+		}else{			
+			$moduledata['ordenes']=\DB::table('clu_order')
+			->select('clu_order.*')
+			->where('clu_order.store_id',Session::get('store.id'))					
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();			
+				
+			$moduledata['filtro'] = $moduledata['total'];
+		}
+		
+		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['ordenes']]);
+
 	}
 
 }

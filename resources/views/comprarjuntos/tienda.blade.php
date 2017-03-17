@@ -638,16 +638,17 @@
 				<div class="modal-body">
 					<div class="row ">
 						<div class="col-md-12 col-md-offset-0 row_init">
-							<table id="table_prods" class="display responsive no-wrap " cellspacing="0" width="100%">
+							<table id="table_orders" class="display responsive no-wrap " cellspacing="0" width="100%">
 						         <thead>
 						            <tr>
 						            	<th></th>					            	
-				            			<th>Número de Pedido</th>
-				            			<th>Fecha de Orden</th>
-				            			<th>Nombre Cliente</th>
-				            			<th>Dirección Cliente</th>
-				            			<th>Correo Cliente</th>
-				            			<th>Telefonos Cliente</th>
+				            			<th>Número</th>
+				            			<th>Fecha</th>
+				            			<th>Cliente</th>
+				            			<th>Dirección</th>
+				            			<th>Correo</th>
+				            			<th>Contacto</th>
+				            			<th>Estado</th>
 						            </tr>
 						        </thead>              
 						    </table> 
@@ -793,6 +794,56 @@
 			datos['id'] = this.id.split('_')[2];
 			datos['name'] = this.id.split('_')[1];			
 			seg_ajaxobject.peticionajax($('#form_consult_orders').attr('action'),datos,"clu_tienda.consultaRespuestaOrders",false);
+
+			//llamado sincrono, para cambiar el id de tienda
+		    //la otra opciòn es retardar el listado de las los pedidos
+
+		    javascript:clu_tienda.table_orders = $('#table_orders').DataTable({
+		    	"responsive": true,
+			    "columnDefs": [
+			        { responsivePriority: 1, targets: 0 },
+			        { responsivePriority: 2, targets: 0 },
+			        { responsivePriority: 7, targets: 0 }
+	    		],
+			    "processing": true,
+			    "bLengthChange": false,
+			    "serverSide": true,
+			    "bDestroy": true,      
+			    "ajax": "{{url('mistiendas/listarajaxorders')}}",
+			    "iDisplayLength": 25,     	       
+			    "columns": [
+			    	{
+		                "className":      'details-control',
+		                "orderable":      false,
+		                "data":           null,
+		                "defaultContent": ''
+		            },		   
+					{ "data": "id"},
+					{ "data": "date"},		        
+					{ "data": "name_client"},  	    
+			        { "data": "adress_client"},
+			        { "data": "email_client"},
+			        { "data": "number_client"},
+			        { "data": "stage_id",render: function ( data, type, row ) {
+			        		if (data == 1) {
+			                    return 'PENDIENTE';
+		                    }
+		                    if (data == 2) {
+			                    return 'ACEPTADO';
+		                    }
+		                    if (data == 3) {
+			                    return 'RECHAZADO';
+		                    }
+		                    if (data == 4) {
+			                    return 'FINALIZADO';
+		                    }
+			        	}
+			    	}               
+			    ],       
+			    "language": {
+			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			    },
+		    });
 
 		});
 		
