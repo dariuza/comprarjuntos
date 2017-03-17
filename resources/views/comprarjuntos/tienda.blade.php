@@ -15,6 +15,7 @@
 		.option_store a{
 			text-decoration:none;			
 		}
+
 		.option_store_icon{
 			font-size: 17px;
 		}
@@ -162,9 +163,8 @@
 				    	<div class="row">
 				    		<div class="col-md-12">
 				    			<a href="{{url('/'.$tienda->name)}}">
-				    				{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}	    				
-				    			</a>
-				    			
+				    				{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
+				    			</a>				    			
 				    		</div>
 				    	</div>
 				    </div>
@@ -185,9 +185,11 @@
 				    			<span class="glyphicon glyphicon-book option_store_icon"  aria-hidden="true"></span>
 				    			<div style="font-size: 10px;">Pedidos</div>
 				    		</div>
-				    		<div class="col-md-3 col-mx-offset-0 option_store" style="color:{{$tienda->color_two}};">				    			
-				    			<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span>
-				    			<div style="font-size: 10px;">Ver Tienda</div>
+				    		<div class="col-md-3 col-mx-offset-0 option_store option_ver" style="color:{{$tienda->color_two}};">
+				    			<a href="{{url('/'.$tienda->name)}}" style="text-decoration:none; color:{{$tienda->color_two}};">
+				    				<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span>
+				    				<div style="font-size: 10px;">Ver Tienda</div>
+				    			</a>	
 				    		</div>				    		
 				    	</div>				    	
 				    </div>
@@ -793,7 +795,7 @@
 			seg_ajaxobject.peticionajax($('#form_consult_orders').attr('action'),datos,"clu_tienda.consultaRespuestaOrders",false);
 
 		});
-
+		
 		$( ".solo_numeros" ).keypress(function(evt) {
 			 evt = (evt) ? evt : window.event;
 		    var charCode = (evt.which) ? evt.which : evt.keyCode;
