@@ -667,6 +667,9 @@
     {!! Form::open(array('id'=>'form_consult_products','url' => 'mistiendas/consultarproducts')) !!}
     {!! Form::close() !!}
 
+    {!! Form::open(array('id'=>'form_consult_product','url' => 'mistiendas/consultarproduct')) !!}
+    {!! Form::close() !!}
+
     {!! Form::open(array('id'=>'form_consult_orders','url' => 'mistiendas/consultarorders')) !!}
     {!! Form::close() !!}
 
@@ -714,7 +717,7 @@
 		    //llamado sincrono, para cambiar el id de tienda
 		    //la otra opciòn es retardar el listado de las los productos
 
-		    javascript:clu_tienda.table = $('#table_prods').DataTable( {		
+		    javascript:clu_tienda.table_products = $('#table_prods').DataTable( {		
 			    "responsive": true,
 			    "columnDefs": [
 			        { responsivePriority: 1, targets: 0 },
@@ -752,17 +755,17 @@
 			});
 
 			//metodo para la tabla
-			$('#example tbody').on('click', 'td.details-control', function () {
+			$('#table_prods tbody').on('click', 'td.details-control', function () {
 				//cerramos el div anterior
 				if(clu_tienda.tr != undefined){
-					if(clu_tienda.row.data().id != clu_tienda.table.row($(this).closest('tr')).data().id){
+					if(clu_tienda.row.data().id != clu_tienda.table_products.row($(this).closest('tr')).data().id){
 						clu_tienda.row.child.hide();
 		        		clu_tienda.tr.removeClass('shown');
 					}					
 				}				
 
 		        clu_tienda.tr = $(this).closest('tr');
-		        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
+		        clu_tienda.row = clu_tienda.table_products.row( clu_tienda.tr );
 		 		
 		        if ( clu_tienda.row.child.isShown() ) {
 		            // la fila esta abierta
@@ -894,7 +897,7 @@
 			    seg_ajaxobject.peticionajax($('#form_consult_products').attr('action'),datos,"clu_tienda.consultaRespuestaProducts",false);
 
 				//recarga la tabla de productos
-				javascript:clu_tienda.table = $('#example').DataTable( {		
+				javascript:clu_tienda.table_products = $('#table_prods').DataTable( {		
 				    "responsive": true,
 				    "columnDefs": [
 				        { responsivePriority: 1, targets: 0 },
@@ -932,17 +935,17 @@
 				});
 
 				//metodo para la tabla
-				$('#example tbody').on('click', 'td.details-control', function () {
+				$('#table_prods tbody').on('click', 'td.details-control', function () {
 					//cerramos el div anterior
 					if(clu_tienda.tr != undefined){
-						if(clu_tienda.row.data().id != clu_tienda.table.row($(this).closest('tr')).data().id){
+						if(clu_tienda.row.data().id != clu_tienda.table_products.row($(this).closest('tr')).data().id){
 							clu_tienda.row.child.hide();
 			        		clu_tienda.tr.removeClass('shown');
 						}					
 					}
 
 			        clu_tienda.tr = $(this).closest('tr');
-			        clu_tienda.row = clu_tienda.table.row( clu_tienda.tr );
+			        clu_tienda.row = clu_tienda.table_products.row( clu_tienda.tr );
 			 		
 			        if ( clu_tienda.row.child.isShown() ) {
 			            // la fila esta abierta

@@ -493,6 +493,7 @@ seg_user.prototype.openModalCart = function(result) {
             cantidad.setAttribute("type", "number");
             cantidad.setAttribute("min", "0");
             cantidad.className = "form-control solo_numeros volumen_cart";
+            cantidad.setAttribute("id", "volumen_cart");
             cantidad.setAttribute("name", "prod_volume_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
             cantidad.value = seg_user.cart_products[i][2];
             volumen.appendChild(cantidad);
@@ -642,7 +643,7 @@ seg_user.prototype.openModalCart = function(result) {
                 cantidad = this.value;
             }
            for(var i=0;i<seg_user.cart_products.length;i++){
-                if(seg_user.cart_products[i][10] == this.name.split('_')[2])
+                if(seg_user.cart_products[i][10] == this.name.split('_')[3])
                 {                
                    seg_user.cart_products[i][2] = cantidad;
                 }
@@ -659,6 +660,7 @@ seg_user.prototype.openModalCart = function(result) {
             $('#precio_total').html("$"+precio_total);
             
         });
+
         $(".volumen_cart").change(function(e) {              
             if(this.value == ""){
                 cantidad = 0;
@@ -666,7 +668,7 @@ seg_user.prototype.openModalCart = function(result) {
                 cantidad = this.value;
             }
            for(var i=0;i<seg_user.cart_products.length;i++){
-                if(seg_user.cart_products[i][10] == this.name.split('_')[2])
+                if(seg_user.cart_products[i][10] == this.name.split('_')[3])
                 {                
                    seg_user.cart_products[i][2] = cantidad;
                 }
@@ -683,6 +685,7 @@ seg_user.prototype.openModalCart = function(result) {
             $('#precio_total').html("$"+precio_total);
             
         });
+        
     }
 };
 

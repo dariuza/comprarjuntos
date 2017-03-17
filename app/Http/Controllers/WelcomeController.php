@@ -219,11 +219,12 @@ class WelcomeController extends Controller {
 			$tienda = \DB::table('clu_store')
 			->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.movil_number','seg_user_profile.fix_number')
 			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
-			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.id')			
-			->where('clu_store.id',key($productos))
+			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.id')	
+			->leftjoin('clu_products', 'clu_store.id', '=', 'clu_products.store_id')			
+			->where('clu_products.id',key($productos))
 			->get();
 
-			$orden->store_id = key($productos);		
+			$orden->store_id = $tienda[0]->id;		
 			try {
 				//guardado de pedido en base
 				$orden->save();	
