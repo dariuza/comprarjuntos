@@ -42,11 +42,11 @@ class StoreController extends Controller {
 		$moduledata['detalles']=\DB::table('clu_order_detail')
 		->select('clu_order_detail.*')
 		->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')
-		->where('clu_order.id',3)		
+		->where('clu_order.id',1)		
 		->orderBy('id', 'asc')
 		->get();
 
-		dd($moduledata['detalles']);
+		//dd($moduledata['detalles']);
 
 		$message =array();
 		//Control de perfil de usuario.
@@ -623,7 +623,11 @@ class StoreController extends Controller {
 		->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')
 		->where('clu_order.id',$request->input('id_order'))		
 		->orderBy('id', 'asc')
-		->get();	
+		->get();
+
+		if(count($moduledata['detalles'])){
+			return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$moduledata['detalles']]);	
+		}
 
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
 	}

@@ -11,8 +11,8 @@ clu_tienda.prototype.onjquery = function() {
 
 clu_tienda.prototype.opt_select = function(controlador,metodo) {
 	
-	if(clu_tienda.table.rows('.selected').data().length){		
-		window.location=metodo + "/" + clu_tienda.table.rows('.selected').data()[0]['id'];
+	if(clu_tienda.table_products.rows('.selected').data().length){		
+		window.location=metodo + "/" + clu_tienda.table_products.rows('.selected').data()[0]['id'];
 	}else{
 		$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Seleccione un registro!</strong>Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
 	}
@@ -88,43 +88,43 @@ clu_tienda.prototype.consultaRespuestaProduct = function(result) {
 	clu_tienda.row.child( clu_tienda.format(clu_tienda.row.data(),result.request)).show();
 	$('#btn_editar_producto').on('click', function (e) {
 		//buscamos los datos seleccionados
-		for(var i=0; clu_tienda.table.data().length; i++){
-			if(this.className.split('_')[3]==clu_tienda.table.data()[i].id){
+		for(var i=0; clu_tienda.table_products.data().length; i++){
+			if(this.className.split('_')[3]==clu_tienda.table_products.data()[i].id){
 				//encontramos los datos
 				$('#modal-title-product').html('Editar Producto');
 				$( "input[name='edit_product']").val(true);
-				$( "input[name='product_id']").val(clu_tienda.table.data()[i].id);
-				$('#nombre_producto').val(clu_tienda.table.data()[i].name);
-				$('#precio').val(clu_tienda.table.data()[i].price);
-				$('#categoria_select').val(clu_tienda.table.data()[i].category);
-				$('#descripcion_producto').val(clu_tienda.table.data()[i].description);
-				$('#prioridad_producto').val(clu_tienda.table.data()[i].order);				
+				$( "input[name='product_id']").val(clu_tienda.table_products.data()[i].id);
+				$('#nombre_producto').val(clu_tienda.table_products.data()[i].name);
+				$('#precio').val(clu_tienda.table_products.data()[i].price);
+				$('#categoria_select').val(clu_tienda.table_products.data()[i].category);
+				$('#descripcion_producto').val(clu_tienda.table_products.data()[i].description);
+				$('#prioridad_producto').val(clu_tienda.table_products.data()[i].order);				
 				//imagen, se reemplaza el src del elemento
-				$('#img_product').attr('src',$('#img_product').attr('src').replace($('#img_product').attr('src').split('/')[$('#img_product').attr('src').split('/').length-1],clu_tienda.table.data()[i].image1));
-				$('#unidades_select').val(clu_tienda.table.data()[i].unity_measure);
-				$('#unidades_medida').val(clu_tienda.table.data()[i].unity_measure);
-				$('#colores_select').val(clu_tienda.table.data()[i].colors);
-				$('#colores').val(clu_tienda.table.data()[i].colors);
-				$('#tallas_select').val(clu_tienda.table.data()[i].sizes);
-				$('#tallas').val(clu_tienda.table.data()[i].sizes);
-				$('#sabores_select').val(clu_tienda.table.data()[i].flavors);
-				$('#sabores').val(clu_tienda.table.data()[i].flavors);
-				$('#materiales_select').val(clu_tienda.table.data()[i].flavors);
-				$('#materiales').val(clu_tienda.table.data()[i].materials);
-				$('#modelos').val(clu_tienda.table.data()[i].models);
+				$('#img_product').attr('src',$('#img_product').attr('src').replace($('#img_product').attr('src').split('/')[$('#img_product').attr('src').split('/').length-1],clu_tienda.table_products.data()[i].image1));
+				$('#unidades_select').val(clu_tienda.table_products.data()[i].unity_measure);
+				$('#unidades_medida').val(clu_tienda.table_products.data()[i].unity_measure);
+				$('#colores_select').val(clu_tienda.table_products.data()[i].colors);
+				$('#colores').val(clu_tienda.table_products.data()[i].colors);
+				$('#tallas_select').val(clu_tienda.table_products.data()[i].sizes);
+				$('#tallas').val(clu_tienda.table_products.data()[i].sizes);
+				$('#sabores_select').val(clu_tienda.table_products.data()[i].flavors);
+				$('#sabores').val(clu_tienda.table_products.data()[i].flavors);
+				$('#materiales_select').val(clu_tienda.table_products.data()[i].flavors);
+				$('#materiales').val(clu_tienda.table_products.data()[i].materials);
+				$('#modelos').val(clu_tienda.table_products.data()[i].models);
 				$('.estado-roduct').show();
-				$('input[name=estado_producto][value='+clu_tienda.table.data()[i].active+']').attr("checked", "checked");
+				$('input[name=estado_producto][value='+clu_tienda.table_products.data()[i].active+']').attr("checked", "checked");
 				$('#modal-button-product').html('Editar Producto')
 
 				//Mostrar Modal
 				$('#nuevoproducto_modal').modal();
 				//para hacer efectivo el cambio del chossen
 				$('#categoria_select').trigger("chosen:updated");
-				$('#unidades_select').val(clu_tienda.table.data()[i].unity_measure.split(',')).trigger("chosen:updated");
-				$('#colores_select').val(clu_tienda.table.data()[i].colors.split(',')).trigger("chosen:updated");
-				$('#tallas_select').val(clu_tienda.table.data()[i].sizes.split(',')).trigger("chosen:updated");
-				$('#sabores_select').val(clu_tienda.table.data()[i].flavors.split(',')).trigger("chosen:updated");
-				$('#materiales_select').val(clu_tienda.table.data()[i].materials.split(',')).trigger("chosen:updated");
+				$('#unidades_select').val(clu_tienda.table_products.data()[i].unity_measure.split(',')).trigger("chosen:updated");
+				$('#colores_select').val(clu_tienda.table_products.data()[i].colors.split(',')).trigger("chosen:updated");
+				$('#tallas_select').val(clu_tienda.table_products.data()[i].sizes.split(',')).trigger("chosen:updated");
+				$('#sabores_select').val(clu_tienda.table_products.data()[i].flavors.split(',')).trigger("chosen:updated");
+				$('#materiales_select').val(clu_tienda.table_products.data()[i].materials.split(',')).trigger("chosen:updated");
 				break;
 			};
 		}	    
@@ -204,37 +204,102 @@ clu_tienda.prototype.consultaRespuestaOrders = function(result) {
 };
 
 clu_tienda.prototype.consultaRespuestaOrder = function(result) {
-	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request)).show();
+	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request ,result.data)).show();
 };
 
-clu_tienda.prototype.formatorder= function(d,r) {
+clu_tienda.prototype.formatorder= function(d,r,data) {
 	 var html = ''+
     	'<div class="panel panel-default">'+
     		'<div class="panel-heading">'+
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
-					'<div class=" btn_editar_producto_'+d.id+'" id="btn_editar_producto" >'+
-						'<span class="glyphicon glyphicon-cog" aria-hidden="true" style=""></span>'+
-						'<span> Editar esta Orden</span>'+
+					'<div class=" btn_editar_orden_'+d.id+'" id="btn_editar_producto" >'+
+						'<span class="glyphicon glyphicon-th-list" aria-hidden="true" style=""></span>'+
+						'<span> Detalles de Orden</span>'+
 					'</div>'+
 				'</a>'+
 	    	'</div>'+
 	    	'<div class="panel-body">'+
-				'<div class="row">'+
+				'<div class="row" style="text-align: center;"> '+
 					'<div class="col-md-12">'+
-						'<div class="col-md-6 product_more">'+
-							'<div>'+					
-								'<label for="description" class="col-md-12 control-label">Descripciòn</label>'+
-								''+d.description+''+
-							'</div>';
+						'<div class="col-md-12">'+
+							'<div class="col-md-3">'+							
+								'<label for="producto" class="col-md-12 control-label">PRODUCTO</label>'+	
+							'</div>'+
+							'<div class="col-md-3">'+							
+								'<label for="description" class="col-md-12 control-label">DESCRPCIÒN</label>'+	
+							'</div>'+
+							'<div class="col-md-2">'+							
+								'<label for="precio" class="col-md-12 control-label">PRECIO</label>'+	
+							'</div>'+
+							'<div class="col-md-2">'+							
+								'<label for="cantidad" class="col-md-12 control-label">CANTIDAD</label>'+	
+							'</div>'+						
+							'<div class="col-md-2">'+							
+								'<label for="total" class="col-md-12 control-label">TOTAL</label>'+	
+							'</div>'+
+						'</div>';
 
-		  html = html +'</div>'+
-						'<div class="col-md-6" style="text-align: center;">'+
+						fondo_bandera = -1;
+						background = 'none';
+						cantidad_total = 0;
+        				precio_total = 0;
+
+						for(var i=0; i < data.length ; i++){
 							
-						'</div>'+
-					'</div>'+
+							if(fondo_bandera==1){
+				                background = "#e7e7e7";
+				            }
+
+			html = html +'<div class="col-md-12" style="background:'+background+';">'+
+							'<div class="col-md-3">'+							
+								''+data[i]['product']+
+							'</div>'+
+							'<div class="col-md-3">'+							
+								''+data[i]['description']+
+							'</div>'+
+							'<div class="col-md-2">'+							
+								''+data[i]['price']+
+							'</div>'+							
+							'<div class="col-md-2">'+							
+								''+data[i]['volume']+
+							'</div>'+							
+							'<div class="col-md-2">'+							
+								'$'+(parseInt(data[i]['volume'])*parseInt(data[i]['price']))+
+							'</div>'+
+						'</div>';
+
+						cantidad_total = parseInt(cantidad_total) + parseInt(data[i]['volume']);
+						precio_total = parseInt(precio_total) + (parseInt(data[i]['volume'])*parseInt(data[i]['price']));
+
+						 fondo_bandera = fondo_bandera*-1;
+						 background = 'none';
+
+						}			
+
+     html = html +'</div>'+			
 				'</div>'+
-	    	'</div>'+   
+	    	'</div>'+
+			'<div class="panel-footer" >'+
+				'<span> Cantidad de productos a llevar: <label>'+cantidad_total+'</label>. Total a Pagar: $'+precio_total+'.</span>'+
+				'<span> hi.</span>'+
+			'</div>'+
    		'</div>';
+
+
+   	 var html =  html +
+    	'<div class="panel panel-default">'+
+    		'<div class="panel-heading">'+
+	    		'<a href="#" style="text-decoration: none; color: #777">'+
+					'<div class=" btn_editar_pedido_'+d.id+'" id="btn_editar_producto" >'+
+						'<span class="glyphicon glyphicon-list-alt" aria-hidden="true" style=""></span>'+
+						'<span> Indicaciones y Sugerencias de Pedido</span>'+
+					'</div>'+
+				'</a>'+
+	    	'</div>'+
+
+
+    	'</div>';
+
 	 return html;
 };
 
