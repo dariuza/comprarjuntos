@@ -286,7 +286,7 @@
 							    	<div class="row">
 							    		<div class="col-md-12">
 							    			<a href="{{url('/'.$producto->store_name)}}">
-							    				{{ Html::image('users/'.$producto->user_name.'/products/'.$producto->store_image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
+							    				{{ Html::image('users/'.$producto->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
 							    			</a>				    			
 							    		</div>
 							    		{{--
@@ -408,7 +408,7 @@
 							    	<div class="row">
 							    		<div class="col-md-12">
 							    			<a href="{{url('/'.$producto->store_name)}}">
-							    				{{ Html::image('users/'.$producto->user_name.'/products/'.$producto->store_image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
+							    				{{ Html::image('users/'.$producto->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
 							    			</a>				    			
 							    		</div>
 							    		{{--
