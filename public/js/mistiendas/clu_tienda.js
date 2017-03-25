@@ -86,10 +86,10 @@ clu_tienda.prototype.consultaRespuestaProducts = function(result) {
 
 clu_tienda.prototype.consultaRespuestaProduct = function(result) {
 	clu_tienda.row.child( clu_tienda.format(clu_tienda.row.data(),result.request)).show();
-	$('#btn_editar_producto').on('click', function (e) {
+	$('.editproduct').on('click', function (e) {
 		//buscamos los datos seleccionados
 		for(var i=0; clu_tienda.table_products.data().length; i++){
-			if(this.className.split('_')[3]==clu_tienda.table_products.data()[i].id){
+			if(this.className.split(' ')[0].split('_')[3]==clu_tienda.table_products.data()[i].id){
 				//encontramos los datos
 				$('#modal-title-product').html('Editar Producto');
 				$( "input[name='edit_product']").val(true);
@@ -136,7 +136,7 @@ clu_tienda.prototype.format= function(d,r) {
     '<div class="panel panel-default">'+
     	'<div class="panel-heading">'+
     		'<a href="#" style="text-decoration: none; color: #777">'+
-				'<div class=" btn_editar_producto_'+d.id+'" id="btn_editar_producto" >'+
+				'<div class="btn_editar_producto_'+d.id+' editproduct" id="btn_editar_producto" >'+
 					'<span class="glyphicon glyphicon-cog" aria-hidden="true" style=""></span>'+
 					'<span> Editar este Producto</span>'+
 				'</div>'+
@@ -191,6 +191,12 @@ clu_tienda.prototype.format= function(d,r) {
 					'<div class="col-md-4" style="text-align: center;">'+
 						'<label for="img_product_descrip" class="col-md-12 control-label">Imagen de Producto</label>'+
 						'<img src="'+r.url+'/users/'+r.usuario+'/products/'+d.image1+'" id="img_product_descrip" style="width: 90%; border:2px solid #ddd;border-radius: 0%;" alt="Imagen no disponible">'+
+						'<a href="#" class="btn btn-default col-md-12" style="text-decoration: none; color: #777; margin-top: 10px; " >'+
+							'<div class="btn_editar_producto_'+d.id+' editproduct" id="btn_editar_producto" >'+
+								'<span class="glyphicon glyphicon-cog" aria-hidden="true" style=""></span>'+
+								'<span> Editar este Producto</span>'+
+							'</div>'+
+						'</a>'+
 					'</div>'+
 				'</div>'+
 			'</div>'+
@@ -212,7 +218,7 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
     	'<div class="panel panel-default">'+
     		'<div class="panel-heading">'+
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
-					'<div class=" btn_editar_orden_'+d.id+'" id="btn_editar_producto" >'+
+					'<div class=" btn_editar_orden_'+d.id+'" id="btn_editar_orden" >'+
 						'<span class="glyphicon glyphicon-th-list" aria-hidden="true" style=""></span>'+
 						'<span> Detalles de Orden</span>'+
 					'</div>'+
@@ -280,9 +286,22 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
 				'</div>'+
 	    	'</div>'+
 			'<div class="panel-footer" >'+
-				'<span> Cantidad de productos a llevar: <label>'+cantidad_total+'</label>. Total a Pagar: $'+precio_total+'.</span>'+
-				'<span> hi.</span>'+
-			'</div>'+
+				'<span> Cantidad de productos a llevar: <label>'+cantidad_total+'</label>. Total a Pagar: $'+precio_total+'.</span>';
+	 
+	 //los botones dependen del estado de la orden		
+	  html = html +'<div style="float: right;">'+				
+					'<a href="#" class="btn btn-warning " style="text-decoration: none; margin-right: 10px;" >'+						
+						'<span class="glyphicon glyphicon-remove" aria-hidden="true" style=""></span>'+
+						'<span> Rechazar Pedido</span>'+						
+					'</a>'+
+					'<a href="#" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
+						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
+						'<span> Aceptar Pedido</span>'+						
+					'</a>'+
+				'</div>';
+
+
+	html = html +'</div>'+		
    		'</div>';
 
 
@@ -290,7 +309,7 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
     	'<div class="panel panel-default">'+
     		'<div class="panel-heading">'+
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
-					'<div class=" btn_editar_pedido_'+d.id+'" id="btn_editar_producto" >'+
+					'<div class="" id="" >'+
 						'<span class="glyphicon glyphicon-list-alt" aria-hidden="true" style=""></span>'+
 						'<span> Indicaciones y Sugerencias de Pedido</span>'+
 					'</div>'+
