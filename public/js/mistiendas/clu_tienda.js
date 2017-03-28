@@ -211,6 +211,14 @@ clu_tienda.prototype.consultaRespuestaOrders = function(result) {
 
 clu_tienda.prototype.consultaRespuestaOrder = function(result) {
 	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request ,result.data)).show();
+	//OPCIONES DE PEDIDO DE ORDEN
+	$('#stage_rechazado').on('click', function (e) {
+		alert('Alert');
+	});
+
+	$('#stage_aceptado').on('click', function (e) {
+		alert('Aceptado');
+	});
 };
 
 clu_tienda.prototype.formatorder= function(d,r,data) {
@@ -288,22 +296,48 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
 			'<div class="panel-footer" >'+
 				'<span> Cantidad de productos a llevar: <label>'+cantidad_total+'</label>. Total a Pagar: $'+precio_total+'.</span>';
 	 
-	 //los botones dependen del estado de la orden		
-	  html = html +'<div style="float: right;">'+				
-					'<a href="#" class="btn btn-warning " style="text-decoration: none; margin-right: 10px;" >'+						
+	 //los botones dependen del estado de la orden
+	 if(d.stage_id == 1){
+	 	//estado PENDIENTE
+	 	html = html +'<div style="float: right;">'+				
+					'<a href="#"  id = "stage_rechazado" class="btn btn-warning " style="text-decoration: none; margin-right: 10px;" >'+						
 						'<span class="glyphicon glyphicon-remove" aria-hidden="true" style=""></span>'+
 						'<span> Rechazar Pedido</span>'+						
 					'</a>'+
-					'<a href="#" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
+					'<a href="#" id = "stage_aceptado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
 						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
 						'<span> Aceptar Pedido</span>'+						
 					'</a>'+
 				'</div>';
+	 }else{
+	 	if(d.stage_id == 1){
+	 		//ACEPTADO
+	 		html = html +'<div style="float: right;">'+									
+					'<a href="#" id = "stage_finalizado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
+						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
+						'<span> Pedido Entregado</span>'+						
+					'</a>'+
+				'</div>';
+	 	}else{
+	 		if(d.stage_id == 3){
+	 		//RECHAZADO
+	 		html = html +'<div style="float: right;">'+
+					'<a href="#" id = "stage_finalizado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
+						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
+						'<span> Poner Pendiente</span>'+						
+					'</a>'+
+					'<a href="#" id = "stage_finalizado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
+						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
+						'<span> Finalizar Pedido</span>'+						
+					'</a>'+
+				'</div>';
+	 		}
+	 	}
+	 }	  
 
 
 	html = html +'</div>'+		
    		'</div>';
-
 
    	 var html =  html +
     	'<div class="panel panel-default">'+
@@ -320,6 +354,7 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
     	'</div>';
 
 	 return html;
+
 };
 
 var clu_tienda = new clu_tienda();

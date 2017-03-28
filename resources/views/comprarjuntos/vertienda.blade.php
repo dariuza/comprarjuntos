@@ -43,7 +43,13 @@
 	}
 
 	</style>
-	<div class="row" style="margin-top: 5%;">	
+
+	<div class="row visible-lg" style="margin-top: 5%;"></div>
+	<div class="row visible-md" style="margin-top: 7%;"></div>
+	<div class="row visible-sm" style="margin-top: 10%;"></div>
+	<div class="row visible-xs" style="margin-top: 16%;"></div>
+
+	<div class="row">	
 		<div class="alerts col-md-12 col-md-offset-0">
 		<!-- $error llega si la función validator falla en autenticar los datos -->
 			@if (count($errors) > 0)

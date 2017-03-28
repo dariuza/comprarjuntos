@@ -5,6 +5,7 @@ use DateTime;
 use App\Core\ComprarJuntos\Orden;
 use App\Core\ComprarJuntos\Anotacion;
 use App\Core\ComprarJuntos\Detalle;
+use App\Core\ComprarJuntos\Mensaje;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -183,6 +184,7 @@ class WelcomeController extends Controller {
 			$orden->adress_client = $request->input('dir_invitado');
 			$orden->email_client = strtolower($request->input('email_invitado'));
 			$orden->number_client = $request->input('tel_invitado');
+			$orden->client_id = 0;
 			
 		}else{
 			//es usuario del sistema y esta logueado
@@ -217,7 +219,7 @@ class WelcomeController extends Controller {
 		if(count($productos)){
 			//buscamos la tienda y su tendero
 			$tienda = \DB::table('clu_store')
-			->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.movil_number','seg_user_profile.fix_number')
+			->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.movil_number','seg_user_profile.fix_number','seg_user.id as user_id')
 			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.id')	
 			->leftjoin('clu_products', 'clu_store.id', '=', 'clu_products.store_id')			
@@ -286,23 +288,67 @@ class WelcomeController extends Controller {
 
 			$mensage;
 			
-			Mail::send('email.order',$data,function($message) use ($tienda,$orden) {
-				$message->from(Session::get('mail'),Session::get('copy').'-'.$orden->id);
-				$message->to($tienda[0]->email,$tienda[0]->name)->subject('Orden de Pedido.');
-			});
+			//envio de correo al tendero
+			try{
+				Mail::send('email.order',$data,function($message) use ($tienda,$orden) {
+					$message->from(Session::get('mail'),Session::get('copy').' - '.$orden->id);
+					$message->to($tienda[0]->email,$tienda[0]->name)->subject('Orden de Pedido.');
+				});
+			}catch (\Exception  $e) {	
+				$mensage[]='No se logro enviar el correo al Tendero';				
+			}
 
 			//envio de correo a cliente, si falla notificar al tendero en mensage
 			try{
 				Mail::send('email.order_client',$data,function($message) use ($orden) {
-					$message->from(Session::get('mail'),Session::get('copy').'-'.$orden->id);
+					$message->from(Session::get('mail'),Session::get('copy').' - '.$orden->id);
 					$message->to($orden->email_client,$orden->name_client)->subject('Orden de Pedido.');
 				});
 			}catch (\Exception  $e) {	
 				$mensage[]='El correo suministrado no es valido';				
 			}
 
-			//envio a buzon interno de pedido, con estado inicaial, pedido no visto
+			//envio a buzon interno de pedido, a tendero
+			$mensaje = new Mensaje();
+			$mensaje->subject = 'Orden de Pedido';
+			$mensaje->date = $hoy->format('Y-m-d H:i:s');
+			$mensaje->object = 'clu_order';
+			$mensaje->object_id = $orden->id;
+			$mensaje->user_receiver_id = $tienda[0]->user_id;//tendero			
+			$mensaje->user_sender_id = 1;//envia el sistema, super admin			
 
+			$html = '<div>'.
+					'Nueva Orden'.
+					'</div>';
+			$mensaje->body = $html;
+
+			try {				
+				$mensaje->save();	
+			}catch (ModelNotFoundException $e) {				
+				//no hacer nada
+			}
+
+			//envio a buzon interno de pedido, a cliente
+			if($orden->client_id){
+				$mensaje = new Mensaje();
+				$mensaje->subject = 'Orden de Pedido';
+				$mensaje->date = $hoy->format('Y-m-d H:i:s');
+				$mensaje->object = 'clu_order';
+				$mensaje->object_id = $orden->id;
+				$mensaje->user_receiver_id = $orden->client_id;//tendero			
+				$mensaje->user_sender_id = 1;//envia el sistema. superadmin
+
+				$html = '<div>'.
+						'Nueva Orden'.
+						'</div>';
+				$mensaje->body = $html;
+
+				try {				
+					$mensaje->save();	
+				}catch (ModelNotFoundException $e) {				
+					//no hacer nada
+				}
+			}
 
 			//retornar ala tienda con mensajes de ejecuciòn			
 			$mensage[]='El pedido fue enviado con EXITO!, Con Consecutivo: '.$orden->id;
