@@ -37,7 +37,7 @@ class StoreController extends Controller {
 		//no funcionara debido a la ruta de busqueda por url
 	}
 	
-	public function getListar(){	
+	public function getListar(){
 		
 		$moduledata['detalles']=\DB::table('clu_order_detail')
 		->select('clu_order_detail.*')
@@ -671,6 +671,57 @@ class StoreController extends Controller {
 		
 		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['ordenes']]);
 
+	}
+
+	public function postCambioestadoorder(Request $request){
+		//verificamos la orden y la tienda
+		//Tiendas
+
+		try {
+			$orden=\DB::table('clu_order')			
+			->leftjoin('clu_store', 'clu_order.store_id', '=', 'clu_store.id')
+			->where('clu_order.id',$request->input()['id_order'])		
+			->where('clu_store.id',$request->input()['id_store'])			
+			->get();
+			
+			if(!empty($orden)){				
+				$order = Orden::find($request->input()['id_order']);
+
+				//operaciòn
+				$bandera_stage = false;
+				if($request->input()['stage'] == 'aceptado'){
+					$order->stage_id = 2;
+					$order->save();
+					$bandera_stage = true;
+					
+				}
+				if($request->input()['stage'] == 'rechazado'){
+					$order->stage_id = 3;
+					$order->save();
+					$bandera_stage = true;
+					
+				}
+				if($request->input()['stage'] == 'finalizado'){
+					$order->stage_id = 4;
+					$order->save();
+					$bandera_stage = true;
+					
+				}
+
+				if($bandera_stage){
+					//Enviar mensaje a cliente
+					
+					return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>true]);
+				}
+
+				return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>false]);
+			}
+
+
+		}catch (ModelNotFoundException $e) {			
+			return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>false]);
+		}		
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>false]);
 	}
 
 }

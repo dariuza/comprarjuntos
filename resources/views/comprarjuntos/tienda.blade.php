@@ -682,6 +682,8 @@
     {!! Form::open(array('id'=>'form_consult_order','url' => 'mistiendas/consultarorder')) !!}
     {!! Form::close() !!}
 
+    {!! Form::open(array('id'=>'form_stage_order','url' => 'mistiendas/cambioestadoorder')) !!}
+    {!! Form::close() !!}
 
 @endsection
 @section('script')

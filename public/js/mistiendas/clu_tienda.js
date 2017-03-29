@@ -212,13 +212,14 @@ clu_tienda.prototype.consultaRespuestaOrders = function(result) {
 clu_tienda.prototype.consultaRespuestaOrder = function(result) {
 	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request ,result.data)).show();
 	//OPCIONES DE PEDIDO DE ORDEN
-	$('#stage_rechazado').on('click', function (e) {
-		alert('Alert');
-	});
+	$('.stage_cambio').on('click', function (e) {
+		var datos = new Array();
+		datos['stage'] = this.id.split('_')[1];
+		datos['id_order'] = this.id.split('_')[2];
+		datos['id_store'] = this.id.split('_')[3];
+		seg_ajaxobject.peticionajax($('#form_stage_order').attr('action'),datos,"clu_tienda.cambiarRespuestaOrden");
 
-	$('#stage_aceptado').on('click', function (e) {
-		alert('Aceptado');
-	});
+	});	
 };
 
 clu_tienda.prototype.formatorder= function(d,r,data) {
@@ -300,38 +301,27 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
 	 if(d.stage_id == 1){
 	 	//estado PENDIENTE
 	 	html = html +'<div style="float: right;">'+				
-					'<a href="#"  id = "stage_rechazado" class="btn btn-warning " style="text-decoration: none; margin-right: 10px;" >'+						
+					'<a href="#"  id = "stage_rechazado_'+d.id+'_'+r.id_tienda+'" class="btn btn-warning stage_cambio" style="text-decoration: none; margin-right: 10px;" >'+						
 						'<span class="glyphicon glyphicon-remove" aria-hidden="true" style=""></span>'+
 						'<span> Rechazar Pedido</span>'+						
 					'</a>'+
-					'<a href="#" id = "stage_aceptado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
+					'<a href="#" id = "stage_aceptado_'+d.id+'_'+r.id_tienda+'" class="btn btn-success stage_cambio" style="text-decoration: none; margin-right: 10px;">'+						
 						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
 						'<span> Aceptar Pedido</span>'+						
 					'</a>'+
 				'</div>';
 	 }else{
-	 	if(d.stage_id == 1){
+	 	if(d.stage_id == 2){
 	 		//ACEPTADO
 	 		html = html +'<div style="float: right;">'+									
-					'<a href="#" id = "stage_finalizado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
+					'<a href="#" id = "stage_finalizado_'+d.id+'_'+r.id_tienda+'" class="btn btn-success stage_cambio" style="text-decoration: none; margin-right: 10px;">'+						
 						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
 						'<span> Pedido Entregado</span>'+						
 					'</a>'+
 				'</div>';
 	 	}else{
-	 		if(d.stage_id == 3){
-	 		//RECHAZADO
-	 		html = html +'<div style="float: right;">'+
-					'<a href="#" id = "stage_finalizado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
-						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
-						'<span> Poner Pendiente</span>'+						
-					'</a>'+
-					'<a href="#" id = "stage_finalizado" class="btn btn-success " style="text-decoration: none; margin-right: 10px;">'+						
-						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
-						'<span> Finalizar Pedido</span>'+						
-					'</a>'+
-				'</div>';
-	 		}
+	 		//
+	 		RECHAZADO
 	 	}
 	 }	  
 
@@ -354,7 +344,10 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
     	'</div>';
 
 	 return html;
+};
 
+clu_tienda.prototype.cambiarRespuestaOrden = function(result) {
+	alert('OK');
 };
 
 var clu_tienda = new clu_tienda();
