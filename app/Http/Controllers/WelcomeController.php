@@ -2,6 +2,7 @@
 
 use Mail;
 use DateTime;
+use Auth;
 use App\Core\ComprarJuntos\Orden;
 use App\Core\ComprarJuntos\Anotacion;
 use App\Core\ComprarJuntos\Detalle;
@@ -42,6 +43,7 @@ class WelcomeController extends Controller {
 		
 		if(!empty($request->input())){
 			//si es el finder es el buscador inicial
+			dd($request->input());			
 			if(array_key_exists('finder',$request->input())){
 				return redirect('/'.$request->input('finder'));
 			}
@@ -136,6 +138,7 @@ class WelcomeController extends Controller {
 	//Este es el metodo que controla el buscador principal
 	public function getFind($data = null){
 		//BUSQUEDA DE TIENDA PRODUCTO O CATEGORIA
+		
 		//Primero miramos si coincide con el nombre de una tienda
 		$moduledata['tienda'] = \DB::table('clu_store')
 		->select('clu_store.*','seg_user.name as user_name')
@@ -160,6 +163,27 @@ class WelcomeController extends Controller {
 		}
 
 		return $data;
+	}
+
+	public function getModal($data = null, $metadata = null){		
+		if($data == 'modalregistro' ){
+			Session::flash('modal', 'modalregistro');
+		}
+		if($data == 'modalorden' ){
+			//aqui usamos los datos y los metadatos par desplegar la orden
+			//preguntamos si se halla logueado el usuario
+			if (Auth::guest()) {
+			 	//es un invitado, primero debe loguearce
+			 	Session::flash('modal', 'modallogin');
+			 	Session::flash('orden_id', $metadata);			 				 	
+			}else{
+				//puede ir directamente hasta la orden de pedido
+				Session::flash('orden_id', $metadata);			 	
+				return Redirect::to('/mistiendas/listar');
+				
+			}			
+		}
+		return redirect('/');
 	}
 
 	//este motodo es para retornar datos para mostar el modal
@@ -281,6 +305,7 @@ class WelcomeController extends Controller {
 			$data['adress_client'] = $orden->adress_client;
 			$data['email_client'] = $orden->email_client;
 			$data['number_client'] = $orden->number_client;
+			$data['id_client'] = $orden->client_id;
 
 			$data['order_description'] = $request->input('description');
 

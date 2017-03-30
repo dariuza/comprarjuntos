@@ -98,10 +98,17 @@
 						<div>Sugerencias del Cliente</div>
 						<div>{{$order_description}}</div>
 					@endif
+					
 				</div>
 
-				<div class="panel-footer" style="text-align: center;padding: 15px;font-size: 15px;border-top: 1px solid #e5e5e5;background: #dddddd;color: cadetblue;">
-					<a href = "{{url('/'.$tienda)}}"> ComprarJuntos -{{$tienda}} </a>
+				<div class="panel-footer" style="text-align: center;padding: 15px;font-size: 15px;border-top: 1px solid #e5e5e5;background: #dddddd;color: cadetblue;">					
+					<a href = "{{url('/'.$tienda)}}"> ComprarJuntos - {{$tienda}} </a>
+					@if(!$id_client)						
+						<div style="margin-top: 10px;">
+							<b>Te invitamos para que hagas parte de esta maravillosa comunidad que es ComprarJuntos. </b>
+							<a href = "{{url('/modal',['modalregistro'=>'modalregistro','meta'=>'meta'])}}"> Registrate AQUI!!</a>
+						</div>
+					@endif
 				</div>
 			</div>			
 		</div>		

@@ -775,6 +775,20 @@
 			</script>
 		@endif		
 	@endif
+	<!-- Modals -->
+	@if(Session::has('modal'))
+		@if(Session::get('modal') == 'modalregistro')
+			<script> $("#registry_modal").modal(); </script>
+		@endif
+		@if(Session::get('modal') == 'modallogin')
+			<script> 
+				$("#login_modal").modal(); 
+				$('#login_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button>Luego de ingresar, se mostrara en pantalla el pedido solicitado.</div>');
+			</script>			
+			{{Session::flash('orden_id', Session::get('orden_id'))}}
+		@endif
+	@endif	
+
 	<script type="text/javascript">  
 		$('#fecha_nacimiento').datepicker({
 			format: "yyyy-mm-dd",

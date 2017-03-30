@@ -686,6 +686,7 @@
     {!! Form::close() !!}
 
 @endsection
+
 @section('script')
 	<script type="text/javascript" src="{{ url('js/bootstrap-colorpicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
@@ -955,7 +956,17 @@
 			$('#tallas_select').val([]).trigger("chosen:updated");
 			$('#sabores_select').val([]).trigger("chosen:updated");
 			$('#materiales_select').val([]).trigger("chosen:updated");
-		 });
+		});
+
+		$('#productos_modal').on('hidden.bs.modal', function () {
+			 clu_tienda.table_products.destroy();
+			 $('#table_prods tbody').off('click');
+		});
+
+		$('#odenes_modal').on('hidden.bs.modal', function () {
+			 clu_tienda.table_products.destroy();
+			 $('#table_prods tbody').off('click');
+		});
 
 	</script>
 	@if(old('edit'))		
@@ -1062,4 +1073,102 @@
 		@endif		
 	@endif
 
+	@if(Session::has('orden_id'))
+		{{Session::flash('orden_id', Session::get('orden_id'))}}
+		<script type="text/javascript">
+
+			var datos = new Array();
+			datos['id'] = "{!!Session::get('modulo.tienda_orden.0')->id!!}";
+			datos['name'] = "{!!Session::get('modulo.tienda_orden.0')->name!!}";			
+			seg_ajaxobject.peticionajax($('#form_consult_orders').attr('action'),datos,"clu_tienda.consultaRespuestaOrders",false);
+
+			//llamado sincrono, para cambiar el id de tienda
+		    //la otra opciòn es retardar el listado de las los pedidos
+
+		    javascript:clu_tienda.table_orders = $('#table_orders').DataTable({
+		    	"responsive": true,
+			    "columnDefs": [
+			        { responsivePriority: 1, targets: 0 },
+			        { responsivePriority: 2, targets: 0 },
+			        { responsivePriority: 7, targets: 0 }
+	    		],
+			    "processing": true,
+			    "bLengthChange": false,
+			    "serverSide": true,
+			    "bDestroy": true,      
+			    "ajax": "{{url('mistiendas/listarajaxorders')}}",
+			    "iDisplayLength": 25,     	       
+			    "columns": [
+			    	{
+		                "className":      'details-control',
+		                "orderable":      false,
+		                "data":           null,
+		                "defaultContent": ''
+		            },		   
+					{ "data": "id"},
+					{ "data": "date"},		        
+					{ "data": "name_client"},  	    
+			        { "data": "adress_client"},
+			        { "data": "email_client"},
+			        { "data": "number_client"},
+			        { "data": "stage_id",render: function ( data, type, row ) {
+			        		if (data == 1) {
+			                    return 'PENDIENTE';
+		                    }
+		                    if (data == 2) {
+			                    return 'ACEPTADO';
+		                    }
+		                    if (data == 3) {
+			                    return 'RECHAZADO';
+		                    }
+		                    if (data == 4) {
+			                    return 'FINALIZADO';
+		                    }
+			        	}
+			    	}               
+			    ],       
+			    "language": {
+			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+			    },
+		    });
+
+		    @if(Session::has('orden_id'))
+				clu_tienda.table_orders.search( "Orden_{!!Session::get('orden_id')!!}" ).draw();				
+			@endif	
+
+		    //metodo para la tabla
+			$('#table_orders tbody').on('click', 'td.details-control', function () {
+
+				//cerramos el div anterior
+				if(clu_tienda.tr != undefined){
+					if(clu_tienda.row.data().id != clu_tienda.table_orders.row($(this).closest('tr')).data().id){
+						clu_tienda.row.child.hide();
+		        		clu_tienda.tr.removeClass('shown');
+					}					
+				}				
+
+		        clu_tienda.tr = $(this).closest('tr');
+		        clu_tienda.row = clu_tienda.table_orders.row( clu_tienda.tr );
+		 		
+		        if ( clu_tienda.row.child.isShown() ) {
+		            // la fila esta abierta
+		            clu_tienda.row.child.hide();
+		            clu_tienda.tr.removeClass('shown');
+		        }
+		        else {
+		            //la fila esta cerrada
+		            //llamado asincrono datos de producto
+		            var datos = new Array();
+		            datos['id_order'] = clu_tienda.row.data().id;
+		            datos['id_tienda'] = clu_tienda.row.data().store_id;
+		            datos['url'] = "{{url('/')}}";
+					datos['usuario'] = "{{Session::get('comjunplus.usuario.name')}}";
+		            seg_ajaxobject.peticionajax($('#form_consult_order').attr('action'),datos,"clu_tienda.consultaRespuestaOrder");
+		            clu_tienda.tr.addClass('shown');
+		        }
+				
+			});
+		</script>			
+	@endif
+	
 @endsection

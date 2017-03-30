@@ -37,6 +37,11 @@ Route::get('cambiarcontraseña/',[
 	'as' => 'changepasword'
 ]);
 
+Route::get('modal/{data}/{metadata}',[
+	'uses' => 'WelcomeController@getModal',
+	'as' => 'home'
+]);
+
 Route::get('/{data}',[
 	'uses' => 'WelcomeController@getFind',
 	'as' => 'search'

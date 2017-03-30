@@ -256,14 +256,23 @@ class LoginController extends Controller
 					
 					//retornamos al index que debe pintar con la nueva imformacion					
 					//return Redirect::route('home')->with('message', $message );
+
+					//consulta de orden desde correo electronico
+					if(Session::has('orden_id')){						
+						//redirigir a mistiendas y mostrar el modal con la orden solicitada
+						Session::flash('orden_id', Session::get('orden_id'));			 	
+						return Redirect::to('/mistiendas/listar')->with('message', $message);
+					}
+
 					return Redirect::to('/')->with('message', $message);
 					
 				}else{
-					//el usuario ya est autenticado
+					//el usuario ya est autenticado					
 					return Redirect::route('home');
 				}
 			}
-    	}    	
+    	}
+    	
     	return Redirect::route('home');
     }
     

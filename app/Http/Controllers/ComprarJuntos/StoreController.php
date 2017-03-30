@@ -57,7 +57,7 @@ class StoreController extends Controller {
 
 		//calculo de datos para desplegar las tiendas del usuario
 		$moduledata = array();	
-		//Controlador para opciones
+		//Controlador para opciones, para el nuevo modelo para que sepa que pintar
 		Session::flash('controlador', '/mistiendas/');
 
 		//consultamos los Departamentos los selects
@@ -102,7 +102,24 @@ class StoreController extends Controller {
 		foreach ($categories as $categoria){
 			$categorias[$categoria['id']] = $categoria['name'];
 		}
-		$moduledata['categorias']=$categorias;		
+		$moduledata['categorias']=$categorias;
+
+		if(Session::has('orden_id')){						
+			//consultamos la tienda de la orden
+			try {
+				$moduledata['tienda_orden']=\DB::table('clu_store')
+				->select('clu_store.*')
+				->leftjoin('clu_order', 'clu_store.id', '=', 'clu_order.store_id')
+				->where('clu_order.id',Session::get('orden_id'))						
+				->get();
+			}catch (ModelNotFoundException $e) {
+				$message = ['Problemas al hallar datos de la tienda'];
+				return Redirect::to('mistiendas/inicio')->with('modulo',$moduledata)->with('error', $message);
+			}
+			Session::flash('orden_id', Session::get('orden_id'));			 				
+		}
+
+		//VERIFICACIÒN DE MENSAJES		
 
 		//verificacion de mensajes de error
 		if(Session::get('error')){			
@@ -609,12 +626,6 @@ class StoreController extends Controller {
 		}			
 			
 	}
-	public function postConsultarorders(Request $request){
-		//antes de enviar, asignamos el id de tienda par el listarajax
-		Session::put('store.id', $request->input('id'));
-		Session::put('store.name', $request->input('name'));
-		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
-	}
 
 	public function postConsultarorder(Request $request){
 		//consultamos, los detalles y las entradas del foro
@@ -632,7 +643,16 @@ class StoreController extends Controller {
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
 	}
 
-	//LISTAR LOS PRODUCTOS
+	public function postConsultarorders(Request $request){
+		//antes de enviar, asignamos el id de tienda par el listarajax
+		Session::put('store.id', $request->input('id'));
+		Session::put('store.name', $request->input('name'));
+		//para la consulta de orden por email
+		//if(Session::has('orden_id'))Session::flash('orden_id', Session::get('orden_id'));
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
+	}
+
+	//LISTAR LAS ORDENES
 	public function getListarajaxorders(Request $request){
 		//Tienda id
 		if(empty(Session::get('store.id'))){
@@ -650,14 +670,22 @@ class StoreController extends Controller {
 			select('clu_order.*')			
 			->where('clu_order.store_id',Session::get('store.id'))		
 			->where(function ($query) {
-				$query->where('clu_order.id', 'like', '%'.Session::get('search').'%')
-				->orWhere('clu_order.name_client', 'like', '%'.Session::get('search').'%')
-				->orWhere('clu_order.number_client', 'like', '%'.Session::get('search').'%');								
+								
+				if(strpos(Session::get('search'),'Orden_') !== false){
+					//solo consultamos por orden, para la consulta desde correo electronico
+					//$query->where('clu_order.id', 'like', Session::get('search'));
+					$query->where('clu_order.id', str_replace('Orden_','', Session::get('search')));					
+				}else{
+					$query->where('clu_order.id', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_order.name_client', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_order.number_client', 'like', '%'.Session::get('search').'%');
+				}
+												
 			})
 			->skip($request->input('start'))->take($request->input('length'))
 			->orderBy('id', 'desc')
 			->get();		
-			$moduledata['filtro'] = count($moduledata['ordenes']);
+			$moduledata['filtro'] = count($moduledata['ordenes']);			
 		}else{			
 			$moduledata['ordenes']=\DB::table('clu_order')
 			->select('clu_order.*')
