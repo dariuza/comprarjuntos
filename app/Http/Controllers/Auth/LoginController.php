@@ -69,6 +69,11 @@ class LoginController extends Controller
 			
 			if ($validator->fails()) {
 				//el redirect puede redirigir a route, to, back, url
+				if(Session::has('orden_id')){
+					//hubo un error de logion al intentar acceder a la ordenasi que se intenta nuevamente
+					Session::flash('modal', 'modallogin');
+ 					Session::flash('orden_id', Session::get('orden_id'));
+				}						
 				return Redirect::to('/')->withErrors($validator)->withInput();
 			}else{
 				//preguntamos si el usuario no esta autenticado
@@ -91,9 +96,19 @@ class LoginController extends Controller
 								'active'  => 1
 							);
 							if (!$this->auth->attempt($userdata)){
+								if(Session::has('orden_id')){
+									//hubo un error de logion al intentar acceder a la ordenasi que se intenta nuevamente
+									Session::flash('modal', 'modallogin');
+				 					Session::flash('orden_id', Session::get('orden_id'));
+								}						
 								return Redirect::to('/')->withErrors(['Usuario o contraseña invalidos.'])->withInput();
 							}
 						}else{
+							if(Session::has('orden_id')){
+								//hubo un error de logion al intentar acceder a la ordenasi que se intenta nuevamente
+								Session::flash('modal', 'modallogin');
+			 					Session::flash('orden_id', Session::get('orden_id'));
+							}
 							//el redirect puede redirigir a route, to, back, url
 							return Redirect::to('/')->withErrors(['Datos invalidos, comunicate con el administrador','Recuerda que tu correo electrónico tambien funciona como usuario para ingresar a ComprarJuntos.'])->withInput();
 						}
