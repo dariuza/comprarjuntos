@@ -493,7 +493,7 @@ seg_user.prototype.openModalCart = function(result) {
             cantidad.setAttribute("type", "number");
             cantidad.setAttribute("min", "0");
             cantidad.className = "form-control solo_numeros volumen_cart";
-            cantidad.setAttribute("id", "volumen_cart");
+            cantidad.setAttribute("id", "volumen_cart_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
             cantidad.setAttribute("name", "prod_volume_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
             cantidad.value = seg_user.cart_products[i][2];
             volumen.appendChild(cantidad);
@@ -501,7 +501,7 @@ seg_user.prototype.openModalCart = function(result) {
             total = document.createElement("div");
             total.className = "col-md-2";
             total.style.marginTop = "2%";    
-            total.setAttribute("id", "total_"+seg_user.cart_products[i][0]);
+            total.setAttribute("id", "total_"+seg_user.cart_products[i][0]+"_"+seg_user.cart_contador);
             total.innerHTML = "$"+( parseInt(seg_user.cart_products[i][1]) * parseInt(seg_user.cart_products[i][2]) );
 
             boton = document.createElement("button");
@@ -642,10 +642,13 @@ seg_user.prototype.openModalCart = function(result) {
             }else{
                 cantidad = this.value;
             }
+             var j = -1;//para halalr los datos del producto
            for(var i=0;i<seg_user.cart_products.length;i++){
                 if(seg_user.cart_products[i][10] == this.name.split('_')[3])
                 {                
                    seg_user.cart_products[i][2] = cantidad;
+                   j=i;
+                   break;
                 }
             }
 
@@ -658,6 +661,9 @@ seg_user.prototype.openModalCart = function(result) {
             }
             $('#cantidad_cart').html(cantidad_total);
             $('#precio_total').html("$"+precio_total);
+
+            //cambiamos el total de la fila
+            $('#total_'+this.name.split('_')[2]+'_'+this.name.split('_')[3]).text((parseInt(seg_user.cart_products[j][1]) * parseInt(seg_user.cart_products[j][2]) ));
             
         });
 
@@ -667,10 +673,13 @@ seg_user.prototype.openModalCart = function(result) {
             }else{
                 cantidad = this.value;
             }
+            var j = -1;//para halalr los datos del producto
            for(var i=0;i<seg_user.cart_products.length;i++){
                 if(seg_user.cart_products[i][10] == this.name.split('_')[3])
                 {                
                    seg_user.cart_products[i][2] = cantidad;
+                    j=i;
+                    break;
                 }
             }
 
@@ -683,6 +692,9 @@ seg_user.prototype.openModalCart = function(result) {
             }
             $('#cantidad_cart').html(cantidad_total);
             $('#precio_total').html("$"+precio_total);
+
+            //cambiamos el total de la fila
+            $('#total_'+this.name.split('_')[2]+'_'+this.name.split('_')[3]).text((parseInt(seg_user.cart_products[j][1]) * parseInt(seg_user.cart_products[j][2]) ));
             
         });
         

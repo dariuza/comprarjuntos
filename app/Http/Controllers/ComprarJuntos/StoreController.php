@@ -732,13 +732,15 @@ class StoreController extends Controller {
 				if($request->input()['stage'] == 'finalizado'){
 					$order->stage_id = 4;
 					$order->save();
-					$bandera_stage = true;
-					
+					$bandera_stage = true;					
 				}
 
 				if($bandera_stage){
 					//Enviar mensaje a cliente
+
 					
+
+
 					return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>true]);
 				}
 

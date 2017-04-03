@@ -97,7 +97,7 @@
 						</table>
 					</div>
 					@if($order_description != '')
-						<div>Sugerencias del Cliente</div>
+						<div>Sugerencias.</div>
 						<div>{{$order_description}}</div>
 					@endif
 					

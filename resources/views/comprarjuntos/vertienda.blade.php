@@ -157,7 +157,7 @@
 				<div class="panel panel-default">					
 					<div class="panel-body">
 				    	<div class="row">
-				    		<div class="col-md-12">				    			
+				    		<div class="col-md-12 option_add_product" id ="{{$producto->name}}_{{$producto->id}}">				    			
 			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 175px;border-radius: 0%;' ))}}				    							    			
 				    		</div>
 
