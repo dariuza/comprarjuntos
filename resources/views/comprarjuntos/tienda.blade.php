@@ -964,8 +964,8 @@
 		});
 
 		$('#odenes_modal').on('hidden.bs.modal', function () {
-			 clu_tienda.table_products.destroy();
-			 $('#table_prods tbody').off('click');
+			 clu_tienda.table_orders.destroy();
+			 $('#table_orders tbody').off('click');
 		});
 
 	</script>

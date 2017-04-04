@@ -5,6 +5,7 @@ use App\Core\ComprarJuntos\Producto;
 use App\Core\ComprarJuntos\Categoria;
 use App\Core\ComprarJuntos\Orden;
 use Validator;
+use Mail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -38,7 +39,7 @@ class StoreController extends Controller {
 	}
 	
 	public function getListar(){
-		
+
 		$moduledata['detalles']=\DB::table('clu_order_detail')
 		->select('clu_order_detail.*')
 		->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')
@@ -701,6 +702,7 @@ class StoreController extends Controller {
 
 	}
 
+	//funciòn paara cambiar de estado a las ordenes
 	public function postCambioestadoorder(Request $request){
 		//verificamos la orden y la tienda
 		//Tiendas
@@ -719,27 +721,66 @@ class StoreController extends Controller {
 				$bandera_stage = false;
 				if($request->input()['stage'] == 'aceptado'){
 					$order->stage_id = 2;
-					$order->save();
+					//$order->save();
 					$bandera_stage = true;
 					
 				}
 				if($request->input()['stage'] == 'rechazado'){
 					$order->stage_id = 3;
-					$order->save();
+					//$order->save();
 					$bandera_stage = true;
 					
 				}
 				if($request->input()['stage'] == 'finalizado'){
 					$order->stage_id = 4;
-					$order->save();
+					//$order->save();
 					$bandera_stage = true;					
 				}
 
 				if($bandera_stage){
-					//Enviar mensaje a cliente
+
+					//ENVIAR MENSAJE A CLIENTE
+					//consultamos la tienda
+					$tienda = \DB::table('clu_store')
+					->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.movil_number','seg_user_profile.fix_number','seg_user.id as user_id')
+					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')								
+					->where('clu_store.id',$request->input()['id_store'])
+					->get();
+
+					//consultamos la orden
+					$orden = \DB::table('clu_order')
+					//->leftjoin('clu_order_detail', 'clu_order.id', '=', 'clu_order_detail.order_id')
+					->where('clu_order.id',$request->input()['id_order'])
+					->get();
+
+					//consultamos los detalles
+					$detalles = \DB::table('clu_order')
+					->select('clu_order_detail.*')
+					->leftjoin('clu_order_detail', 'clu_order.id', '=', 'clu_order_detail.order_id')
+					->where('clu_order.id',$request->input()['id_order'])
+					->get();
+
+
+					$data = Array();
+					$data['tienda'] = $tienda[0]->name;
+					$data['orden_id'] = $request->input()['id_order'];
+					$data['email'] = $tienda[0]->email;
+					$data['direccion_tienda'] = $tienda[0]->city.' - '.$tienda[0]->adress;
+					$data['ciudad_tienda'] = $tienda[0]->city;
+					$data['telefono_tienda'] = $tienda[0]->movil_number.' - '.$tienda[0]->fix_number;
+					$data['imagen'] = 'users/'.$tienda[0]->uname.'/stores/'.$tienda[0]->image;
 
 					
-
+					try{
+						Mail::send('email.order_change',$data,function($message) use ($orden) {
+							$message->from(Session::get('mail'),Session::get('copy').' - '.$orden[0]->id);
+							$message->to($orden[0]->email_client,$orden[0]->name_client)->subject('Orden de Pedido.');
+						});
+					}catch (\Exception  $e) {	
+						return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$e->getMessage()]);
+					}
+					
 
 					return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>true]);
 				}
