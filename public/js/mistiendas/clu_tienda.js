@@ -321,7 +321,7 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
 				'</div>';
 	 	}else{
 	 		//
-	 		RECHAZADO
+	 		//RECHAZADO
 	 	}
 	 }	  
 

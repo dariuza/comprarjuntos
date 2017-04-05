@@ -48,15 +48,15 @@
 	<body>
 		<div class="container-fluid">			
 			<div class="panel panel-default" style="width: 65%;margin: auto;border-radius: 6px;font-family: 'Dosis', sans-serif;font-size: 18px;line-height: 1.42857143;color: #333;box-shadow: 0 5px 15px rgba(0,0,0,.5);border: 1px solid rgba(0,0,0,.2);">
-				<div class="panel-heading" style="padding: 15px;border-bottom: 1px solid #e5e5e5;background: #dddddd;">{{ strtoupper($tienda) }} te Informa</div>
+				<div class="panel-heading" style="padding: 15px;border-bottom: 1px solid #e5e5e5;background: #dddddd;">{{ ucwords($tienda) }} Te Informa</div>
 				<div class="panel-body" style="padding: 15px;font-size: 16px;">
 					<div style="float: right;margin-right: 5%;">
 						<img src="{{url('/'.$imagen)}}" alt="Imagen Tienda" style="width: 70%;">
 					</div>
 					<div>Una nueva Orden de Pedido ha llegado a tu tienda.</div>
 					<div>Nùmero de Orden :{{ $orden_id }}</div>					
-					<ul>
-						<div>DATOS DEL CLIENTE</div>
+					<div>DATOS DEL CLIENTE</div>
+					<ul>						
 						<li>Nombre: {{$nombre_cliente}}</li>
 						<li>Dirección: {{$adress_client}}</li>
 						<li>Correo Electrónico: {{$email_client}}</li>

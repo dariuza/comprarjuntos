@@ -243,7 +243,7 @@ class WelcomeController extends Controller {
 		if(count($productos)){
 			//buscamos la tienda y su tendero
 			$tienda = \DB::table('clu_store')
-			->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.movil_number','seg_user_profile.fix_number','seg_user.id as user_id')
+			->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.names as nombres_tendero','seg_user_profile.surnames as apellidos_tendero','seg_user_profile.movil_number','seg_user_profile.fix_number','seg_user.id as user_id')
 			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')	
 			->leftjoin('clu_products', 'clu_store.id', '=', 'clu_products.store_id')			
@@ -300,6 +300,9 @@ class WelcomeController extends Controller {
 			$data['ciudad_tienda'] = $tienda[0]->city;
 			$data['telefono_tienda'] = $tienda[0]->movil_number.' - '.$tienda[0]->fix_number;
 			$data['imagen'] = 'users/'.$tienda[0]->uname.'/stores/'.$tienda[0]->image;		
+
+			$data['nombres_tendero'] =  $tienda[0]->nombres_tendero;
+			$data['apellidos_tendero'] = $tienda[0]->apellidos_tendero;
 
 			$data['nombre_cliente'] = $orden->name_client;
 			$data['adress_client'] = $orden->adress_client;

@@ -713,6 +713,8 @@ class StoreController extends Controller {
 			->where('clu_order.id',$request->input()['id_order'])		
 			->where('clu_store.id',$request->input()['id_store'])			
 			->get();
+
+			$estado = ''; 
 			
 			if(!empty($orden)){				
 				$order = Orden::find($request->input()['id_order']);
@@ -721,19 +723,22 @@ class StoreController extends Controller {
 				$bandera_stage = false;
 				if($request->input()['stage'] == 'aceptado'){
 					$order->stage_id = 2;
-					//$order->save();
+					$order->save();
+					$estado = 'ACEPTADA';
 					$bandera_stage = true;
 					
 				}
 				if($request->input()['stage'] == 'rechazado'){
 					$order->stage_id = 3;
-					//$order->save();
+					$order->save();
+					$estado = 'RECHAZADA';
 					$bandera_stage = true;
 					
 				}
 				if($request->input()['stage'] == 'finalizado'){
 					$order->stage_id = 4;
-					//$order->save();
+					$order->save();
+					$estado = 'ETREGADO';
 					$bandera_stage = true;					
 				}
 
@@ -742,7 +747,7 @@ class StoreController extends Controller {
 					//ENVIAR MENSAJE A CLIENTE
 					//consultamos la tienda
 					$tienda = \DB::table('clu_store')
-					->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.movil_number','seg_user_profile.fix_number','seg_user.id as user_id')
+					->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.names as nombres_tendero','seg_user_profile.surnames as apellidos_tendero','seg_user_profile.movil_number','seg_user_profile.fix_number','seg_user.id as user_id')
 					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')								
 					->where('clu_store.id',$request->input()['id_store'])
@@ -761,8 +766,13 @@ class StoreController extends Controller {
 					->where('clu_order.id',$request->input()['id_order'])
 					->get();
 
+					//anotaciones
+					$anotaciones = \DB::table('clu_order_annotation')
+					->where('clu_order_annotation.order_id',$request->input()['id_order'])
+					->get();
 
-					$data = Array();
+
+					$data = Array();					
 					$data['tienda'] = $tienda[0]->name;
 					$data['orden_id'] = $request->input()['id_order'];
 					$data['email'] = $tienda[0]->email;
@@ -770,6 +780,18 @@ class StoreController extends Controller {
 					$data['ciudad_tienda'] = $tienda[0]->city;
 					$data['telefono_tienda'] = $tienda[0]->movil_number.' - '.$tienda[0]->fix_number;
 					$data['imagen'] = 'users/'.$tienda[0]->uname.'/stores/'.$tienda[0]->image;
+
+					$data['estado'] = $estado;
+
+					$data['nombres_tendero'] =  $tienda[0]->nombres_tendero;
+					$data['apellidos_tendero'] = $tienda[0]->apellidos_tendero;					
+
+					$data['url'] = $request->url();
+
+					$data['detalles'] = $detalles;
+					$data['anotaciones'] = $anotaciones;
+
+					$data['id_client'] = $orden[0]->client_id;
 
 					
 					try{
