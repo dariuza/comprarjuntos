@@ -691,6 +691,7 @@
 	<script type="text/javascript" src="{{ url('js/bootstrap-colorpicker.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url('js/bootstrap-filestyle.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url('js/spin.min.js') }}"></script>
 	<script type="text/javascript">
 		//cambio de municipio ante el cambio del departamento
 		$( "#departamento" ).change(function() {
@@ -740,7 +741,7 @@
 			    "serverSide": true,
 			    "bDestroy": true,      
 			    "ajax": "{{url('mistiendas/listarajax')}}",
-			    "iDisplayLength": 25,     	       
+			    "iDisplayLength": 15,     	       
 			    "columns": [
 			    	{
 		                "className":      'details-control',
@@ -819,7 +820,7 @@
 			    "serverSide": true,
 			    "bDestroy": true,      
 			    "ajax": "{{url('mistiendas/listarajaxorders')}}",
-			    "iDisplayLength": 25,     	       
+			    "iDisplayLength": 15,     	       
 			    "columns": [
 			    	{
 		                "className":      'details-control',
@@ -1012,7 +1013,7 @@
 				    "serverSide": true,
 				    "bDestroy": true,      
 				    "ajax": "{{url('mistiendas/listarajax')}}",
-				    "iDisplayLength": 25,     	       
+				    "iDisplayLength": 15,     	       
 				    "columns": [
 				    	{
 			                "className":      'details-control',
@@ -1097,7 +1098,7 @@
 			    "serverSide": true,
 			    "bDestroy": true,      
 			    "ajax": "{{url('mistiendas/listarajaxorders')}}",
-			    "iDisplayLength": 25,     	       
+			    "iDisplayLength": 15,     	       
 			    "columns": [
 			    	{
 		                "className":      'details-control',
@@ -1166,7 +1167,6 @@
 		            seg_ajaxobject.peticionajax($('#form_consult_order').attr('action'),datos,"clu_tienda.consultaRespuestaOrder");
 		            clu_tienda.tr.addClass('shown');
 		        }
-				
 			});
 		</script>			
 	@endif

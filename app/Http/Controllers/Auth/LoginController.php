@@ -191,10 +191,12 @@ class LoginController extends Controller
 					$permits = $pmts;
 					
 					foreach ($permits as $value){
+											
 						if(!(key_exists($value['modules']['app_id'], $permisos))){
+							//se crea el array para permisos de aplicaciòn
 							$permisos[$value['modules']['app_id']]['modulos'] = array();
 					
-							if(!(key_exists($value['modules']['app_id']['aplicacion'], $permisos))){
+							//if(!(key_exists($value['modules']['app_id']['aplicacion'], $permisos))){								
 								foreach ($aplicaciones as $app){
 									if($value['modules']['app_id'] == $app['id']){
 										$permisos[$value['modules']['app_id']]['aplicacion'] = $app['app'];
@@ -202,7 +204,8 @@ class LoginController extends Controller
 										$permisos[$value['modules']['app_id']]['preferencias'] = $app['preferences'];
 									}
 								}
-							}
+							//}
+							
 						}
 						if(!(key_exists($value['module_id'], $permisos[$value['modules']['app_id']]['modulos']))){
 							$permisos[$value['modules']['app_id']]['modulos'][json_decode($value['modules']['preference'])->categoria][$value['module_id']] = array();

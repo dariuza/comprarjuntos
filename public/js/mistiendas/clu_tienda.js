@@ -219,6 +219,34 @@ clu_tienda.prototype.consultaRespuestaOrder = function(result) {
 		datos['id_store'] = this.id.split('_')[3];
 		seg_ajaxobject.peticionajax($('#form_stage_order').attr('action'),datos,"clu_tienda.cambiarRespuestaOrden");
 
+		//loading
+		var opts = {
+			  lines: 13 // The number of lines to draw
+			, length: 41 // The length of each line
+			, width: 10 // The line thickness
+			, radius: 56 // The radius of the inner circle
+			, scale: 1 // Scales overall size of the spinner
+			, corners: 1 // Corner roundness (0..1)
+			, color: '#000' // #rgb or #rrggbb or array of colors
+			, opacity: 0.25 // Opacity of the lines
+			, rotate: 0 // The rotation offset
+			, direction: 1 // 1: clockwise, -1: counterclockwise
+			, speed: 1 // Rounds per second
+			, trail: 60 // Afterglow percentage
+			, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+			, zIndex: 2e9 // The z-index (defaults to 2000000000)
+			, className: 'spinner' // The CSS class to assign to the spinner
+			, top: '50%' // Top position relative to parent
+			, left: '50%' // Left position relative to parent
+			, shadow: false // Whether to render a shadow
+			, hwaccel: false // Whether to use hardware acceleration
+			, position: 'absolute' // Element positioning
+		}
+
+		target = document.getElementById('odenes_modal');
+		clu_tienda.spinner = new Spinner(opts).spin(target);
+
+
 	});	
 };
 
@@ -346,8 +374,10 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
 	 return html;
 };
 
-clu_tienda.prototype.cambiarRespuestaOrden = function(result) {
-	alert('OK');
+clu_tienda.prototype.cambiarRespuestaOrden = function(result) {	
+	clu_tienda.table_orders.ajax.reload();
+	clu_tienda.spinner.el.remove();
+	$('#odenes_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La Orden ha sido actualizada correctamente!</strong></br> Orden actualizada: '+result.id_order+'</br> Ahora la Orden esta en el estado: '+result.stage+'</div>');
 };
 
 var clu_tienda = new clu_tienda();
