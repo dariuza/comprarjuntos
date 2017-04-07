@@ -210,9 +210,11 @@ clu_tienda.prototype.consultaRespuestaOrders = function(result) {
 };
 
 clu_tienda.prototype.consultaRespuestaOrder = function(result) {
-	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request ,result.data)).show();
+	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request ,result.data,result.annotations)).show();
 	//OPCIONES DE PEDIDO DE ORDEN
 	$('.stage_cambio').on('click', function (e) {
+		//bloquear botones
+		$('.stage_cambio')[0].parentElement.remove();
 		var datos = new Array();
 		datos['stage'] = this.id.split('_')[1];
 		datos['id_order'] = this.id.split('_')[2];
@@ -243,26 +245,44 @@ clu_tienda.prototype.consultaRespuestaOrder = function(result) {
 			, position: 'absolute' // Element positioning
 		}
 
-		target = document.getElementById('odenes_modal');
-		clu_tienda.spinner = new Spinner(opts).spin(target);
+		//target = document.getElementById('odenes_modal');
+		//this.parentElement.parentElement.parentElement.parentElement
+		clu_tienda.spinner = new Spinner(opts).spin(document.getElementsByTagName("body")[0]);
 
 
 	});	
 };
 
-clu_tienda.prototype.formatorder= function(d,r,data) {
+clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
 	 var html = ''+
+    	
+	 	'<div class="panel panel-default">'+
+	 		'<div class="panel-body">'+
+	 			'<div class="row" style="text-align: center;"> '+
+	 				'<div class="col-md-4">'+
+	 					'<b>Direcciòn:</b> '+d.adress_client+''+
+	 				'</div>'+	
+	 				'<div class="col-md-4">'+
+	 					'<b>Correo:</b> '+d.email_client+''+
+	 				'</div>'+	
+	 				'<div class="col-md-4">'+
+	 					'<b>Contacto:</b> '+d.number_client+''+
+	 				'</div>'+	
+	 			'</div>'+
+	 		'</div>'+
+	 	'</div>'+
+
     	'<div class="panel panel-default">'+
     		'<div class="panel-heading">'+
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
 					'<div class=" btn_editar_orden_'+d.id+'" id="btn_editar_orden" >'+
-						'<span class="glyphicon glyphicon-th-list" aria-hidden="true" style=""></span>'+
+						//'<span class="glyphicon glyphicon-th-list" aria-hidden="true" style=""></span>'+
 						'<span> Detalles de Orden</span>'+
 					'</div>'+
 				'</a>'+
 	    	'</div>'+
 	    	'<div class="panel-body">'+
-				'<div class="row" style="text-align: center;"> '+
+				'<div class="row" style="text-align: center;"> '+					
 					'<div class="col-md-12">'+
 						'<div class="col-md-12">'+
 							'<div class="col-md-3">'+							
@@ -356,28 +376,28 @@ clu_tienda.prototype.formatorder= function(d,r,data) {
 
 	html = html +'</div>'+		
    		'</div>';
+   	//fin del panel de detalle
 
    	 var html =  html +
     	'<div class="panel panel-default">'+
     		'<div class="panel-heading">'+
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
 					'<div class="" id="" >'+
-						'<span class="glyphicon glyphicon-list-alt" aria-hidden="true" style=""></span>'+
+						//'<span class="glyphicon glyphicon-list-alt" aria-hidden="true" style=""></span>'+
 						'<span> Indicaciones y Sugerencias de Pedido</span>'+
 					'</div>'+
 				'</a>'+
 	    	'</div>'+
-
-
     	'</div>';
 
 	 return html;
 };
 
-clu_tienda.prototype.cambiarRespuestaOrden = function(result) {	
-	clu_tienda.table_orders.ajax.reload();
+clu_tienda.prototype.cambiarRespuestaOrden = function(result) {		
 	clu_tienda.spinner.el.remove();
-	$('#odenes_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La Orden ha sido actualizada correctamente!</strong></br> Orden actualizada: '+result.id_order+'</br> Ahora la Orden esta en el estado: '+result.stage+'</div>');
+	//clu_tienda.table_orders.ajax.reload();
+	clu_tienda.table_orders.search( "Orden_"+result.request.id_order).draw();				
+	$('#odenes_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La Orden ha sido actualizada correctamente!</strong></br> Orden actualizada: '+result.request.id_order+'</br> Ahora la Orden esta en el estado: '+result.request.stage+'</div>');
 };
 
 var clu_tienda = new clu_tienda();

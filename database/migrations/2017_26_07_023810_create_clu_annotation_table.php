@@ -14,6 +14,7 @@ class CreateCluAnnotationTable extends Migration
     {
         Schema::create('clu_order_annotation', function(Blueprint $table){
             $table->increments('id');
+            $table->string('user_name');//entrada de texto
             $table->dateTime('date');
             $table->string('description');//entrada de texto
             $table->boolean('active')->default(true);

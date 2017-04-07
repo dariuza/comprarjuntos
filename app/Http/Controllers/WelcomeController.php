@@ -261,6 +261,7 @@ class WelcomeController extends Controller {
 			//guardado de anotaciones
 			if(!empty($request->input('description'))){
 				$anotacion = new Anotacion();
+				$anotacion->user_name = $orden->name_client;
 				$anotacion->date = $hoy->format('Y-m-d H:i:s');
 				$anotacion->description = $request->input('description');
 				$anotacion->active = true;

@@ -11,6 +11,6 @@ class Anotacion extends Model
      */
 	protected $table = 'clu_order_annotation';
 	
-	protected $fillable = ['id','date','description','active','order_id'];
+	protected $fillable = ['id','user_name','date','description','active','order_id'];
 			
 }

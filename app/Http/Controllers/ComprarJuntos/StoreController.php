@@ -637,8 +637,16 @@ class StoreController extends Controller {
 		->orderBy('id', 'asc')
 		->get();
 
+		$moduledata['entradas']=\DB::table('clu_order_annotation')
+		->select('clu_order_annotation.*')
+		->leftjoin('clu_order', 'clu_order_annotation.order_id', '=', 'clu_order.id')
+		->where('clu_order.id',$request->input('id_order'))		
+		->orderBy('id', 'desc')
+		->get();
+
+
 		if(count($moduledata['detalles'])){
-			return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$moduledata['detalles']]);	
+			return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$moduledata['detalles'],'annotations'=>$moduledata['entradas']]);	
 		}
 
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
@@ -803,7 +811,7 @@ class StoreController extends Controller {
 						return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$e->getMessage()]);
 					}
 					
-
+					Session::flash('orden_id', $request->input()['id_order']);
 					return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>true]);
 				}
 

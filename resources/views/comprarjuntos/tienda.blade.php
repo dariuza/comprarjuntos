@@ -648,9 +648,11 @@
 				            			<th>Número</th>
 				            			<th>Fecha</th>
 				            			<th>Cliente</th>
+				            			<!--
 				            			<th>Dirección</th>
 				            			<th>Correo</th>
 				            			<th>Contacto</th>
+				            			-->
 				            			<th>Estado</th>
 						            </tr>
 						        </thead>              
@@ -831,9 +833,9 @@
 					{ "data": "id"},
 					{ "data": "date"},		        
 					{ "data": "name_client"},  	    
-			        { "data": "adress_client"},
-			        { "data": "email_client"},
-			        { "data": "number_client"},
+			        //{ "data": "adress_client"},
+			        //{ "data": "email_client"},
+			        //{ "data": "number_client"},
 			        { "data": "stage_id",render: function ( data, type, row ) {
 			        		if (data == 1) {
 			                    return 'PENDIENTE';
@@ -853,6 +855,24 @@
 			    "language": {
 			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			    },
+			    "fnRowCallback": function( nRow, aData ) {
+			    	if(aData.stage_id == 1){
+			    		$(nRow).children()[4].style.backgroundColor = '#fcf8e4';
+			    		$(nRow).children()[4].style.color = '#8a6d3b';
+			    	}
+			    	if(aData.stage_id == 2){
+			    		$(nRow).children()[4].style.backgroundColor = '#d9edf7';
+			    		$(nRow).children()[4].style.color = '#31708f';
+			    	}
+			    	if(aData.stage_id == 3){
+			    		$(nRow).children()[4].style.backgroundColor = '#f2dede';
+			    		$(nRow).children()[4].style.color = '#a94442';
+			    	}
+			    	if(aData.stage_id == 4){
+			    		$(nRow).children()[4].style.backgroundColor = '#dff0d8';
+			    		$(nRow).children()[4].style.color = '#3c763d';
+			    	}		       		        
+            	}
 		    });
 
 		    //metodo para la tabla
@@ -968,6 +988,9 @@
 			 clu_tienda.table_orders.destroy();
 			 $('#table_orders tbody').off('click');
 		});
+
+		//limpiamos el spinner
+		//clu_tienda.spinner.el.remove();
 
 	</script>
 	@if(old('edit'))		
@@ -1109,9 +1132,9 @@
 					{ "data": "id"},
 					{ "data": "date"},		        
 					{ "data": "name_client"},  	    
-			        { "data": "adress_client"},
-			        { "data": "email_client"},
-			        { "data": "number_client"},
+			        //{ "data": "adress_client"},
+			        //{ "data": "email_client"},
+			        //{ "data": "number_client"},
 			        { "data": "stage_id",render: function ( data, type, row ) {
 			        		if (data == 1) {
 			                    return 'PENDIENTE';
@@ -1131,6 +1154,24 @@
 			    "language": {
 			        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 			    },
+			    "fnRowCallback": function( nRow, aData ) {
+			    	if(aData.stage_id == 1){
+			    		$(nRow).children()[4].style.backgroundColor = '#fcf8e4';
+			    		$(nRow).children()[4].style.color = '#8a6d3b';
+			    	}
+			    	if(aData.stage_id == 2){
+			    		$(nRow).children()[4].style.backgroundColor = '#d9edf7';
+			    		$(nRow).children()[4].style.color = '#31708f';
+			    	}
+			    	if(aData.stage_id == 3){
+			    		$(nRow).children()[4].style.backgroundColor = '#f2dede';
+			    		$(nRow).children()[4].style.color = '#a94442';
+			    	}
+			    	if(aData.stage_id == 4){
+			    		$(nRow).children()[4].style.backgroundColor = '#dff0d8';
+			    		$(nRow).children()[4].style.color = '#3c763d';
+			    	}		       		        
+            	}
 		    });
 
 		    @if(Session::has('orden_id'))
