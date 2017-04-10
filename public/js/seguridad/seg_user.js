@@ -808,4 +808,3 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
 };
 
 var seg_user = new seg_user();
-

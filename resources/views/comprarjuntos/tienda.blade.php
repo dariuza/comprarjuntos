@@ -190,8 +190,8 @@
 				    		</div>
 				    		<div class="col-md-3 col-mx-offset-0 option_store option_ver" style="color:{{$tienda->color_two}};">
 				    			<a href="{{url('/'.$tienda->name)}}" style="text-decoration:none; color:{{$tienda->color_two}};">
-				    				<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span>
-				    				<div style="font-size: 10px;">Ver Tienda</div>
+				    				<span class="glyphicon glyphicon-tags option_store_icon" aria-hidden="true"></span>
+				    				<div style="font-size: 10px;">Reseñas</div>
 				    			</a>	
 				    		</div>				    		
 				    	</div>				    	
@@ -665,6 +665,25 @@
 		        </div>
 	      	</div>
 		</div>
+	</div>
+
+	<div class="modal fade" id="confirm_order" role="dialog" >
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body">
+			 		<div class="row ">
+			 			<div class="col-md-12 col-md-offset-0 row_init">
+							Agrega un Mensaje para el Cliente ante el cambio de estado de esta Orden.
+							{!! Form::textarea('message_order',null, array('class' => 'form-control','rows' => 3,'placeholder'=>'Este mensaje llegara al correo electronico del cliente asosciado a esta orden de pedido.')) !!}
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn btn-default" id="continue_order">Continuar</button>
+					<button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+				</div>
+		 	</div>
+	  	</div>
 	</div>
 
 

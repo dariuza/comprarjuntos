@@ -17,7 +17,9 @@
 	}
 	.tienda_banner{
 		background-image: url("{{url('users/'.$tienda[0]->user_name.'/banners/'.$tienda[0]->banner)}}");
-		background-size: 100% 175px;
+		/*background-size: 100% 175px;*/
+		background-repeat: no-repeat;
+    	background-position: center;
 	}
 	.center-block {
 	  display: block;
@@ -112,7 +114,7 @@
 		</div>
 	</div>
 	
-	<div class="row tienda_banner" style="height: 175px;font-size: 40px; color: {{$tienda[0]->color_two}} !important; padding: 1%;margin-bottom: 1%; ">
+	<div class="row tienda_banner" style="height: 200px;font-size: 40px; color: {{$tienda[0]->color_two}} !important; padding: 1%;margin-bottom: 1%; ">
 		@if($tienda[0]->banner == 'default.png')
 			{{$tienda[0]->name}}
 		@endif

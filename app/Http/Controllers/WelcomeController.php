@@ -332,7 +332,8 @@ class WelcomeController extends Controller {
 					$message->to($orden->email_client,$orden->name_client)->subject('Orden de Pedido.');
 				});
 			}catch (\Exception  $e) {	
-				$mensage[]='El correo suministrado no es valido';				
+				$mensage[]='El correo suministrado no es valido';
+				$mensage[]='Si no eres usuario de ComprarJuntos lo mejor es realizar nuevamente el pedido. Si ya eres usuario, tu correo electronico esta mal diligenciado y deberias correjirlo';				
 			}
 
 			//envio a buzon interno de pedido, a tendero

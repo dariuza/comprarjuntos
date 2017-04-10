@@ -592,7 +592,6 @@ class StoreController extends Controller {
 				$product->active =  1;
 			}
 
-
 			$product->name =  $request->input()['nombre_producto'];
 			$product->price = $request->input()['precio'];
 			$product->category = $request->input()['categoria_select'];
@@ -714,7 +713,6 @@ class StoreController extends Controller {
 	public function postCambioestadoorder(Request $request){
 		//verificamos la orden y la tienda
 		//Tiendas
-
 		try {
 			$orden=\DB::table('clu_order')			
 			->leftjoin('clu_store', 'clu_order.store_id', '=', 'clu_store.id')
@@ -797,10 +795,10 @@ class StoreController extends Controller {
 					$data['url'] = $request->url();
 
 					$data['detalles'] = $detalles;
+					$data['mensaje_orden'] = $request->input()['menssage_order'];
 					$data['anotaciones'] = $anotaciones;
 
 					$data['id_client'] = $orden[0]->client_id;
-
 					
 					try{
 						Mail::send('email.order_change',$data,function($message) use ($orden) {
@@ -810,6 +808,24 @@ class StoreController extends Controller {
 					}catch (\Exception  $e) {	
 						return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$e->getMessage()]);
 					}
+
+					//agregamosel mensaje del tendero a las notaciones de la orden
+					if($data['mensaje_orden'] != ""){
+						$anotacion = new Anotacion();
+						$anotacion->user_name = $data['nombres_tendero'];
+						$anotacion->date = $hoy->format('Y-m-d H:i:s');
+						$anotacion->description = $data['mensaje_orden'];
+						$anotacion->active = true;
+						$anotacion->order_id = $data['orden_id'] ;				
+						try {
+							//guardado de anotacion de pedido
+							$anotacion->save();
+						}catch (ModelNotFoundException $e) {				
+							//si no se guarda la nota no hay problema, se sigue la linea y se retorna
+							Session::flash('orden_id', $request->input()['id_order']);
+							return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>true]);
+						}
+					}					
 					
 					Session::flash('orden_id', $request->input()['id_order']);
 					return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>true]);

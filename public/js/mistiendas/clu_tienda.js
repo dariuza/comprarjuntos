@@ -207,49 +207,55 @@ clu_tienda.prototype.format= function(d,r) {
 
 clu_tienda.prototype.consultaRespuestaOrders = function(result) {
 	$('#odenes_modal').modal();
+	//recuperar el focus sobre el modal de ordenes
+	$('#odenes_modal').modal({
+		focus: this,
+		show: true
+	});
 };
 
 clu_tienda.prototype.consultaRespuestaOrder = function(result) {
 	clu_tienda.row.child( clu_tienda.formatorder(clu_tienda.row.data(),result.request ,result.data,result.annotations)).show();
 	//OPCIONES DE PEDIDO DE ORDEN
 	$('.stage_cambio').on('click', function (e) {
-		//bloquear botones
-		$('.stage_cambio')[0].parentElement.remove();
+
 		var datos = new Array();
 		datos['stage'] = this.id.split('_')[1];
 		datos['id_order'] = this.id.split('_')[2];
 		datos['id_store'] = this.id.split('_')[3];
-		seg_ajaxobject.peticionajax($('#form_stage_order').attr('action'),datos,"clu_tienda.cambiarRespuestaOrden");
+		clu_tienda.datos_order = datos;
 
-		//loading
-		var opts = {
-			  lines: 13 // The number of lines to draw
-			, length: 41 // The length of each line
-			, width: 10 // The line thickness
-			, radius: 56 // The radius of the inner circle
-			, scale: 1 // Scales overall size of the spinner
-			, corners: 1 // Corner roundness (0..1)
-			, color: '#000' // #rgb or #rrggbb or array of colors
-			, opacity: 0.25 // Opacity of the lines
-			, rotate: 0 // The rotation offset
-			, direction: 1 // 1: clockwise, -1: counterclockwise
-			, speed: 1 // Rounds per second
-			, trail: 60 // Afterglow percentage
-			, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
-			, zIndex: 2e9 // The z-index (defaults to 2000000000)
-			, className: 'spinner' // The CSS class to assign to the spinner
-			, top: '50%' // Top position relative to parent
-			, left: '50%' // Left position relative to parent
-			, shadow: false // Whether to render a shadow
-			, hwaccel: false // Whether to use hardware acceleration
-			, position: 'absolute' // Element positioning
-		}
-
-		//target = document.getElementById('odenes_modal');
-		//this.parentElement.parentElement.parentElement.parentElement
-		clu_tienda.spinner = new Spinner(opts).spin(document.getElementsByTagName("body")[0]);
-
-
+		$('#confirm_order').modal().one('click', '#continue_order', function(e) {
+			//bloquear el div de los botones
+		    $('.stage_cambio')[0].parentElement.remove();
+		    //agregamos el mensaje
+		    clu_tienda.datos_order.menssage_order = $( "textarea[name='message_order']").val();
+		    seg_ajaxobject.peticionajax($('#form_stage_order').attr('action'),clu_tienda.datos_order,"clu_tienda.cambiarRespuestaOrden");
+		    //loading
+			var opts = {
+				  lines: 13 // The number of lines to draw
+				, length: 41 // The length of each line
+				, width: 10 // The line thickness
+				, radius: 56 // The radius of the inner circle
+				, scale: 1 // Scales overall size of the spinner
+				, corners: 1 // Corner roundness (0..1)
+				, color: '#000' // #rgb or #rrggbb or array of colors
+				, opacity: 0.25 // Opacity of the lines
+				, rotate: 0 // The rotation offset
+				, direction: 1 // 1: clockwise, -1: counterclockwise
+				, speed: 1 // Rounds per second
+				, trail: 60 // Afterglow percentage
+				, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+				, zIndex: 2e9 // The z-index (defaults to 2000000000)
+				, className: 'spinner' // The CSS class to assign to the spinner
+				, top: '50%' // Top position relative to parent
+				, left: '50%' // Left position relative to parent
+				, shadow: false // Whether to render a shadow
+				, hwaccel: false // Whether to use hardware acceleration
+				, position: 'absolute' // Element positioning
+			}		
+			clu_tienda.spinner = new Spinner(opts).spin(document.getElementsByTagName("body")[0]);
+	    });
 	});	
 };
 
@@ -393,11 +399,16 @@ clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
 	 return html;
 };
 
-clu_tienda.prototype.cambiarRespuestaOrden = function(result) {		
+clu_tienda.prototype.cambiarRespuestaOrden = function(result) {	
 	clu_tienda.spinner.el.remove();
 	//clu_tienda.table_orders.ajax.reload();
-	clu_tienda.table_orders.search( "Orden_"+result.request.id_order).draw();				
-	$('#odenes_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La Orden ha sido actualizada correctamente!</strong></br> Orden actualizada: '+result.request.id_order+'</br> Ahora la Orden esta en el estado: '+result.request.stage+'</div>');
+	clu_tienda.table_orders.search( "Orden_"+result.request.id_order).draw();
+	if(result.data == true){
+		$('#odenes_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La Orden ha sido actualizada correctamente!</strong></br> Orden actualizada: '+result.request.id_order+'</br> Ahora la Orden esta en el estado: '+result.request.stage+'</div>');
+	}else{
+		//ubo un error en el envio del mensage
+		$('#odenes_modal .alerts-module').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!La Orden ha sido actualizada correctamente!</strong></br> Sin embargo el correo no llego al cliente </br> '+result.data+' </br>Intenta contactar el cliente si en caso dejo su nùmero de contacto para que sepa sobre el nuevo estado ('+result.request.stage+') de la orden de pedido: '+result.request.id_order+' </div>');
+	}
 };
 
 var clu_tienda = new clu_tienda();

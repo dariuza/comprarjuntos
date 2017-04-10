@@ -93,6 +93,11 @@
 							</tr>
 						</table>
 					</div>
+
+					@if($mensaje_orden != '')
+						<div>Sugerencias del Tendero</div>
+						<div>{{$mensaje_orden}}</div>
+					@endif	
 					
 				</div>
 
@@ -103,7 +108,7 @@
 							<b>Te invitamos para que hagas parte de esta maravillosa comunidad que es ComprarJuntos. </b>
 							<a href = "{{url('/modal',['modalregistro'=>'modalregistro','meta'=>'meta'])}}"> Registrate AQUI!!</a>
 						</div>
-					@endif				
+					@endif			
 				</div>
 			</div>			
 		</div>		
