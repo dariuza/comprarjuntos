@@ -4,8 +4,10 @@ use App\Core\ComprarJuntos\Tienda;
 use App\Core\ComprarJuntos\Producto;
 use App\Core\ComprarJuntos\Categoria;
 use App\Core\ComprarJuntos\Orden;
+use App\Core\ComprarJuntos\Anotacion;
 use Validator;
 use Mail;
+use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -643,7 +645,6 @@ class StoreController extends Controller {
 		->orderBy('id', 'desc')
 		->get();
 
-
 		if(count($moduledata['detalles'])){
 			return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$moduledata['detalles'],'annotations'=>$moduledata['entradas']]);	
 		}
@@ -812,6 +813,7 @@ class StoreController extends Controller {
 					//agregamosel mensaje del tendero a las notaciones de la orden
 					if($data['mensaje_orden'] != ""){
 						$anotacion = new Anotacion();
+						$hoy = new DateTime();
 						$anotacion->user_name = $data['nombres_tendero'];
 						$anotacion->date = $hoy->format('Y-m-d H:i:s');
 						$anotacion->description = $data['mensaje_orden'];

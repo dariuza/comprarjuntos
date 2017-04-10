@@ -283,28 +283,28 @@ clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
 					'<div class=" btn_editar_orden_'+d.id+'" id="btn_editar_orden" >'+
 						//'<span class="glyphicon glyphicon-th-list" aria-hidden="true" style=""></span>'+
-						'<span> Detalles de Orden</span>'+
+						'<span style="color: black;"><b> DETALLES DEL PEDIDO</b></span>'+
 					'</div>'+
 				'</a>'+
 	    	'</div>'+
 	    	'<div class="panel-body">'+
-				'<div class="row" style="text-align: center;"> '+					
+				'<div class="row" style="text-align: center;"> '+
 					'<div class="col-md-12">'+
-						'<div class="col-md-12">'+
+						'<div class="col-md-12" style="border: solid black;border-width: 0px 0px 1px 0px;">'+
 							'<div class="col-md-3">'+							
-								'<label for="producto" class="col-md-12 control-label">PRODUCTO</label>'+	
+								'<span for="producto" class="col-md-12 ">PRODUCTO</span>'+	
 							'</div>'+
 							'<div class="col-md-3">'+							
-								'<label for="description" class="col-md-12 control-label">DESCRPCIÒN</label>'+	
+								'<span for="description" class="col-md-12 ">DESCRPCIÒN</span>'+	
 							'</div>'+
 							'<div class="col-md-2">'+							
-								'<label for="precio" class="col-md-12 control-label">PRECIO</label>'+	
+								'<span for="precio" class="col-md-12">PRECIO</span>'+	
 							'</div>'+
 							'<div class="col-md-2">'+							
-								'<label for="cantidad" class="col-md-12 control-label">CANTIDAD</label>'+	
+								'<span for="cantidad" class="col-md-12 ">CANTIDAD</span>'+	
 							'</div>'+						
 							'<div class="col-md-2">'+							
-								'<label for="total" class="col-md-12 control-label">TOTAL</label>'+	
+								'<span for="total" class="col-md-12 ">TOTAL</span>'+	
 							'</div>'+
 						'</div>';
 
@@ -390,10 +390,52 @@ clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
 					'<div class="" id="" >'+
 						//'<span class="glyphicon glyphicon-list-alt" aria-hidden="true" style=""></span>'+
-						'<span> Indicaciones y Sugerencias de Pedido</span>'+
+						'<span style="color: black;"><b> INDICACIONES Y SUGERENCIAS</b></span>'+
 					'</div>'+
 				'</a>'+
 	    	'</div>'+
+	    	'<div class="panel-body">'+
+	    		'<div class="row" style="text-align: center;"> '+
+	    			'<div class="col-md-12">'+	
+						'<div class="col-md-12" style="border: solid black;border-width: 0px 0px 1px 0px;">'+
+							'<div class="col-md-2">'+							
+								'<span for="nombre_usuario" class="col-md-12 ">USUARIO</span>'+	
+							'</div>'+
+							'<div class="col-md-7">'+							
+								'<span for="nota_usuario" class="col-md-12 ">DESCRIPCIÒN</span>'+	
+							'</div>'+
+							'<div class="col-md-3">'+							
+								'<span for="fecha_nota" class="col-md-12 ">FECHA</span>'+	
+							'</div>'+
+						'</div>';
+
+						fondo_bandera = -1;
+						background = 'none';
+						for(var i=0; i < annotations.length ; i++){
+							
+							if(fondo_bandera==1){
+				                background = "#e7e7e7";
+				            }
+
+	            html = html +'<div class="col-md-12" style="background:'+background+';">'+
+		            			'<div class="col-md-2">'+							
+									''+annotations[i]['user_name']+
+								'</div>'+
+								'<div class="col-md-7" style="text-align: justify;">'+							
+									''+annotations[i]['description']+
+								'</div>'+
+								'<div class="col-md-3">'+							
+									''+annotations[i]['date']+
+								'</div>'+
+	            			'</div>';
+
+				            fondo_bandera = fondo_bandera*-1;
+						 	background = 'none';
+				        }
+
+	 	html = html +'</div>'+
+	 			'</div>'+
+	    	'</div>'+	    	
     	'</div>';
 
 	 return html;
