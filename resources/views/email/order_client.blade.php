@@ -98,7 +98,7 @@
 						</table>
 					</div>
 					@if($order_description != '')
-						<div>Sugerencias.</div>
+						<div><b>Sugerencias.</b></div>
 						<div>{{$order_description}}</div>
 					@endif
 					
@@ -108,7 +108,7 @@
 					<a href = "{{url('/'.$tienda)}}"> ComprarJuntos - {{$tienda}} </a>
 					@if(!$id_client)						
 						<div style="margin-top: 10px;">
-							<b>Te invitamos para que hagas parte de esta maravillosa comunidad que es ComprarJuntos. </b>
+							<b>Te invitamos para que hagas parte de esta maravillosa comunidad.</b>
 							<a href = "{{url('/modal',['modalregistro'=>'modalregistro','meta'=>'meta'])}}"> Registrate AQUI!!</a>
 						</div>
 					@endif

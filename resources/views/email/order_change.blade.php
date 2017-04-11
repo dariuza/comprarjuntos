@@ -95,9 +95,11 @@
 					</div>
 
 					@if($mensaje_orden != '')
-						<div>Sugerencias del Tendero</div>
+						<div><b>Sugerencias del Tendero</b></div>
 						<div>{{$mensaje_orden}}</div>
-					@endif	
+					@endif
+					<br>
+					<a  href = "{{url('/modal/modaltotender/'.$orden_id)}}">Escribe un mensaje al tendero. Aquì!!</a>
 					
 				</div>
 
@@ -105,7 +107,7 @@
 					<a href = "{{url('/'.$tienda)}}"> ComprarJuntos - {{$tienda}} </a>
 					@if(!$id_client)						
 						<div style="margin-top: 10px;">
-							<b>Te invitamos para que hagas parte de esta maravillosa comunidad que es ComprarJuntos. </b>
+							<b>Te invitamos para que hagas parte de esta maravillosa comunidad.</b>
 							<a href = "{{url('/modal',['modalregistro'=>'modalregistro','meta'=>'meta'])}}"> Registrate AQUI!!</a>
 						</div>
 					@endif			

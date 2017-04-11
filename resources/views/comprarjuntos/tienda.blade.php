@@ -680,12 +680,11 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" data-dismiss="modal" class="btn btn-default" id="continue_order">Continuar</button>
-					<button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+					<!--<button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>-->
 				</div>
 		 	</div>
 	  	</div>
 	</div>
-
 
 	<!-- Form en blanco para consultar Ciudades -->
 	{!! Form::open(array('id'=>'form_consult_city','url' => 'user/consultarcity')) !!}		

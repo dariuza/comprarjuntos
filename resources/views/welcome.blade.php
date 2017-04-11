@@ -832,9 +832,5 @@
 		        window.location=$('#form_home').attr('action')+"/"+this.textContent;
 		    });
 	    });
-
-		
-		
-
 	</script>
 @endsection
