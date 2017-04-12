@@ -208,10 +208,12 @@ clu_tienda.prototype.format= function(d,r) {
 clu_tienda.prototype.consultaRespuestaOrders = function(result) {
 	$('#odenes_modal').modal();
 	//recuperar el focus sobre el modal de ordenes
+	/*
 	$('#odenes_modal').modal({
 		focus: this,
 		show: true
 	});
+	*/
 };
 
 clu_tienda.prototype.consultaRespuestaOrder = function(result) {
@@ -367,7 +369,11 @@ clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
 	 }else{
 	 	if(d.stage_id == 2){
 	 		//ACEPTADO
-	 		html = html +'<div style="float: right;">'+									
+	 		html = html +'<div style="float: right;">'+
+	 				'<a href="#"  id = "stage_rechazado_'+d.id+'_'+r.id_tienda+'" class="btn btn-warning stage_cambio" style="text-decoration: none; margin-right: 10px;" >'+						
+						'<span class="glyphicon glyphicon-remove" aria-hidden="true" style=""></span>'+
+						'<span> Rechazar Pedido</span>'+						
+					'</a>'+								
 					'<a href="#" id = "stage_finalizado_'+d.id+'_'+r.id_tienda+'" class="btn btn-success stage_cambio" style="text-decoration: none; margin-right: 10px;">'+						
 						'<span class="glyphicon glyphicon-ok" aria-hidden="true" style=""></span>'+
 						'<span> Pedido Entregado</span>'+						
@@ -375,7 +381,7 @@ clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
 				'</div>';
 	 	}else{
 	 		//
-	 		//RECHAZADO
+	 		//RECHAZADO, podriamos retornarlo a pendiente.
 	 	}
 	 }	  
 
