@@ -170,6 +170,7 @@ class WelcomeController extends Controller {
 			Session::flash('modal', 'modalregistro');
 		}
 		if($data == 'modalorden' ){
+			//el tendero esea ver el pedido desde el correo
 			//aqui usamos los datos y los metadatos par desplegar la orden
 			//preguntamos si se halla logueado el usuario
 			if (Auth::guest()) {
@@ -183,6 +184,25 @@ class WelcomeController extends Controller {
 				
 			}			
 		}
+
+		if($data == 'modalmessagetotender' ){
+			//el cliente desea dejar un mensaje para el tendero deacuerdo ala orden aceptada o rechazada.
+			Session::flash('modal', 'modalmessagetotender');
+			//calculamos la tienda y el tendero y
+			$moduledata['orden'] = \DB::table('clu_order')
+			->select('clu_order.*','clu_store.name as store','clu_store.color_one','clu_store.color_two','seg_user_profile.names','seg_user_profile.surnames','seg_user_profile.user_id as user_id')
+			->leftjoin('clu_store', 'clu_order.store_id', '=', 'clu_store.id')
+			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+			->where('clu_order.id',$metadata)							
+			->get();
+			$moduledata['annotations'] = \DB::table('clu_order_annotation')
+			->select('clu_order_annotation.*')	
+			->leftjoin('clu_order', 'clu_order_annotation.order_id', '=', 'clu_order.id')			
+			->where('clu_order.id',$metadata)							
+			->get();			
+			Session::flash('orden_data', $moduledata);	
+		}
+
 		return redirect('/');
 	}
 

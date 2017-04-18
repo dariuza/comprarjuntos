@@ -633,6 +633,7 @@
 	      </div>
       </div>
 	</div>
+
 	@else
 	<!-- Modal para usuarios logueados-->
 	<!-- Modal para editar datos de perfil -->
@@ -744,9 +745,34 @@
 		         
 			</div>
 		 </div>
+	</div>	
+	@endif
+	<!--Modal generico para mensajes a tendero-->
+	<div class="modal fade" id="message_order_modal" role="dialog" >
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" id = "ordmes_title" >Mensaje para Tienda</h4>
+				</div>
+				<div class = "alerts-module"></div>				
+				<div class="modal-body">					
+					<div class="row ">
+						<div class="col-md-12" id="msg_annotations"></div>
+						<div class="col-md-12 col-md-offset-0 row_init">
+							{!! Form::open(array('id'=>'formordmess','url' => 'user/messageorder','method'=>'post','onsubmit'=>'javascript:return seg_user.validateMessageOrder()')) !!}
+								{!! Form::hidden('msg_usuario_id',null,array('id'=>'msg_usuario_id')) !!}	
+								{!! Form::hidden('msg_orden_id',null,array('id'=>'msg_orden_id')) !!}									
+							 {!! Form::close() !!}
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+		          <button type="submit" form = "formordmess" class="btn btn-default " >Enviar</button>		          	                  
+		        </div>
+			</div>
+		</div>
 	</div>
-	
-	@endif	
 
 	{!! Form::open(array('id'=>'form_consult_city','url' => 'user/consultarcity')) !!}		
     {!! Form::close() !!}
@@ -775,7 +801,7 @@
 			</script>
 		@endif		
 	@endif
-	<!-- Modals -->
+	<!-- Modals especiales opcionalmente activados-->
 	@if(Session::has('modal'))
 		@if(Session::get('modal') == 'modalregistro')
 			<script> $("#registry_modal").modal(); </script>
@@ -787,6 +813,38 @@
 			</script>			
 			{{Session::flash('orden_id', Session::get('orden_id'))}}
 		@endif
+		@if(Session::get('modal') == 'modalmessagetotender')
+			<script>
+				$("#message_order_modal").modal(); 
+				$('#ordmes_title').html('Mensaje para tienda -  {{ucwords(Session::get("orden_data")["orden"][0]->store)}} ({{Session::get("orden_data")["orden"][0]->names}} {{Session::get("orden_data")["orden"][0]->surnames}})');
+				$('#msg_usuario_id').val({{Session::get("orden_data")["orden"][0]->user_id}});
+				$('#msg_orden_id').val({{Session::get("orden_data")["orden"][0]->id}});
+				
+				if({{count(Session::get("orden_data")["annotations"])}}){
+					//anotaciones	
+					$('#msg_annotations').html($('#msg_annotations').html()+
+						'<div class="col-md-12" style="border-bottom: 1px solid black;">'+
+							'<div class="col-md-2"> Usuarios</div>'+
+							'<div class="col-md-7"> Descripciòn</div>'+
+							'<div class="col-md-3"> Fecha</div>'+
+						'</div>'
+					);					
+
+					for(var i=0 ; i < {{ count(Session::get("orden_data")["annotations"]) }}; i++){
+						$('#msg_annotations').html($('#msg_annotations').html()+
+						'<div class="col-md-12">'+
+							'<div class="col-md-2"> {{Session::get("orden_data")["annotations"]['+i+']->user_name}}</div>'+
+							'<div class="col-md-7"> {{Session::get("orden_data")["annotations"]['+i+']->description}}</div>'+
+							'<div class="col-md-3"> {{Session::get("orden_data")["annotations"]['+i+']->date}}</div>'+
+						'</div>'
+						);
+					}
+					
+
+				}
+
+			</script>
+		@endif		
 	@endif	
 
 	<script type="text/javascript">  
