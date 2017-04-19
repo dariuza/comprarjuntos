@@ -3,6 +3,7 @@
 use Mail;
 use DateTime;
 use Auth;
+use App\Core\ComprarJuntos\Tienda;
 use App\Core\ComprarJuntos\Orden;
 use App\Core\ComprarJuntos\Anotacion;
 use App\Core\ComprarJuntos\Detalle;
@@ -190,23 +191,127 @@ class WelcomeController extends Controller {
 			Session::flash('modal', 'modalmessagetotender');
 			//calculamos la tienda y el tendero y
 			$moduledata['orden'] = \DB::table('clu_order')
-			->select('clu_order.*','clu_store.name as store','clu_store.color_one','clu_store.color_two','seg_user_profile.names','seg_user_profile.surnames','seg_user_profile.user_id as user_id')
+			->select('clu_order.*','clu_store.id as store_id','clu_store.name as store','clu_store.color_one','clu_store.color_two','seg_user_profile.names','seg_user_profile.surnames','seg_user_profile.user_id as user_id')
 			->leftjoin('clu_store', 'clu_order.store_id', '=', 'clu_store.id')
 			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 			->where('clu_order.id',$metadata)							
 			->get();
+			//consultaremos la ùltimas 3 annotaciones
 			$moduledata['annotations'] = \DB::table('clu_order_annotation')
 			->select('clu_order_annotation.*')	
 			->leftjoin('clu_order', 'clu_order_annotation.order_id', '=', 'clu_order.id')			
 			->where('clu_order.id',$metadata)							
+			->orderBy('id','ascd')
+			->take(3)	
 			->get();			
 			Session::flash('orden_data', $moduledata);	
+		}
+
+		if($data == 'modalresenatostore' ){			
+			Session::flash('modal', 'modalresenatostore');
+			$moduledata['orden'] = \DB::table('clu_order')
+			->select('clu_order.*','clu_store.id as store_id','clu_store.name as store','clu_store.color_one','clu_store.color_two','seg_user_profile.names','seg_user_profile.surnames','seg_user_profile.user_id as user_id')
+			->leftjoin('clu_store', 'clu_order.store_id', '=', 'clu_store.id')
+			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+			->where('clu_order.id',$metadata)							
+			->get();
+			Session::flash('orden_data_resena', $moduledata);	
 		}
 
 		return redirect('/');
 	}
 
-	//este motodo es para retornar datos para mostar el modal
+	public function postMessageorder(Request $request){
+
+		try {
+			//enviar mensaje a tendero			
+			//consultamos la orden
+			$orden=\DB::table('clu_order')			
+			->leftjoin('clu_store', 'clu_order.store_id', '=', 'clu_store.id')
+			->where('clu_order.id',$request->input()['msg_orden_id'])					
+			->get();
+			
+			$tienda = \DB::table('clu_store')
+			->select('clu_store.*','seg_user.email','seg_user.name as uname','seg_user_profile.names as nombres_tendero','seg_user_profile.surnames as apellidos_tendero','seg_user_profile.movil_number','seg_user_profile.fix_number','seg_user.id as user_id')
+			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')								
+			->where('clu_store.id',$request->input()['msg_store_id'])
+			->get();
+
+			$detalles = \DB::table('clu_order')
+			->select('clu_order_detail.*')
+			->leftjoin('clu_order_detail', 'clu_order.id', '=', 'clu_order_detail.order_id')
+			->where('clu_order.id',$request->input()['msg_orden_id'])
+			->get();
+
+			//anotaciones
+			$anotaciones = \DB::table('clu_order_annotation')
+			->where('clu_order_annotation.order_id',$request->input()['msg_orden_id'])
+			->get();
+
+			$data = Array();					
+			$data['tienda'] = $tienda[0]->name;
+			$data['orden_id'] = $request->input()['msg_orden_id'];
+			$data['email'] = $tienda[0]->email;
+			$data['direccion_tienda'] = $tienda[0]->city.' - '.$tienda[0]->adress;
+			$data['ciudad_tienda'] = $tienda[0]->city;
+			$data['telefono_tienda'] = $tienda[0]->movil_number.' - '.$tienda[0]->fix_number;
+			$data['imagen'] = 'users/'.$tienda[0]->uname.'/stores/'.$tienda[0]->image;		
+
+			$data['nombres_tendero'] =  $tienda[0]->nombres_tendero;
+			$data['apellidos_tendero'] = $tienda[0]->apellidos_tendero;					
+
+			$data['url'] = $request->url();
+
+			$data['detalles'] = $detalles;
+			$data['mensaje_orden'] =$request->input()['message_orden_text'];
+			$data['anotaciones'] = $anotaciones;
+
+			$data['id_client'] = $orden[0]->client_id;
+			$data['name_client'] = $orden[0]->name_client;
+			$data['email_client'] = $orden[0]->email_client;
+			$data['number_client'] = $orden[0]->number_client;
+			$data['adress_client'] = $orden[0]->adress_client;
+						
+			try{
+				Mail::send('email.order_message_tender',$data,function($message) use ($orden,$tienda) {
+					$message->from(Session::get('mail'),Session::get('copy').' - '.$orden[0]->id);
+					$message->to($tienda[0]->email,$tienda[0]->uname)->subject('Orden de Pedido.');
+				});
+			}catch (\Exception  $e) {	
+				$message[] = 'Lo sentimos, el mensaje no pudo ser enviado al tendero. Intenta hacerle llegar tu mensaje acudiendo directamente a su correo electronico o a su nùmero de contacto.'; 
+				return Redirect::to('/')->with('error', $message);
+			}
+
+			//agregamosel mensaje del tendero a las notaciones de la orden
+			if($data['mensaje_orden'] != ""){
+				$anotacion = new Anotacion();
+				$hoy = new DateTime();
+				$anotacion->user_name = $data['name_client'];
+				$anotacion->date = $hoy->format('Y-m-d H:i:s');
+				$anotacion->description = $data['mensaje_orden'];
+				$anotacion->active = true;
+				$anotacion->order_id = $data['orden_id'] ;				
+				try {
+					//guardado de anotacion de pedido
+					$anotacion->save();
+				}catch (ModelNotFoundException $e) {
+					//no pasa gran cosa, ya se ha enviado el mensaje al correo					
+				}
+			}				
+			
+			//agregar en message interno
+			$message[] = 'Mensaje enviado con exito al tendero.';
+			
+		}catch (ModelNotFoundException $e) {			
+			//Modificamos el mensaje a mostrar
+			$message[] = 'Lo sentimos, el mensaje no pudo ser enviado al tendero. Intenta hacerle llegar tu mensaje acudiendo directamente a su correo electronico o a su nùmero de contacto.'; 
+			return Redirect::to('/')->with('error', $message);
+		}
+		return Redirect::to('/')->with('message', $message);					
+	}
+
+	//este motodo es para retornar datos para mostar el modal, al querer agregar un producto al carrito
 	public function postAddproduct(Request $request){
 		//consultamos las caracteristicas del producto		
 		$producto = \DB::table('clu_products')							
@@ -215,7 +320,7 @@ class WelcomeController extends Controller {
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$producto]);	
 	}
 
-	//este motodo es para mandar la orden de pedido
+	//este motodo es para mandar la orden de pedido, guardarla
 	public function postAddorder(Request $request){
 				
 		$orden = new Orden();	

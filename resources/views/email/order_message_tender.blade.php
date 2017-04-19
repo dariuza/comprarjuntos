@@ -53,14 +53,17 @@
 					<div style="float: right;margin-right: 5%;">
 						<img src="{{url('/'.$imagen)}}" alt="Imagen Tienda" style="width: 70%;">
 					</div>
-					<div>Tu Orden de Pedido ha sido <b>{{$estado}}</b>.</div>
+					<div>El cliente te ha enviado el siguiente mensaje.</div>
+					<br>
+					<div style="border: 1px solid;padding: 5px;">{{ $mensaje_orden }}</div>
+					<br>
 					<div>Nùmero de Orden :{{ $orden_id }}</div>
-					<div>DATOS DE LA TIENDA</div>		
-					<ul>									
-						<li>Tendero: {{$nombres_tendero}} {{$apellidos_tendero}}</li>						
-						<li>Dirección: {{$direccion_tienda}}</li>						
-						<!--<li>Correo Electrónico: {{$email}}</li>-->
-						<!--<li>Teléfono: {{$telefono_tienda}}</li>-->
+					<div>DATOS DEL CLIENTE</div>		
+					<ul>						
+						<li>Nombre: {{$name_client}}</li>
+						<li>Dirección: {{$adress_client}}</li>
+						<li>Correo Electrónico: {{$email_client}}</li>
+						<li>Teléfono: {{$number_client}}</li>
 					</ul>
 					<div style="text-align: center;">
 						<div style="margin-bottom: 15px;margin-top: 15px;"><b>DETALLES DE ORDEN</b></div>
@@ -95,43 +98,14 @@
 					</div>
 
 					@if($mensaje_orden != '')
-						<div><b>Sugerencias del Tendero</b></div>
+						<div><b>Sugerencias del Cliente</b></div>
 						<div>{{$mensaje_orden}}</div>
-					@endif
-
-					<br>
-					<!--Rechazado o aceptado-->
-					@if($estado == "RECHAZADA")
-						<div>Te pedimos que 
-						<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">aportes con tu reseña al servicio prestado</a>, ya que actualmente esta orden aporta una reseña neutral en esta tienda y tu aporte nos ayuda a cuantificar la repuraciòn de las tiendas en ComprarJuntos.</div>						
-						<p>
-						<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">Puedes contribuir con tu reseña a la tienda. Aquì!!</a>
-						</p>
-						<div style="font-size: 12px;">Nota: Pese a que el pedido fue rechazado, no significa que la reseña al servicio sea rotundamente negativa, si la informaciòn llego a tiempo, esto te permite actuar para tomar otra decisiòn rapidamente. Puedes elegir otro proveedor o adquirir un sustituto adecuado.</div>
-						
-					@else
-						@if($estado == "FINALIZADO")
-							<div>Te pedimos que aportes con tu reseña al servicio prestado ya que actualmente la orden aporta una reseña neutral para esta tienda y tu 
-							aporte nos ayuda a cuantificar la repuraciòn de las tiendas de ComprarJuntos.</div>
-							<div>Nota: Si te llego este mensaje significa que ya tienes el pedido en tus manos, ya puedes verificar su calidad y cuantificar el servicio.</div>
-							<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">Puedes contribuir con tu reseña a la tienda. Aquì!!</a>
-						@else
-							<a  href = "{{url('/modal/modalmessagetotender/'.$orden_id)}}">Escribe un mensaje al tendero. Aquì!!</a>
-						@endif						
-					@endif
-
-					
+					@endif					
 					
 				</div>
 
 				<div class="panel-footer" style="text-align: center;padding: 15px;font-size: 15px;border-top: 1px solid #e5e5e5;background: #dddddd;color: cadetblue;">
-					<a href = "{{url('/'.$tienda)}}"> ComprarJuntos - {{$tienda}} </a>
-					@if(!$id_client)						
-						<div style="margin-top: 10px;">
-							<b>Te invitamos para que hagas parte de esta maravillosa comunidad.</b>
-							<a href = "{{url('/modal',['modalregistro'=>'modalregistro','meta'=>'meta'])}}"> Registrate AQUI!!</a>
-						</div>
-					@endif			
+					<a href = "{{url('/'.$tienda)}}"> ComprarJuntos - {{$tienda}} </a>					
 				</div>
 			</div>			
 		</div>		
