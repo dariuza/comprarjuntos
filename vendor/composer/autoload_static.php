@@ -278,6 +278,7 @@ class ComposerStaticInit4de8934c8b51214bf3548eeb287fcd8c
         'App\\Core\\ComprarJuntos\\Anotacion' => __DIR__ . '/../..' . '/app/Core/ComprarJuntos/Anotacion.php',
         'App\\Core\\ComprarJuntos\\Categoria' => __DIR__ . '/../..' . '/app/Core/ComprarJuntos/Categoria.php',
         'App\\Core\\ComprarJuntos\\Detalle' => __DIR__ . '/../..' . '/app/Core/ComprarJuntos/Detalle.php',
+        'App\\Core\\ComprarJuntos\\Mensaje' => __DIR__ . '/../..' . '/app/Core/ComprarJuntos/Mensaje.php',
         'App\\Core\\ComprarJuntos\\Orden' => __DIR__ . '/../..' . '/app/Core/ComprarJuntos/Orden.php',
         'App\\Core\\ComprarJuntos\\Producto' => __DIR__ . '/../..' . '/app/Core/ComprarJuntos/Producto.php',
         'App\\Core\\ComprarJuntos\\Tienda' => __DIR__ . '/../..' . '/app/Core/ComprarJuntos/Tienda.php',

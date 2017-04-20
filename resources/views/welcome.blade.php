@@ -60,6 +60,9 @@
 		.popover-content ul li:hover{
 			background-color: #dddddd;
 		}
+		.glyphicon-star{
+			color: #ffcc00;
+		}
 
 		@-moz-document url-prefix() {
 		    .img_tendero {
@@ -68,7 +71,13 @@
 		}
 
 
-	</style>		
+	</style>
+
+	<!--Importacion de iconos especiales para la labor (star)-->
+	<!--
+	<link  rel="stylesheet" href="{{ url('fonts/font-awesome/css/font-awesome.min.css') }}">
+	-->
+
 	<div class="row visible-lg" style="margin-top: 5%;"></div>
 	<div class="row visible-md" style="margin-top: 7%;"></div>
 	<div class="row visible-sm" style="margin-top: 10%;"></div>
@@ -751,7 +760,7 @@
 	<!--Modal generico para mensajes a tendero-->
 	@if(Session::has('orden_data'))
 	<div class="modal fade" id="message_order_modal" role="dialog" >
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -763,14 +772,14 @@
 						@if(count(Session::get("orden_data")["annotations"]))
 							<div class="col-md-12" id="msg_annotations">
 								<div class="col-md-12" style="border-bottom: 1px solid black;">
-									<div class="col-md-2"> Usuarios</div>
-									<div class="col-md-7"> Descripciòn</div>
+									<div class="col-md-3"> Usuarios</div>
+									<div class="col-md-6"> Descripciòn</div>
 									<div class="col-md-3"> Fecha</div>
 								</div>
 								@foreach(Session::get("orden_data")["annotations"] as $annotation)
 									<div class="col-md-12">
-										<div class="col-md-2"> {{$annotation->user_name}}</div>
-										<div class="col-md-7"> {{$annotation->description}}</div>
+										<div class="col-md-3"> {{$annotation->user_name}}</div>
+										<div class="col-md-6"> {{$annotation->description}}</div>
 										<div class="col-md-3"> {{$annotation->date}}</div>
 									</div>
 								@endforeach							
@@ -795,29 +804,50 @@
 	</div>
 	@endif
 
-	@if(Session::has('orden_data_resena'))
+	@if(Session::has('orden_data_resena'))	
 	<div class="modal fade" id="resena_order_modal" role="dialog" >
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title" id = "ordmes_title" >Reseña para Tienda</h4>
+					<h4 class="modal-title" id = "ordmes_title" >Cuantifica el servicio de la Tienda {{ucwords(Session::get('orden_data_resena')['orden'][0]->store)}}!</h4>
 				</div>
 				<div class = "alerts-module"></div>				
-				<div class="modal-body">					
+				<div class="modal-body" style="text-align: center;">					
 					<div class="row ">						
 						<div class="col-md-12 col-md-offset-0 row_init">
-							{!! Form::open(array('id'=>'formordrsn','url' => 'welcome/messageorder','method'=>'post','onsubmit'=>'javascript:return seg_user.validateMessageOrder()')) !!}
+							{!! Form::open(array('id'=>'formordrsn','url' => 'welcome/reseniaorder','method'=>'post','onsubmit'=>'javascript:return seg_user.validateReseniaOrder()')) !!}
 								{!! Form::hidden('rsn_usuario_id',null,array('id'=>'rsn_usuario_id')) !!}	
 								{!! Form::hidden('rsn_orden_id',null,array('id'=>'rsn_orden_id')) !!}
 								{!! Form::hidden('rsn_store_id',null,array('id'=>'rsn_store_id')) !!}
-								{!! Form::textarea('resena_orden_text',null, array('class' => 'form-control','rows' => 3,'placeholder'=>'Puedes escribir aquì una descripcion del porque de la cuantificaciòn de tu reseña.')) !!}
+								{!! Form::hidden('rsn_resenia',null,array('id'=>'rsn_resenia')) !!}								
+
+								{{--
+									{{ Form::radio('resenia', 'true') }} Si<br>
+									{{ Form::radio('resenia', 'none', true) }} No estoy Seguro<br>
+									{{ Form::radio('resenia', 'false') }} No <br>
+								--}}
+
+								<span class="rating" style="font-size: 24px;">
+						        	<span id="star_1" class="star  glyphicon glyphicon-star"></span>
+						        	<span id="star_2" class="star  glyphicon glyphicon-star"></span>
+						        	<span id="star_3" class="star  glyphicon glyphicon-star"></span>
+						        	<span id="star_4" class="star  glyphicon glyphicon-star-empty"></span>
+						        	<span id="star_5" class="star  glyphicon glyphicon-star-empty"></span>
+						        </span><br>
+						        <span>
+						        	Servicio <span id="service_text" style="color:#ffcc00">Regular</span>
+						        </span>
+						        <br>
+						        <br>
+
+								{!! Form::textarea('rsn_orden_text',null, array('class' => 'form-control','rows' => 3,'placeholder'=>'Comparte tu opinión sobre la tienda y su servicio.')) !!}
 							 {!! Form::close() !!}
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-		          <button type="submit" form = "formordmess" class="btn btn-default " >Enviar</button>		          	                  
+		          <button type="submit" form = "formordrsn" class="btn btn-default " >Enviar</button>		          	                  
 		        </div>
 			</div>
 		</div>
@@ -877,7 +907,13 @@
 		@endif
 
 		@if(Session::get('modal') == 'modalresenatostore')
-			<script> $("#resena_order_modal").modal(); </script>
+			<script> 
+				$("#resena_order_modal").modal(); 
+				$('#rsn_usuario_id').val({{Session::get("orden_data_resena")["orden"][0]->user_id}});
+				$('#rsn_orden_id').val({{Session::get("orden_data_resena")["orden"][0]->id}});				
+				$('#rsn_store_id').val({{Session::get("orden_data_resena")["orden"][0]->store_id}});
+			</script>
+
 		@endif	
 	@endif	
 
@@ -924,5 +960,39 @@
 		        window.location=$('#form_home').attr('action')+"/"+this.textContent;
 		    });
 	    });
+
+		$('#rsn_resenia').val(3);
+	    $(".star").mouseover(function() {
+		  	for(var i=1;i<=$(this)[0].id.split("_")[1];i++){
+		  		//vamos cambiar todo ha para atras
+		  		$('#star_'+i).removeClass().addClass('start glyphicon glyphicon-star');
+		  	}
+		  	for(var i=5;i>$(this)[0].id.split("_")[1];i--){
+		  		//vamos cambiar todo ha para atras
+		  		$('#star_'+i).removeClass().addClass('start glyphicon glyphicon-star-empty');
+		  	}
+
+		  	if($(this)[0].id.split("_")[1] == "1"){
+		  		$('#service_text').text('Muy Malo');
+		  		$('#service_text').css('color','red');
+		  	}
+		  	if($(this)[0].id.split("_")[1] == "2"){
+		  		$('#service_text').text('Malo');
+		  		$('#service_text').css('color','#ff9900');
+		  	}
+		  	if($(this)[0].id.split("_")[1] == "3"){
+		  		$('#service_text').text('Regular');
+		  		$('#service_text').css('color','#ffcc00');
+		  	}
+		  	if($(this)[0].id.split("_")[1] == "4"){
+		  		$('#service_text').text('Bueno');
+		  		$('#service_text').css('color','#66ccff');
+		  	}
+		  	if($(this)[0].id.split("_")[1] == "5"){
+		  		$('#service_text').text('Muy Bueno');
+		  		$('#service_text').css('color','#00cc66');
+		  	}
+		  	$('#rsn_resenia').val($(this)[0].id.split("_")[1]);			  	
+		  })		  
 	</script>
 @endsection

@@ -222,7 +222,6 @@ class WelcomeController extends Controller {
 	}
 
 	public function postMessageorder(Request $request){
-
 		try {
 			//enviar mensaje a tendero			
 			//consultamos la orden
@@ -309,6 +308,10 @@ class WelcomeController extends Controller {
 			return Redirect::to('/')->with('error', $message);
 		}
 		return Redirect::to('/')->with('message', $message);					
+	}
+
+	public function postReseniaorder(Request $request){
+		dd($request->input());
 	}
 
 	//este motodo es para retornar datos para mostar el modal, al querer agregar un producto al carrito

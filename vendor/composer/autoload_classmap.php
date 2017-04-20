@@ -13,6 +13,7 @@ return array(
     'App\\Core\\ComprarJuntos\\Anotacion' => $baseDir . '/app/Core/ComprarJuntos/Anotacion.php',
     'App\\Core\\ComprarJuntos\\Categoria' => $baseDir . '/app/Core/ComprarJuntos/Categoria.php',
     'App\\Core\\ComprarJuntos\\Detalle' => $baseDir . '/app/Core/ComprarJuntos/Detalle.php',
+    'App\\Core\\ComprarJuntos\\Mensaje' => $baseDir . '/app/Core/ComprarJuntos/Mensaje.php',
     'App\\Core\\ComprarJuntos\\Orden' => $baseDir . '/app/Core/ComprarJuntos/Orden.php',
     'App\\Core\\ComprarJuntos\\Producto' => $baseDir . '/app/Core/ComprarJuntos/Producto.php',
     'App\\Core\\ComprarJuntos\\Tienda' => $baseDir . '/app/Core/ComprarJuntos/Tienda.php',

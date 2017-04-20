@@ -11,9 +11,7 @@
 		<meta name="description" content="Plaza de mercado para la Economia del Bien Común" />
 		<meta name="keywords" content="bien común, economia solidaria, circulos solidarios, grupos solidarios, fomentamos, comprar, vender, tienda, cart, plaza mercado, comprar juntos, grupo consumo" />
 
-
-		<link rel="shortcut icon" href="{{ url('images/icons/icon.png') }}">
-		
+		<link rel="shortcut icon" href="{{ url('images/icons/icon.png') }}">		
 		<link  rel="stylesheet" href="{{ url('css/bootstrap.min.css') }}" type="text/css" />
 
 		<!--
@@ -31,11 +29,10 @@
 		<link  rel="stylesheet" href="{{ url('css/bootstrap-submenu.min.css') }}" type="text/css" />
 		<link  rel="stylesheet" href="{{ url('css/bootstrap-datepicker.min.css') }}" type="text/css" />	
 		<link  rel="stylesheet" href="{{ url('css/datatables.min.css') }}" type="text/css" />	
-		<link  rel="stylesheet" href="{{ url('css/datatables-responsive.min.css') }}" type="text/css" />		
-				
+		<link  rel="stylesheet" href="{{ url('css/datatables-responsive.min.css') }}" type="text/css" />				
 	</head>
 	
-	<body>
+	<body>		
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container-fluid">			
 				<div class="navbar-header">
@@ -201,10 +198,8 @@
 					<input type="hidden" name="value_login" id="value_login" value="1">
 				@endif				
 				</div>
-				
-				
 			</div>
-		</nav>
+		</nav>		
 		<div class="container-fluid">
 			@yield('content')
 		</div>

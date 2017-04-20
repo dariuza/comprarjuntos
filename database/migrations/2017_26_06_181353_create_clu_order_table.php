@@ -18,7 +18,8 @@ class CreateCluOrderTable extends Migration
             $table->string('name_client');
             $table->string('adress_client');
             $table->string('email_client');
-            $table->string('number_client');            
+            $table->string('number_client');
+            $table->integer('resenia')->default(3);
             $table->integer('client_id')->unsigned();//para que el cliente pueda ver sus pedidos
             $table->boolean('active')->default(true);
             $table->integer('stage_id')->unsigned();

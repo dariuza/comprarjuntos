@@ -110,11 +110,14 @@
 						<div style="font-size: 12px;">Nota: Pese a que el pedido fue rechazado, no significa que la reseña al servicio sea rotundamente negativa, si la informaciòn llego a tiempo, esto te permite actuar para tomar otra decisiòn rapidamente. Puedes elegir otro proveedor o adquirir un sustituto adecuado.</div>
 						
 					@else
-						@if($estado == "FINALIZADO")
-							<div>Te pedimos que aportes con tu reseña al servicio prestado ya que actualmente la orden aporta una reseña neutral para esta tienda y tu 
+						@if($estado == "ETREGADO")
+							<div>Te pedimos que 
+							<a href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">aportes con tu reseña al servicio prestado</a>, ya que actualmente la orden aporta una reseña neutral para esta tienda y tu 
 							aporte nos ayuda a cuantificar la repuraciòn de las tiendas de ComprarJuntos.</div>
-							<div>Nota: Si te llego este mensaje significa que ya tienes el pedido en tus manos, ya puedes verificar su calidad y cuantificar el servicio.</div>
+							<p>
 							<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">Puedes contribuir con tu reseña a la tienda. Aquì!!</a>
+							</p>
+							<div style="font-size: 12px;">Nota: Si te llego este mensaje significa que ya tienes el pedido en tus manos, ya puedes verificar su calidad y cuantificar el servicio.</div>
 						@else
 							<a  href = "{{url('/modal/modalmessagetotender/'.$orden_id)}}">Escribe un mensaje al tendero. Aquì!!</a>
 						@endif						
