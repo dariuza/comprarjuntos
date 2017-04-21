@@ -270,7 +270,7 @@ class LoginController extends Controller
 						
 					}
 					
-					$message[] = 'Tienes varios mensajes por revisar';
+					//$message[] = 'Tienes varios mensajes por revisar';
 					
 					//retornamos al index que debe pintar con la nueva imformacion					
 					//return Redirect::route('home')->with('message', $message );

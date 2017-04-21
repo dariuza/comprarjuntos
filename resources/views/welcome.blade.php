@@ -841,7 +841,7 @@
 						        <br>
 						        <br>
 
-								{!! Form::textarea('rsn_orden_text',null, array('class' => 'form-control','rows' => 3,'placeholder'=>'Comparte tu opinión sobre la tienda y su servicio.')) !!}
+								{!! Form::textarea('rsn_resenia_text',null, array('class' => 'form-control','rows' => 3,'placeholder'=>'Comparte tu opinión sobre la tienda y su servicio.')) !!}
 							 {!! Form::close() !!}
 						</div>
 					</div>

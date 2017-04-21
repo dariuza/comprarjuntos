@@ -44,7 +44,7 @@ class WelcomeController extends Controller {
 		
 		if(!empty($request->input())){
 			//si es el finder es el buscador inicial
-			dd($request->input());			
+			//dd($request->input());			
 			if(array_key_exists('finder',$request->input())){
 				return redirect('/'.$request->input('finder'));
 			}
@@ -311,7 +311,32 @@ class WelcomeController extends Controller {
 	}
 
 	public function postReseniaorder(Request $request){
-		dd($request->input());
+		/*
+			"rsn_usuario_id" => "2"//tendero	
+			"rsn_store_id" => "1"//tienda y cliente.
+		*/		
+		//actualizamos la senenia de la orden, eso es todo, pro solo se puede actualizar una solo vez a menos que sea regular		
+		$orden = Orden::find($request->input('rsn_orden_id'));
+		
+		if($orden->resenia == 3){
+			//si se actualiza
+			$orden->resenia = $request->input('rsn_resenia');
+			$orden->resenia_test = $request->input('rsn_resenia_text');
+			try {
+				$orden->save();
+			}catch (ModelNotFoundException $e) {			
+				//Modificamos el mensaje a mostrar
+				$message[] = 'Lo sentimos, La orden de pedido no fue correctamente cuentificada. Intentalo nuevamente.'; 
+				return Redirect::to('/')->with('error', $message);
+			}
+			$message[] = 'La orden de pedido fue correctamente cuantificada.';
+		}else{
+			$message[] = 'La orden de pedido ya ha sido previamente cuantificada.';	
+		}
+		//enviamos mensaje a tendero interno?
+		//enviamos mensaje a tendero externo?
+		
+		return Redirect::to('/')->with('message', $message);					
 	}
 
 	//este motodo es para retornar datos para mostar el modal, al querer agregar un producto al carrito
