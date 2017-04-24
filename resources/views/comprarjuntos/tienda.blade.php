@@ -65,6 +65,9 @@
 		.product_more{
 			text-align: justify;
 		}
+		.glyphicon-star{
+			color: #ffcc00;
+		}
 		
 		
 	</style>

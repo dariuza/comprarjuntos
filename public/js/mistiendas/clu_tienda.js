@@ -390,7 +390,8 @@ clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
    		'</div>';
    	//fin del panel de detalle
 
-   	 var html =  html +
+   	//panel de sugerencias
+   	html =  html +
     	'<div class="panel panel-default">'+
     		'<div class="panel-heading">'+
 	    		'<a href="#" style="text-decoration: none; color: #777">'+
@@ -444,7 +445,87 @@ clu_tienda.prototype.formatorder= function(d,r,data,annotations) {
 	    	'</div>'+	    	
     	'</div>';
 
-	 return html;
+    html =  html +
+    	'<div class="panel panel-default">'+
+	 		'<div class="panel-body">'+
+	 			'<div class="row" style="text-align: center;"> '+
+	 				'<div class="col-md-2">';
+
+	 					if(d.resenia == 1){
+	 						html =  html +'Muy Mal Servicio'+
+ 							'</div>'+
+ 							'<div class="col-md-2">'+
+			 					'<span class="rating" style="font-size: 20px;">'+
+						        	'<span id="star_1" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_2" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        	'<span id="star_3" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        	'<span id="star_4" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        	'<span id="star_5" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        '</span>'+
+			 				'</div>';
+	 					}
+
+	 					if(d.resenia == 2){
+	 						html =  html +'Mal Servicio'+
+	 						'</div>'+
+	 						'<div class="col-md-2">'+
+			 					'<span class="rating" style="font-size: 20px;">'+
+						        	'<span id="star_1" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_2" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_3" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        	'<span id="star_4" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        	'<span id="star_5" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        '</span>'+
+			 				'</div>';
+	 					}
+	 					if(d.resenia == 3){
+	 						html =  html +'Regular Servicio'+
+	 						'</div>'+
+	 						'<div class="col-md-2">'+
+			 					'<span class="rating" style="font-size: 20px;">'+
+						        	'<span id="star_1" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_2" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_3" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_4" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        	'<span id="star_5" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        '</span>'+
+			 				'</div>';
+	 					}
+	 					if(d.resenia == 4){
+	 						html =  html +'Buen Servicio'+
+	 						'</div>'+
+	 						'<div class="col-md-2">'+
+			 					'<span class="rating" style="font-size: 20px;">'+
+						        	'<span id="star_1" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_2" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_3" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_4" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_5" class="star  glyphicon glyphicon-star-empty"></span>'+
+						        '</span>'+
+			 				'</div>';
+	 					}
+	 					if(d.resenia == 5){
+	 						html =  html +'Muy Buen Servicio'+
+	 						'</div>'+
+	 						'<div class="col-md-2">'+
+			 					'<span class="rating" style="font-size: 20px;">'+
+						        	'<span id="star_1" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_2" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_3" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_4" class="star  glyphicon glyphicon-star"></span>'+
+						        	'<span id="star_5" class="star  glyphicon glyphicon-star"></span>'+
+						        '</span>'+
+			 				'</div>';
+	 					}
+
+	 				html =  html + ''+
+	 				'<div class="col-md-8">'+
+	 					''+d.resenia_test+''+
+	 				'</div>'+	
+	 			'</div>'+
+	 		'</div>'+
+	 	'</div>';
+	return html;
 };
 
 clu_tienda.prototype.cambiarRespuestaOrden = function(result) {	
