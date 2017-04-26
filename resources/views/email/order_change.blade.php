@@ -96,7 +96,7 @@
 
 					@if($mensaje_orden != '')
 						<div><b>Sugerencias del Tendero</b></div>
-						<div>{{$mensaje_orden}}</div>
+						<div style="border: 1px solid black;padding: 5px;">{{$mensaje_orden}}</div>
 					@endif
 
 					<br>
@@ -115,16 +115,13 @@
 							<a href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">aportes con tu reseña al servicio prestado</a>, ya que actualmente la orden aporta una reseña neutral para esta tienda y tu 
 							aporte nos ayuda a cuantificar la repuraciòn de las tiendas de ComprarJuntos.</div>
 							<p>
-							<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">Puedes contribuir con tu reseña a la tienda. Aquì!!</a>
+							<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">Puedes contribuir con tu calificaciòn al servicio. Aquì!!</a>
 							</p>
 							<div style="font-size: 12px;">Nota: Si te llego este mensaje significa que ya tienes el pedido en tus manos, ya puedes verificar su calidad y cuantificar el servicio.</div>
 						@else
 							<a  href = "{{url('/modal/modalmessagetotender/'.$orden_id)}}">Escribe un mensaje al tendero. Aquì!!</a>
 						@endif						
-					@endif
-
-					
-					
+					@endif					
 				</div>
 
 				<div class="panel-footer" style="text-align: center;padding: 15px;font-size: 15px;border-top: 1px solid #e5e5e5;background: #dddddd;color: cadetblue;">

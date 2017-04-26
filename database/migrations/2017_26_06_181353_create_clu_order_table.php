@@ -21,6 +21,7 @@ class CreateCluOrderTable extends Migration
             $table->string('number_client');
             $table->integer('resenia')->default(3);
             $table->string('resenia_test')->default('El servicio no fue ni bueno ni malo.');
+            $table->boolean('resenia_active')->default(false);
             $table->integer('client_id')->unsigned();//para que el cliente pueda ver sus pedidos
             $table->boolean('active')->default(true);
             $table->integer('stage_id')->unsigned();

@@ -160,6 +160,24 @@ class WelcomeController extends Controller {
 			->where('clu_products.store_id',$moduledata['tienda'][0]->id)		
 			->get();
 
+			$moduledata['ordenes'] = \DB::table('clu_order')							
+			->where('clu_order.store_id',$moduledata['tienda'][0]->id)		
+			->where('clu_order.stage_id',4)		
+			->get();
+
+			//calculo de reputaciòn 
+			$reputacion_score = 0;
+			foreach ($moduledata['ordenes'] as $key => $value) {
+				$reputacion_score = $reputacion_score+$value->resenia;
+			}
+
+			$moduledata['tienda'][0]->reputacion = 0;
+			$moduledata['tienda'][0]->reputacionpercent = 0;
+			if($reputacion_score){
+				$moduledata['tienda'][0]->reputacion = ($reputacion_score / (count($moduledata['ordenes'])*5))*5;
+				$moduledata['tienda'][0]->reputacionpercent = ($reputacion_score / (count($moduledata['ordenes'])*5));	
+			}
+			
 			return view('comprarjuntos/vertienda')->with($moduledata);
 		}
 
@@ -318,10 +336,11 @@ class WelcomeController extends Controller {
 		//actualizamos la senenia de la orden, eso es todo, pro solo se puede actualizar una solo vez a menos que sea regular		
 		$orden = Orden::find($request->input('rsn_orden_id'));
 		
-		if($orden->resenia == 3){
+		if(!$orden->resenia_active){
 			//si se actualiza
 			$orden->resenia = $request->input('rsn_resenia');
 			$orden->resenia_test = $request->input('rsn_resenia_text');
+			$orden->resenia_active = 1;
 			try {
 				$orden->save();
 			}catch (ModelNotFoundException $e) {			

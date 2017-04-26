@@ -43,8 +43,13 @@
 		padding-right: 15px !important;
 		padding-left: 15px !important;			
 	}
+	.fa{
+		/*color:#ffcc00;*/
+	}
 
 	</style>
+
+	<link rel="stylesheet" href="{{ url('css/font-awesome.min.css') }}">
 
 	<div class="row visible-lg" style="margin-top: 5%;"></div>
 	<div class="row visible-md" style="margin-top: 7%;"></div>
@@ -120,18 +125,100 @@
 		@endif
 	</div>
 	<div class="col-md-10 col-md-offset-1" style="margin-bottom: 1%;">
-		<div class="row col-md-7">
+		<div class="row col-md-6">
 			<div class="col-md-5">
 			{{ Html::image('users/'.$tienda[0]->user_name.'/stores/'.$tienda[0]->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 200px;border-radius: 0%;' ))}}	
 			</div>
-			<div class="col-md-7 col-sd-offset-0">
-				<div><b>{{$tienda[0]->name}}</b></div>
+			<div class="col-md-7 col-sd-offset-0" style="text-align: center;">				
 				<div>{{$tienda[0]->description}}</div>
 				<div><span class="glyphicon glyphicon-map-marker" aria-hidden="true">{{$tienda[0]->department}}, {{$tienda[0]->city}}</span></div>
-				<div>{{$tienda[0]->adress}}</div>				
+				<div>{{$tienda[0]->adress}}</div>
+				@if($tienda[0]->web)
+					<div><i class="fa fa-cloud" aria-hidden="true"></i> <a href="https://{{$tienda[0]->web}}" target="_blank">{{$tienda[0]->web}}</a></div>
+				@endif
+				@if($tienda[0]->fanpage)
+					<div><i class="fa fa-facebook" aria-hidden="true"></i> <a href="https://{{$tienda[0]->fanpage}}" target="_blank">{{$tienda[0]->fanpage}}</a></div>
+				@endif
+
+				@if($tienda[0]->movil)
+					<div><i class="fa fa-whatsapp" aria-hidden="true"></i> {{$tienda[0]->movil}}</div>
+				@endif			
+				
 			</div>	
 		</div>
-		<div class="row col-md-2">
+		<div class="row col-md-3" style="text-align: center;">
+			<div><b>REPUTACIÒN</b></div>			
+			@if($tienda[0]->reputacion == 0)
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 5)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 4.5)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 4)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>			
+			@elseif($tienda[0]->reputacion >= 3.5)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>			
+			@elseif($tienda[0]->reputacion >= 3)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 2.5)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 2)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 1.5)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 1)
+				<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+			@elseif($tienda[0]->reputacion >= 0.5)
+				<i class="fa fa-star-half-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>
+				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>			
+			@endif
+			
+			<div>El porcentaje de satisfacción  del servicio en {{ucwords($tienda[0]->name)}} es de {{$tienda[0]->reputacionpercent*100}}%.</div>
+			<div>Ventas Concretadas: {{count($ordenes)}}</div>
+
 		</div>
 		<div class="row col-md-3" style="text-align: center;">
 			<div> PROPIETARIO DE LA TIENDA</div>
@@ -155,12 +242,12 @@
 	<!--Listado de productos-->
 	<div class="col-md-10 col-md-offset-1">	
 		@foreach($productos as $producto)
-			<div class="col-md-3 col-mx-offset-1">
+			<div class="col-md-3 col-mx-offset-1" style="text-align: center;">
 				<div class="panel panel-default">					
 					<div class="panel-body">
 				    	<div class="row">
 				    		<div class="col-md-12 option_add_product" id ="{{$producto->name}}_{{$producto->id}}">				    			
-			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 175px;border-radius: 0%;' ))}}				    							    			
+			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 90%;height: 200px;border-radius: 0%;' ))}}				    							    			
 				    		</div>
 
 				    		<div class="col-md-12 panel-footer"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:{{$tienda[0]->color_two}};padding: 2px;">				    			
