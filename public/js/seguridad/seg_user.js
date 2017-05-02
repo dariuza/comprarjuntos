@@ -4,6 +4,7 @@ function seg_user() {
     this.cart_store_id;//esta variable de momento no se usara, incapasidad de ser global
     this.cart_products = new Array();
     this.cart_contador = 1;
+    this.table_orders = '';
     //refrescamos el brand del carrito de compras, ante el refresh de seg_user
 }
 	

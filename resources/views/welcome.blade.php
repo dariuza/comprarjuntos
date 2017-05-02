@@ -411,7 +411,12 @@
 					<b>Encuentra Productos y Consume Responsablemente</b>
 				</div>
 				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
+					@php ($p=0)
+					@php ($j=1)
 					@foreach($productos as $producto)
+						@if($p%4==0)
+							<div class="col-md-12 col-md-offset-0">
+						@endif
 						<div class="col-md-3 col-mx-offset-1">
 							<div class="panel panel-default">					
 								<div class="panel-body">
@@ -449,7 +454,14 @@
 							    	</div>
 							    </div>				    
 							</div>
-						</div>	
+						</div>
+						@if($j%4==0)
+							</div>							
+						@elseif($p == count($productos)-1)
+							</div>
+						@endif
+						@php ($p++)
+						@php ($j++)
 					@endforeach
 				</div>
 			</div>

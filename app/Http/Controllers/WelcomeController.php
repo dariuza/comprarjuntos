@@ -160,23 +160,31 @@ class WelcomeController extends Controller {
 			->where('clu_products.store_id',$moduledata['tienda'][0]->id)		
 			->get();
 
-			$moduledata['ordenes'] = \DB::table('clu_order')							
+			$ordenes = array();
+			$ordenes = \DB::table('clu_order')							
 			->where('clu_order.store_id',$moduledata['tienda'][0]->id)		
 			->where('clu_order.stage_id',4)		
-			->get();
+			->get();	
 
 			//calculo de reputaciòn 
 			$reputacion_score = 0;
-			foreach ($moduledata['ordenes'] as $key => $value) {
+			foreach ($ordenes as $key => $value) {
 				$reputacion_score = $reputacion_score+$value->resenia;
 			}
 
+			//$moduledata['ordenes'] = $ordenes;
+
 			$moduledata['tienda'][0]->reputacion = 0;
 			$moduledata['tienda'][0]->reputacionpercent = 0;
+			$moduledata['tienda'][0]->ordenes = 0;	
 			if($reputacion_score){
-				$moduledata['tienda'][0]->reputacion = ($reputacion_score / (count($moduledata['ordenes'])*5))*5;
-				$moduledata['tienda'][0]->reputacionpercent = ($reputacion_score / (count($moduledata['ordenes'])*5));	
+				$moduledata['tienda'][0]->reputacion = ($reputacion_score / (count($ordenes)*5))*5;
+				$moduledata['tienda'][0]->reputacionpercent = ($reputacion_score / (count($ordenes)*5));	
+				$moduledata['tienda'][0]->ordenes = count($ordenes);	
 			}
+			
+			//asignamos el id para listar las ordenes, en listarajaxorders
+			Session::put('store.id', $moduledata['tienda'][0]->id);
 			
 			return view('comprarjuntos/vertienda')->with($moduledata);
 		}
@@ -237,6 +245,43 @@ class WelcomeController extends Controller {
 		}
 
 		return redirect('/');
+	}
+
+	public function getListarajaxorders(Request $request){
+		//Tienda id
+		if(empty(Session::get('store.id'))){
+			//algo anda muy mal, no se udo asignar el id de tienda en la funcion Consultarproductos
+			return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]]);
+		}
+		$moduledata['total']=Orden::count();
+		if(!empty($request->input('search')['value'])){
+			Session::flash('search', $request->input('search')['value']);			
+			
+			$moduledata['ordenes']=
+			Orden::
+			select('clu_order.*')			
+			->where('clu_order.store_id',Session::get('store.id'))		
+			->where(function ($query) {
+				$query->where('clu_order.name_client', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_order.resenia', 'like', '%'.Session::get('search').'%')	
+				->orWhere('clu_order.resenia_test', 'like', '%'.Session::get('search').'%');				
+			})
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();		
+			$moduledata['filtro'] = count($moduledata['ordenes']);
+		}else{			
+			$moduledata['ordenes']=\DB::table('clu_order')
+			->where('clu_order.store_id',Session::get('store.id'))
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();			
+				
+			$moduledata['filtro'] = $moduledata['total'];
+		}
+
+		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['ordenes']]);
+
 	}
 
 	public function postMessageorder(Request $request){

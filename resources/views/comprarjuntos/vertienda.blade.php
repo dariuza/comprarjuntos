@@ -46,6 +46,10 @@
 	.fa{
 		/*color:#ffcc00;*/
 	}
+	table.dataTable.no-footer {
+	    border-bottom: 1px solid #111 !important;
+	    border: 1px solid transparent;
+	}
 
 	</style>
 
@@ -216,8 +220,8 @@
 				<i class="fa fa-star-o fa-2x" aria-hidden="true"></i>			
 			@endif
 			
-			<div>El porcentaje de satisfacción  del servicio en {{ucwords($tienda[0]->name)}} es de {{$tienda[0]->reputacionpercent*100}}%.</div>
-			<div>Ventas Concretadas: {{count($ordenes)}}</div>
+			<div>El porcentaje de satisfacción  del servicio en {{ucwords($tienda[0]->name)}} es de {{round($tienda[0]->reputacionpercent*100)}}%.</div>
+			<div>Ventas Concretadas: {{$tienda[0]->ordenes}}</div>
 
 		</div>
 		<div class="row col-md-3" style="text-align: center;">
@@ -235,7 +239,7 @@
 				<button type="button" class="btn btn-default">Ubicaciòn</button>
 				<button type="button" class="btn btn-default">Estadisticas</button>				
 				<button type="button" class="btn btn-default">Grupos de Consumo</button>
-				<button type="button" class="btn btn-default">Reseñas</button>
+				<button type="button" class="btn btn-default" onclick="window.location.hash = '#calificaciones';">Calificaciones</button>
 			</div>
 		</div>
 	</div>
@@ -268,6 +272,26 @@
 				</div>
 			</div>
 		@endforeach
+	</div>
+
+	<!--Listado de reseñas-->
+	<div id="calificaciones" class="col-md-10 col-md-offset-1" style="margin-top: 2%;">
+		<div class="panel panel-default">
+			<div class="panel-heading" style="text-align: center;"><b>CALIFICACIONES DEL SERVICIO</b></div>
+			<div class="panel-body">
+				<table id="table_orders" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
+					<thead >
+			            <tr>
+			            	<td></td>			            			            	
+		        			<td>CLIENTE</td>
+		        			<td>CALIFICACIÓN</td>
+		        			<td>RESEÑA</td>
+		        			<td>FECHA</td>		        			
+			            </tr>
+			        </thead>              
+				</table>
+			</div>
+		</div>		
 	</div>
 
 	
@@ -564,6 +588,40 @@
 @section('script')
 	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript">
+		//listar las reseñas
+		javascript:seg_user.table_orders = $('#table_orders').DataTable( {
+		    "responsive": true,
+		    "processing": true,
+		    "bLengthChange": false,
+		    "bFilter": false,
+			"ordering": false,
+        	"info":     false,
+		    "serverSide": true,	        
+		    "ajax": "{{url('welcome/listarajaxorders')}}",	
+		    "iDisplayLength": 25,       
+		    "columns": [
+		    	{
+	                "className":      'details-control',
+	                "orderable":      false,
+	                "data":           null,
+	                "defaultContent": ''
+	            },					   
+
+		        { "data": "name_client" },
+		        { "data": "resenia",render: function ( data, type, row ) {
+		        		return '<div>hola</div>';
+		        	}
+		    	}, 
+		        { "data": "resenia_test" },
+		        { "data": "date" }		        		        
+		    ],	       
+		    "language": {
+		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		    },		   
+		    "fnRowCallback": function( nRow, aData ) {
+            }
+		});
+
 		$('.option_add_product').on('click', function (e) {
 			var datos = new Array();
 			datos['id'] = this.id.split('_')[1];
@@ -593,8 +651,7 @@
 					if($('#sizes_cart_select').val() == "0"){
 						//no se selecciono ninguna opción
 						add = false;
-						$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El producto esta disponible en uno o varios tamaños!</strong> Debes elejir un tamaño para continuar.</div>');	
-						
+						$('#add_cart_modal .alerts-module').html('<div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>!El producto esta disponible en uno o varios tamaños!</strong> Debes elejir un tamaño para continuar.</div>');
 					}
 				}
 
