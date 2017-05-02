@@ -209,7 +209,7 @@
 	</div>	
 
 	<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">
-		
+		<!--Para resoluciones en celular-->
 		<div  class=" row col-md-12 col-md-offset-0 hidden-lg" >
 			<!-- Div de tiendas-->
 			<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">
@@ -332,6 +332,7 @@
 			</div>
 		</div>
 
+		<!-- Para resoluciones d computador-->
 		<div  class=" row col-md-9 col-md-offset-0 visible-lg" >
 			<!-- Div de tiendas-->
 			<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">

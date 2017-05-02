@@ -158,7 +158,7 @@ class StoreController extends Controller {
 			->get();
 			
 			if(!empty($tiendas)){
-				if($tiendas[0]->total > (int)Session::get('comjunplus.usuario.stores')){
+				if($tiendas[0]->total >= (int)Session::get('comjunplus.usuario.stores')){
 					$message[] = 'Problemas al crear la tienda';
 					$message[] = 'No puedes crear màs de '.Session::get('comjunplus.usuario.stores'). ' tiendas. Para màs informaciòn envìa tu sugerencia al administrador en tu perfil de usuario.';
 					return Redirect::to('mistiendas/listar')->with('error', $message);
@@ -504,7 +504,7 @@ class StoreController extends Controller {
 			->get();
 			
 			if(!empty($productos)){
-				if($productos[0]->total > (int)Session::get('comjunplus.usuario.products')){
+				if($productos[0]->total >= (int)Session::get('comjunplus.usuario.products')){
 					$message[] = 'Productos0';					
 					return Redirect::to('mistiendas/listar')->with('error', $message);
 				}

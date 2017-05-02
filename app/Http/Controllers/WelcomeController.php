@@ -129,7 +129,7 @@ class WelcomeController extends Controller {
 		->where('clu_products.active',1)
 		->where('clu_store.status','Activa')
 		->orderByRaw("RAND()")
-		->skip(0)->take(8)
+		->skip(0)->take(12)
 		->get();	
 		
 		//return view('welcome',['modulo'=>$moduledata]);
