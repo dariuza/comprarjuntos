@@ -51,6 +51,10 @@
 	    border: 1px solid transparent;
 	}
 
+	.glyphicon-star{
+		color: #ffcc00;
+	}
+
 	</style>
 
 	<link rel="stylesheet" href="{{ url('css/font-awesome.min.css') }}">
@@ -609,7 +613,60 @@
 
 		        { "data": "name_client" },
 		        { "data": "resenia",render: function ( data, type, row ) {
-		        		return '<div>hola</div>';
+		        		if (data == 0) {
+		        			return '<span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        			'</span>';	
+		        		}
+		        		if (data == 1) {
+		        			return '<span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        			'</span>';		
+		        		}
+		        		if (data == 2) {
+		        			return '<span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        			'</span>';		
+		        		}
+		        		if (data == 3) {
+		        			return  '<span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        			'</span>';		
+		        		}
+		        		if (data == 4) {
+		        			return '<span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star-empty"></span>'+
+				        			'</span>';		
+		        		}
+		        		if (data == 5) {
+		        			return '<span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        				'<span id="star_1" class="start glyphicon glyphicon-star"></span>'+
+				        			'</span>';			
+		        		}		        		
 		        	}
 		    	}, 
 		        { "data": "resenia_test" },
