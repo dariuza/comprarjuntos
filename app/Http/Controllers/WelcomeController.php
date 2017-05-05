@@ -4,6 +4,7 @@ use Mail;
 use DateTime;
 use Auth;
 use App\Core\ComprarJuntos\Tienda;
+use App\Core\ComprarJuntos\Producto;
 use App\Core\ComprarJuntos\Orden;
 use App\Core\ComprarJuntos\Anotacion;
 use App\Core\ComprarJuntos\Detalle;
@@ -157,9 +158,16 @@ class WelcomeController extends Controller {
 			->get();
 
 			$moduledata['productos'] = \DB::table('clu_products')							
-			->where('clu_products.store_id',$moduledata['tienda'][0]->id)		
+			->where('clu_products.store_id',$moduledata['tienda'][0]->id)
+			->skip(0)->take(16)		
 			->get();
 
+			//paginador
+			$moduledata['paginador']['total'] =Producto::count();
+			$moduledata['paginador']['ppp'] =16;//productospor pagina
+			$moduledata['paginador']['pagina'] =1;
+			$moduledata['paginador']['paginas'] = ceil($moduledata['paginador']['total'] / $moduledata['paginador']['ppp']);
+			
 			$ordenes = array();
 			$ordenes = \DB::table('clu_order')							
 			->where('clu_order.store_id',$moduledata['tienda'][0]->id)		
@@ -182,16 +190,16 @@ class WelcomeController extends Controller {
 				$moduledata['tienda'][0]->reputacionpercent = ($reputacion_score / (count($ordenes)*5));	
 				$moduledata['tienda'][0]->ordenes = count($ordenes);	
 			}
-			
+			//dd($moduledata);
 			//asignamos el id para listar las ordenes, en listarajaxorders
-			Session::put('store.id', $moduledata['tienda'][0]->id);
-			
+			Session::put('store.id', $moduledata['tienda'][0]->id);			
 			return view('comprarjuntos/vertienda')->with($moduledata);
 		}
 
 		return $data;
 	}
 
+	//Funcion para desplegar un modal den el index
 	public function getModal($data = null, $metadata = null){		
 		if($data == 'modalregistro' ){
 			Session::flash('modal', 'modalregistro');

@@ -55,6 +55,59 @@
 		color: #ffcc00;
 	}
 
+	.btn-paginator{		
+		color: #666;
+		box-sizing: border-box;
+		display: inline-block;
+		min-width: 1.5em;
+	    padding: 0.5em 1em;
+	    margin-left: 2px;
+	    text-align: center;
+	    text-decoration: none !important;
+	    cursor: pointer;
+
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #dcdcdc));
+	    background: -webkit-linear-gradient(top, #fff 0%, #fff 100%);
+	    background: -moz-linear-gradient(top, #fff 0%, #fff 100%);
+	    background: -ms-linear-gradient(top, #fff 0%, #fff 100%);
+	    background: -o-linear-gradient(top, #fff 0%, #fff 100%);
+	    background: linear-gradient(to bottom, #fff 0%, #fff 100%);	 
+	    border: 1px solid transparent;
+	}
+	.btn-paginator:hover{		
+		color:#fff;
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #666), color-stop(100%, #dcdcdc));
+	    background: -webkit-linear-gradient(top, #666 0%, #666 100%);
+	    background: -moz-linear-gradient(top, #666 0%, #666 100%);
+	    background: -ms-linear-gradient(top, #666 0%, #666 100%);
+	    background: -o-linear-gradient(top, #666 0%, #666 100%);
+	    background: linear-gradient(to bottom, #666 0%, #666 100%);
+	    
+	    border-radius: 2px;
+	    
+	}
+	.btn-paginatorslc{
+		box-sizing: border-box;
+	    display: inline-block;
+	    min-width: 1.5em;
+	    padding: 0.5em 1em;
+	    margin-left: 2px;
+	    text-align: center;
+	    text-decoration: none !important;
+	    cursor: pointer;
+	    color: #333 !important;
+	    border: 1px solid transparent;
+	    border-radius: 2px;
+	    border: 1px solid #979797;
+
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #dcdcdc));
+	    background: -webkit-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+	    background: -moz-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+	    background: -ms-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+	    background: -o-linear-gradient(top, #fff 0%, #dcdcdc 100%);
+	    background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%);	    
+	}
+
 	</style>
 
 	<link rel="stylesheet" href="{{ url('css/font-awesome.min.css') }}">
@@ -248,8 +301,13 @@
 		</div>
 	</div>
 	<!--Listado de productos-->
-	<div class="col-md-10 col-md-offset-1">	
+	<div class="col-md-10 col-md-offset-1">
+		@php ($p=0)
+		@php ($j=1)
 		@foreach($productos as $producto)
+			@if($p%4==0)
+				<div class="col-md-12 col-md-offset-0">
+			@endif
 			<div class="col-md-3 col-mx-offset-1" style="text-align: center;">
 				<div class="panel panel-default">					
 					<div class="panel-body">
@@ -275,7 +333,29 @@
 				    </div>				    
 				</div>
 			</div>
+			@if($j%4==0)
+				</div>							
+			@elseif($p == count($productos)-1)
+				</div>
+			@endif
+			@php ($p++)
+			@php ($j++)
 		@endforeach
+	</div>
+
+	<!--Paginador-->
+	<div  class="col-md-10 col-md-offset-1">
+		<div class="" style="display: flex;float: right;">
+			<div class="btn-paginator">Anterior</div>
+			@for($i=0;$i<$paginador['paginas'];$i++)
+				@if($i+1 == $paginador['pagina'])
+					<div class="btn-paginatorslc">{{$i+1}}</div>
+				@else
+					<div class="btn-paginator">{{$i+1}}</div>
+				@endif				
+			@endfor			
+			<div class="btn-paginator">Sigueinte</div>			
+		</div>
 	</div>
 
 	<!--Listado de reseñas-->
