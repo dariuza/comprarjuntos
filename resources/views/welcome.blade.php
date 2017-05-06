@@ -231,8 +231,8 @@
 				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array('class'=>'img_tendero', 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
 				    				</a>	
 						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
-						    	{{$tienda->color_two}};padding: 7px;">					    			
-						    			<div class="col-md-12" >					    				
+						    	{{$tienda->color_two}};padding: 0px;">					    			
+						    			<div class="col-md-12" style="padding: 0px;" >S				    				
 					    					<div style="text-align: center;">
 					    						<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;text-decoration:none;	">	
 						    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$tienda->name}}
@@ -299,9 +299,9 @@
 							    			</a>				    			
 							    		</div>
 							    		{{--
-							    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 7px;">
+							    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 0px;">
 							    		--}}
-							    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 7px;">
+							    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 0px;">
 							    			<div  class="col-md-12" style="padding: 0px;">
 						    					<div style="text-align: center;">
 						    						<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;text-decoration:none;	">	
@@ -354,8 +354,8 @@
 				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array('class'=>'img_tendero', 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
 				    				</a>	
 						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
-						    	{{$tienda->color_two}};padding: 7px;">					    			
-						    			<div class="col-md-12" >					    				
+						    	{{$tienda->color_two}};padding: 0px;">					    			
+						    			<div class="col-md-12" style="padding: 0px;">				    				
 					    					<div style="text-align: center;">
 					    						<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;text-decoration:none;	">	
 						    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$tienda->name}}
@@ -427,9 +427,9 @@
 							    			</a>				    			
 							    		</div>
 							    		{{--
-							    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 7px;">
+							    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 0px;">
 							    		--}}
-							    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 7px;">
+							    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 0px;">
 							    			<div  class="col-md-12" style="padding: 0px;">
 						    					<div style="text-align: center;">
 						    						<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;text-decoration:none;	">	
