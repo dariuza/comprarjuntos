@@ -76,12 +76,12 @@
 	}
 	.btn-paginator:hover{		
 		color:#fff;
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #666), color-stop(100%, #dcdcdc));
-	    background: -webkit-linear-gradient(top, #666 0%, #666 100%);
-	    background: -moz-linear-gradient(top, #666 0%, #666 100%);
-	    background: -ms-linear-gradient(top, #666 0%, #666 100%);
-	    background: -o-linear-gradient(top, #666 0%, #666 100%);
-	    background: linear-gradient(to bottom, #666 0%, #666 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000), color-stop(100%, #dcdcdc));
+	    background: -webkit-linear-gradient(top, #000 0%, #000 100%);
+	    background: -moz-linear-gradient(top, #000 0%, #000 100%);
+	    background: -ms-linear-gradient(top, #000 0%, #000 100%);
+	    background: -o-linear-gradient(top, #000 0%, #000 100%);
+	    background: linear-gradient(to bottom, #000 0%, #000 100%);
 	    
 	    border-radius: 2px;
 	    
@@ -346,15 +346,17 @@
 	<!--Paginador-->
 	<div  class="col-md-10 col-md-offset-1">
 		<div class="" style="display: flex;float: right;">
-			<div class="btn-paginator">Anterior</div>
+			<div class="btn-paginator paginador-btn">Anterior</div>
 			@for($i=0;$i<$paginador['paginas'];$i++)
 				@if($i+1 == $paginador['pagina'])
-					<div class="btn-paginatorslc">{{$i+1}}</div>
+					<div class="btn-paginatorslc paginador-btn">{{$i+1}}</div>
+					<!--Div oculto con pagina actual-->
+					<div></div>
 				@else
-					<div class="btn-paginator">{{$i+1}}</div>
+					<div class="btn-paginator paginador-btn">{{$i+1}}</div>
 				@endif				
 			@endfor			
-			<div class="btn-paginator">Sigueinte</div>			
+			<div class="btn-paginator paginador-btn">Sigueinte</div>			
 		</div>
 	</div>
 
@@ -1005,6 +1007,9 @@
 
 		//$('.chosen-select').chosen();
 		//$('.chosen-container').width('100%');
+		$('.paginador-btn').on('click', function (e) {
+			alert('OK');
+		});
 
 	</script>
 @endsection
