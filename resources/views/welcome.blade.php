@@ -302,7 +302,7 @@
 							    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 7px;">
 							    		--}}
 							    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 7px;">
-							    			<div  class="col-md-12">
+							    			<div  class="col-md-12" style="padding: 0px;">
 						    					<div style="text-align: center;">
 						    						<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;text-decoration:none;	">	
 							    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$producto->name}}
@@ -430,7 +430,7 @@
 							    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 7px;">
 							    		--}}
 							    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 7px;">
-							    			<div  class="col-md-12">
+							    			<div  class="col-md-12" style="padding: 0px;">
 						    					<div style="text-align: center;">
 						    						<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;text-decoration:none;	">	
 							    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$producto->name}}
