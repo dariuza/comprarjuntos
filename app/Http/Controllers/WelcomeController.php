@@ -159,12 +159,12 @@ class WelcomeController extends Controller {
 
 			$moduledata['productos'] = \DB::table('clu_products')							
 			->where('clu_products.store_id',$moduledata['tienda'][0]->id)
-			->skip(0)->take(16)		
+			->skip(0)->take(4)		
 			->get();
 
 			//paginador
 			$moduledata['paginador']['total'] =Producto::count();
-			$moduledata['paginador']['ppp'] =16;//productospor pagina
+			$moduledata['paginador']['ppp'] =4;//productospor pagina
 			$moduledata['paginador']['pagina'] =1;
 			$moduledata['paginador']['paginas'] = ceil($moduledata['paginador']['total'] / $moduledata['paginador']['ppp']);
 			
@@ -255,6 +255,7 @@ class WelcomeController extends Controller {
 		return redirect('/');
 	}
 
+	//para listar las ordenes para las reseñas
 	public function getListarajaxorders(Request $request){
 		//Tienda id
 		if(empty(Session::get('store.id'))){
@@ -290,6 +291,20 @@ class WelcomeController extends Controller {
 
 		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['ordenes']]);
 
+	}
+
+	//para el paginador de productos
+	public function postListarajaxproducts(Request $request){
+
+		//Tienda id
+		if(empty(Session::get('store.id'))){
+			return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
+		}
+		$productos = \DB::table('clu_products')							
+		->where('clu_products.store_id',Session::get('store.id'))
+		->skip($request->input('ppp')*($request->input('pagina_solicitada')-1))->take($request->input('ppp')*$request->input('pagina_solicitada'))		
+		->get();
+		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
 	}
 
 	public function postMessageorder(Request $request){

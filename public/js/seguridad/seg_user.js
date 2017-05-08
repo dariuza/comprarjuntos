@@ -808,4 +808,9 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
     $('#add_cart_modal').modal();
 };
 
+seg_user.prototype.consultaRespuestaListarProductos = function(result) {
+    alert('respuestaOK')
+}
+
+
 var seg_user = new seg_user();

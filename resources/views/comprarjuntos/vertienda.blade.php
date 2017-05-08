@@ -300,8 +300,13 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="user_name" style="display:none;">{{$tienda[0]->user_name}}</div>
+	<div id="color_one" style="display:none;">{{$tienda[0]->color_one}}</div>
+	<div id="color_two" style="display:none;">{{$tienda[0]->color_two}}</div>
+	
 	<!--Listado de productos-->
-	<div class="col-md-10 col-md-offset-1">
+	<div class="col-md-10 col-md-offset-1 listado_productos">
 		@php ($p=0)
 		@php ($j=1)
 		@foreach($productos as $producto)
@@ -345,18 +350,22 @@
 
 	<!--Paginador-->
 	<div  class="col-md-10 col-md-offset-1">
-		<div class="" style="display: flex;float: right;">
+		<div style="float:left;padding: 0.5em 1em;">Total de productos: {{$paginador['total']}}</div>
+		<div class="" style="display: flex;float: right;">			
 			<div class="btn-paginator paginador-btn">Anterior</div>
 			@for($i=0;$i<$paginador['paginas'];$i++)
 				@if($i+1 == $paginador['pagina'])
 					<div class="btn-paginatorslc paginador-btn">{{$i+1}}</div>
 					<!--Div oculto con pagina actual-->
-					<div></div>
+					<div id="pagina_actual" style="display: none;">{{$i+1}}</div>
 				@else
 					<div class="btn-paginator paginador-btn">{{$i+1}}</div>
 				@endif				
-			@endfor			
-			<div class="btn-paginator paginador-btn">Sigueinte</div>			
+			@endfor						
+			<div class="btn-paginator paginador-btn">Siguiente</div>
+			<div id="paginas" style="display:none;">{{$paginador['paginas']}}</div>
+			<div id="total_productos" style="display:none;">{{$paginador['total']}}</div>
+			<div id="productos_pagina" style="display:none;">{{$paginador['ppp']}}</div>
 		</div>
 	</div>
 
@@ -667,6 +676,8 @@
 	@endif
 
 	{!! Form::open(array('id'=>'form_add_product','url' => 'welcome/addproduct')) !!}		
+    {!! Form::close() !!}
+    {!! Form::open(array('id'=>'form_from_products','url' => 'welcome/listarajaxproducts')) !!}		
     {!! Form::close() !!}
 
 @endsection
@@ -1008,7 +1019,35 @@
 		//$('.chosen-select').chosen();
 		//$('.chosen-container').width('100%');
 		$('.paginador-btn').on('click', function (e) {
-			alert('OK');
+			//identificamos que boton hace el llamado
+			if(this.textContent == 'Anterior' || this.textContent == 'Siguiente'){
+				//si es anterior
+				if(this.textContent == 'Anterior'){
+					//si el actual es 1, 
+					if($('#pagina_actual').text() != '1'){
+						alert('boton anterior si se puede');
+					}				
+				}
+
+				if(this.textContent == 'Siguiente'){
+					//si es ultimo
+					if($('#paginas').text() != $('#pagina_actual').text()){
+						alert('boton siguiente si se puede');
+					}				
+				}
+			}else{
+				//es un boton normal
+				if(this.textContent != $('#pagina_actual').text()){
+					var datos = new Array();
+					datos['total'] = $('#total_productos').text();
+					datos['ppp'] = $('#productos_pagina').text(); 
+					datos['pagina'] = $('#pagina_actual').text();
+					datos['paginas'] = $('#paginas').text();
+					datos['pagina_solicitada'] = this.textContent;
+					seg_ajaxobject.peticionajax($('#form_from_products').attr('action'),datos,"seg_user.consultaRespuestaListarProductos");					
+				}
+			}
+			
 		});
 
 	</script>
