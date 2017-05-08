@@ -39,7 +39,7 @@ Route::get('cambiarcontraseña/',[
 
 Route::get('modal/{data}/{metadata}',[
 	'uses' => 'WelcomeController@getModal',
-	'as' => 'home'
+	'as' => 'modal'
 ]);
 
 Route::get('/{data}',[

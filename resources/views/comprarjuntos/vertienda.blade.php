@@ -73,6 +73,10 @@
 	    background: -o-linear-gradient(top, #fff 0%, #fff 100%);
 	    background: linear-gradient(to bottom, #fff 0%, #fff 100%);	 
 	    border: 1px solid transparent;
+
+	    user-select: none;
+	    -webkit-user-select: none;
+	    -moz-user-select: -moz-none;
 	}
 	.btn-paginator:hover{		
 		color:#fff;
@@ -105,7 +109,18 @@
 	    background: -moz-linear-gradient(top, #fff 0%, #dcdcdc 100%);
 	    background: -ms-linear-gradient(top, #fff 0%, #dcdcdc 100%);
 	    background: -o-linear-gradient(top, #fff 0%, #dcdcdc 100%);
-	    background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%);	    
+	    background: linear-gradient(to bottom, #fff 0%, #dcdcdc 100%);
+
+	    user-select: none;
+	    -webkit-user-select: none;
+	    -moz-user-select: -moz-none;   
+	}
+	.bnt-catacteristicas{
+		text-decoration: none;
+    	color: #333;
+	}
+	.bnt-catacteristicas:hover{
+		text-decoration: none;    	
 	}
 
 	</style>
@@ -295,16 +310,17 @@
 				<button type="button" class="btn btn-default">Categorias</button>				
 				<button type="button" class="btn btn-default">Ubicaciòn</button>
 				<button type="button" class="btn btn-default">Estadisticas</button>				
-				<button type="button" class="btn btn-default">Grupos de Consumo</button>
-				<button type="button" class="btn btn-default" onclick="window.location.hash = '#calificaciones';">Calificaciones</button>
+				<!--<button type="button" class="btn btn-default">Grupos de Consumo</button>-->
+				<button type="button" class="btn btn-default" ><a href="#calificaciones" id="link1" class="bnt-catacteristicas">Calificaciones</a></button>
 			</div>
 		</div>
 	</div>
 
+	<div id="url_app" style="display:none;">{{url('/')}}</div>
 	<div id="user_name" style="display:none;">{{$tienda[0]->user_name}}</div>
 	<div id="color_one" style="display:none;">{{$tienda[0]->color_one}}</div>
 	<div id="color_two" style="display:none;">{{$tienda[0]->color_two}}</div>
-	
+
 	<!--Listado de productos-->
 	<div class="col-md-10 col-md-offset-1 listado_productos">
 		@php ($p=0)
@@ -329,7 +345,7 @@
 				    				<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>
 				    				<div style="font-size: 10px;">Descripciòn</div>
 				    			</div>
-				    			<div class="col-md-4 col-mx-offset-0 option_store option_add_product" id ="{{$producto->name}}_{{$producto->id}}">			    			
+				    			<div class="col-md-4 col-mx-offset-0 option_store option_add_product" id ="{{$producto->name}}_{{$producto->id}}">
 				    				<span class="glyphicon glyphicon-shopping-cart option_store_icon" aria-hidden="true"></span>
 				    				<div style="font-size: 10px;">Al Carrito</div>
 				    			</div>	
@@ -388,7 +404,6 @@
 			</div>
 		</div>		
 	</div>
-
 	
 @endsection
 
@@ -1025,14 +1040,26 @@
 				if(this.textContent == 'Anterior'){
 					//si el actual es 1, 
 					if($('#pagina_actual').text() != '1'){
-						alert('boton anterior si se puede');
+						var datos = new Array();
+						datos['total'] = $('#total_productos').text();
+						datos['ppp'] = $('#productos_pagina').text(); 
+						datos['pagina'] = $('#pagina_actual').text();
+						datos['paginas'] = $('#paginas').text();
+						datos['pagina_solicitada'] = parseInt($('#pagina_actual').text())-1 ;
+						seg_ajaxobject.peticionajax($('#form_from_products').attr('action'),datos,"seg_user.consultaRespuestaListarProductos");					
 					}				
 				}
 
 				if(this.textContent == 'Siguiente'){
 					//si es ultimo
 					if($('#paginas').text() != $('#pagina_actual').text()){
-						alert('boton siguiente si se puede');
+						var datos = new Array();
+						datos['total'] = $('#total_productos').text();
+						datos['ppp'] = $('#productos_pagina').text(); 
+						datos['pagina'] = $('#pagina_actual').text();
+						datos['paginas'] = $('#paginas').text();
+						datos['pagina_solicitada'] = parseInt($('#pagina_actual').text())+1 ;
+						seg_ajaxobject.peticionajax($('#form_from_products').attr('action'),datos,"seg_user.consultaRespuestaListarProductos");				
 					}				
 				}
 			}else{

@@ -968,8 +968,13 @@
 		        }
 		    });
 
-		    //redirecciòn de categorias
+		    //redirecciòn de subcategorias
 			$('.popover-content ul li').on('click', function(e) {		        
+		        window.location=$('#form_home').attr('action')+"/"+this.textContent;
+		    });
+
+			//redirecciòn de categorias
+		    $('.popover-title').on('click', function(e) {		        
 		        window.location=$('#form_home').attr('action')+"/"+this.textContent;
 		    });
 	    });

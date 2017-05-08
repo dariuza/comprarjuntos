@@ -44,8 +44,7 @@ class WelcomeController extends Controller {
 	public function index(Request $request){
 		
 		if(!empty($request->input())){
-			//si es el finder es el buscador inicial
-			//dd($request->input());			
+			//si es el finder es el buscador inicial			
 			if(array_key_exists('finder',$request->input())){
 				return redirect('/'.$request->input('finder'));
 			}
@@ -103,15 +102,6 @@ class WelcomeController extends Controller {
 		}
 
 		$moduledata['categorias'] = $cat;
-		//algunas tiendas
-		$moduledata['tiendas'] = \DB::table('clu_store')
-		->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
-		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
-		->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
-		->where('clu_store.status','Activa')
-		->orderByRaw("RAND()")
-		->skip(0)->take(4)
-		->get();
 
 		//un tendero
 		$moduledata['tendero'] = \DB::table('seg_user_profile')
@@ -122,6 +112,16 @@ class WelcomeController extends Controller {
 		->skip(0)->take(1)
 		->get();
 
+		//algunas tiendas
+		$moduledata['tiendas'] = \DB::table('clu_store')
+		->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+		->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+		->where('clu_store.status','Activa')
+		->orderByRaw("RAND()")
+		->skip(0)->take(4)
+		->get();		
+
 		//productos		
 		$moduledata['productos'] = \DB::table('clu_products')
 		->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
@@ -131,7 +131,7 @@ class WelcomeController extends Controller {
 		->where('clu_store.status','Activa')
 		->orderByRaw("RAND()")
 		->skip(0)->take(12)
-		->get();	
+		->get();
 		
 		//return view('welcome',['modulo'=>$moduledata]);
 		return view('welcome')->with($moduledata);		
@@ -159,12 +159,12 @@ class WelcomeController extends Controller {
 
 			$moduledata['productos'] = \DB::table('clu_products')							
 			->where('clu_products.store_id',$moduledata['tienda'][0]->id)
-			->skip(0)->take(4)		
+			->skip(0)->take(16)		
 			->get();
 
 			//paginador
 			$moduledata['paginador']['total'] =Producto::count();
-			$moduledata['paginador']['ppp'] =4;//productospor pagina
+			$moduledata['paginador']['ppp'] =16;//productospor pagina
 			$moduledata['paginador']['pagina'] =1;
 			$moduledata['paginador']['paginas'] = ceil($moduledata['paginador']['total'] / $moduledata['paginador']['ppp']);
 			
@@ -195,6 +195,12 @@ class WelcomeController extends Controller {
 			Session::put('store.id', $moduledata['tienda'][0]->id);			
 			return view('comprarjuntos/vertienda')->with($moduledata);
 		}
+
+		//Segundo, miramos si coincide con el nombre de una categoria
+
+		//si categoria, mostramos tiendas y algunos productos
+		//Session::flash('categoria', 'si');
+		return Redirect::route('home');		
 
 		return $data;
 	}
@@ -302,7 +308,7 @@ class WelcomeController extends Controller {
 		}
 		$productos = \DB::table('clu_products')							
 		->where('clu_products.store_id',Session::get('store.id'))
-		->skip($request->input('ppp')*($request->input('pagina_solicitada')-1))->take($request->input('ppp')*$request->input('pagina_solicitada'))		
+		->skip($request->input('ppp')*($request->input('pagina_solicitada')-1))->take($request->input('ppp'))				
 		->get();
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
 	}

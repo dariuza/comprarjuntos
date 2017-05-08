@@ -809,7 +809,78 @@ seg_user.prototype.consultaRespuestaAddCart = function(result) {
 };
 
 seg_user.prototype.consultaRespuestaListarProductos = function(result) {
-    alert('respuestaOK')
+    //borramos el contnido del div
+    list = document.getElementsByClassName("listado_productos")[0];
+    list.textContent="";
+    //agregamos los nuevos productos
+    var html = "";
+    var p=0;
+    var j=1;
+    for(var i =0; i<result.data.length;i++){
+        if(p%4 == 0){
+            html += '<div class="col-md-12 col-md-offset-0">';
+        }
+
+        html += '<div class="col-md-3 col-mx-offset-1" style="text-align: center;">';
+        html +=     '<div class="panel panel-default">';
+        html +=         '<div class="panel-body">';
+        html +=             '<div class="row">';
+        
+        html +=                 '<div class="col-md-12 option_add_product" id ="'+result.data[i].name+'_'+result.data[i].id+'">';
+        html +=                     '<img src="'+$('#url_app').text()+'/users/'+$('#user_name').text()+'/products/'+result.data[0].image1+'" style="width: 90%;height: 200px;border-radius: 0%;" alt="Imagen no disponible">';
+        html +=                 '</div>';
+        html +=                 '<div class="col-md-12 panel-footer"  style="background-color:'+$('#color_one').text()+'; color: '+$('#color_two').text()+'; border-color:'+$('#color_two').text()+';padding: 2px;">';
+        html +=                     '<div class="col-md-4 col-mx-offset-0" style="font-size: 14px;">';
+        html +=                         ''+result.data[i].name;
+        html +=                     '</div>';
+        html +=                     '<div class="col-md-4 col-mx-offset-0 option_store">';
+        html +=                         '<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>';
+        html +=                         '<div style="font-size: 10px;">Descripciòn</div>';
+        html +=                     '</div>';
+        html +=                     '<div class="col-md-4 col-mx-offset-0 option_store option_add_product" id ="'+result.data[i].name+'_'+result.data[i].id+'">';
+        html +=                         '<span class="glyphicon glyphicon-shopping-cart option_store_icon" aria-hidden="true"></span>';
+        html +=                         '<div style="font-size: 10px;">Al Carrito</div>';
+        html +=                     '</div>';
+        html +=                 '</div>';
+
+        html +=             '</div>';
+        html +=         '</div>';
+        html +=     '</div>';
+        html += '</div>';
+
+        if(j%4 == 0){
+            html += '</div>';
+        }else{
+            if(p == result.data.length-1){
+                html += '</div>';
+            }
+        }
+        p++;
+        j++;
+    }
+
+    list.innerHTML=html;
+
+    $('.option_add_product').on('click', function (e) {
+        var datos = new Array();
+        datos['id'] = this.id.split('_')[1];
+        datos['name'] = this.id.split('_')[0];
+        seg_ajaxobject.peticionajax($('#form_add_product').attr('action'),datos,"seg_user.consultaRespuestaAddCart");                   
+    });
+
+    //actualizamos los datos del paginador. pagina actual
+    $('#pagina_actual').text(result.request.pagina_solicitada);
+    $('.paginador-btn').removeClass('btn-paginatorslc');
+    $('.paginador-btn').removeClass('btn-paginator');
+    $('.paginador-btn').addClass('btn-paginator');
+    //actualizamos el actual
+    var paginas = $('.paginador-btn');
+    for(var i=0;i<paginas.length;i++){
+        if(paginas[i].textContent == result.request.pagina_solicitada){
+            $(paginas[i]).addClass('btn-paginatorslc');
+        }
+    }
+    
 }
 
 
