@@ -9,6 +9,7 @@ use App\Core\ComprarJuntos\Orden;
 use App\Core\ComprarJuntos\Anotacion;
 use App\Core\ComprarJuntos\Detalle;
 use App\Core\ComprarJuntos\Mensaje;
+use App\Core\Security\Conector;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
@@ -312,13 +313,15 @@ class WelcomeController extends Controller {
 		//TERCERO, buscamos por nombre de producto o buscamos alguna descripcion de productos, y tiendas.
 		//dividimos el criterio de busqueda por espacios y eliminamos los conectores
 		$criterio = explode(' ',strtolower($data));
-		foreach ($criterio as $key => $value) {
+		$conectors = Conector::all()->toArray();			
+		foreach ($conectors as $key => $value) {
+			$conectores[] = $value['conector'];
+		}		
+		foreach ($criterio as $key => $value) {			
 			if(strlen($value) < 3 )unset($criterio[$key]);
-			//User::all()->toArray();
-			//$users = App\User::all();
-		}	
-			
-		dd($criterio);
+			if(in_array($value, $conectores))unset($criterio[$key]);
+		}		
+		
 		if(count($criterio)){
 			//hay criterios de busqueda			
 
@@ -340,9 +343,7 @@ class WelcomeController extends Controller {
 			->get();
 
 			dd($productos);
-		}		
-
-
+		}
 
 		//POR ULTIMO
 		return Redirect::to('/')->with('message_ok', ['Lo sentimos, no encontramos información para la consulta '.$data.'.']);				
