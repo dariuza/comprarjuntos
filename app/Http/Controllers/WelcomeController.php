@@ -112,26 +112,109 @@ class WelcomeController extends Controller {
 		->skip(0)->take(1)
 		->get();
 
-		//algunas tiendas
-		$moduledata['tiendas'] = \DB::table('clu_store')
-		->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
-		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
-		->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
-		->where('clu_store.status','Activa')
-		->orderByRaw("RAND()")
-		->skip(0)->take(4)
-		->get();		
+		if(!empty($request->input())){
+			//si es el finder es el buscador inicial			
+			if(array_key_exists('categoria',$request->input())){
+				//hay filtro de categoria
+				//consultamos id de categoria
+				$categoria = \DB::table('clu_category')
+				->select('clu_category.*')
+				->where('clu_category.name',$request->input('categoria'))							
+				->get();
 
-		//productos		
-		$moduledata['productos'] = \DB::table('clu_products')
-		->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
-		->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
-		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
-		->where('clu_products.active',1)
-		->where('clu_store.status','Activa')
-		->orderByRaw("RAND()")
-		->skip(0)->take(12)
-		->get();
+				if($categoria[0]->category_id){
+					//es subcategoria, consultamos con su padre				
+
+					$moduledata['tiendas'] = \DB::table('clu_store')
+					->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+					->where('clu_store.metadata','like','%'.$categoria[0]->category_id.'%')
+					->where('clu_store.status','Activa')
+					->orderByRaw("RAND()")
+					->skip(0)->take(4)
+					->get();		
+
+					//productos		
+					$moduledata['productos'] = \DB::table('clu_products')
+					->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
+					->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
+					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+					->where('clu_products.active',1)
+					->where('clu_products.category','like','%'.$categoria[0]->id.'%')
+					->where('clu_store.status','Activa')
+					->orderByRaw("RAND()")
+					->skip(0)->take(12)
+					->get();
+
+				}else{
+					//es categoria, consultamos con su id
+					$moduledata['tiendas'] = \DB::table('clu_store')
+					->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+					->where('clu_store.metadata','like','%'.$categoria[0]->id.'%')
+					->where('clu_store.status','Activa')
+					->orderByRaw("RAND()")
+					->skip(0)->take(4)
+					->get();
+					
+					//necesitamos las subcategorias
+					$subcategorias = \DB::table('clu_category')
+					->select('clu_category.*')
+					->where('clu_category.category_id',$categoria[0]->id)							
+					->get();
+					$subcat=array();
+					foreach ($subcategorias as $key => $value) {
+						$subcat[] = $value->id;	
+					}
+
+					if(count($subcat)){						
+						//productos		
+						$moduledata['productos'] = \DB::table('clu_products')
+						->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
+						->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
+						->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+						->where('clu_products.active',1)						
+						->where('clu_store.status','Activa')
+						->where(function($q) use ($subcat){
+							foreach($subcat as $key => $value){
+								$q->orwhere('clu_products.category', 'like', '%'.$value.'%');
+							}
+						})
+						->orderByRaw("RAND()")
+						->skip(0)->take(12)
+						->get();
+					}
+					
+				}
+
+			}
+		}else{
+
+			//no hay filtro
+			//algunas tiendas
+			$moduledata['tiendas'] = \DB::table('clu_store')
+			->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+			->where('clu_store.status','Activa')
+			->orderByRaw("RAND()")
+			->skip(0)->take(4)
+			->get();		
+
+			//productos		
+			$moduledata['productos'] = \DB::table('clu_products')
+			->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
+			->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
+			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+			->where('clu_products.active',1)
+			->where('clu_store.status','Activa')
+			->orderByRaw("RAND()")
+			->skip(0)->take(12)
+			->get();
+
+		}
 		
 		//return view('welcome',['modulo'=>$moduledata]);
 		return view('welcome')->with($moduledata);		
@@ -141,11 +224,11 @@ class WelcomeController extends Controller {
 	public function getFind($data = null){
 		//BUSQUEDA DE TIENDA PRODUCTO O CATEGORIA
 		
-		//Primero miramos si coincide con el nombre de una tienda
+		//PRIMERO miramos si coincide con el nombre de una tienda
 		$moduledata['tienda'] = \DB::table('clu_store')
 		->select('clu_store.*','seg_user.name as user_name')
 		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
-		->where('clu_store.name',$data)							
+		->where('clu_store.name',strtolower($data))							
 		->get();
 
 		//al momento de hallar una tienda
@@ -189,20 +272,80 @@ class WelcomeController extends Controller {
 				$moduledata['tienda'][0]->reputacion = ($reputacion_score / (count($ordenes)*5))*5;
 				$moduledata['tienda'][0]->reputacionpercent = ($reputacion_score / (count($ordenes)*5));	
 				$moduledata['tienda'][0]->ordenes = count($ordenes);	
-			}
-			//dd($moduledata);
+			}			
 			//asignamos el id para listar las ordenes, en listarajaxorders
 			Session::put('store.id', $moduledata['tienda'][0]->id);			
 			return view('comprarjuntos/vertienda')->with($moduledata);
 		}
 
-		//Segundo, miramos si coincide con el nombre de una categoria
+		//SEGUNDO, miramos si coincide con el nombre de una categoria, y si alguna tienda la posee
+		$categoria = \DB::table('clu_category')
+		->select('clu_category.*')
+		->where('clu_category.name',$data)							
+		->get();
+		$tiendas = array();
+		if(count($categoria)){
+			//hallamos la categoria padre
+			if($categoria[0]->category_id){
+				//es subcategoria
+				$tiendas = \DB::table('clu_store')
+				->select('clu_store.*')				
+				->where('clu_store.metadata','like','%'.$categoria[0]->category_id.'%')							
+				->skip(0)->take(1)
+				->get();
+			}else{
+				//es categoria
+				$tiendas = \DB::table('clu_store')
+				->select('clu_store.*')				
+				->where('clu_store.metadata','like','%'.$categoria[0]->id.'%')
+				->skip(0)->take(1)						
+				->get();
+			}
 
-		//si categoria, mostramos tiendas y algunos productos
-		//Session::flash('categoria', 'si');
-		return Redirect::route('home');		
+			if(count($tiendas)){
+				return redirect()->action('WelcomeController@index', ['categoria' => $data]);	
+			}else{
+				return Redirect::to('/')->with('message_ok', ['Actualmente no tenemos en ComprarJuntos alguna tienda que ofrezca '.$data.'.']);				
+			}			
+		}
 
-		return $data;
+		//TERCERO, buscamos por nombre de producto o buscamos alguna descripcion de productos, y tiendas.
+		//dividimos el criterio de busqueda por espacios y eliminamos los conectores
+		$criterio = explode(' ',strtolower($data));
+		foreach ($criterio as $key => $value) {
+			if(strlen($value) < 3 )unset($criterio[$key]);
+			//User::all()->toArray();
+			//$users = App\User::all();
+		}	
+			
+		dd($criterio);
+		if(count($criterio)){
+			//hay criterios de busqueda			
+
+			$productos = \DB::table('clu_products')
+			->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
+			->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
+			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')			
+			->where('clu_products.active',1)
+			->where('clu_store.status','Activa')
+			->where(function($q) use ($criterio){
+				foreach($criterio as $key => $value){
+					$q->orwhere('clu_products.name', 'like', '%'.$value.'%')
+					->orwhere('clu_products.description', 'like', '%'.$value.'%')
+					->orwhere('clu_store.description', 'like', '%'.$value.'%');
+				}
+			})
+			->orderByRaw("RAND()")
+			->skip(0)->take(1)
+			->get();
+
+			dd($productos);
+		}		
+
+
+
+		//POR ULTIMO
+		return Redirect::to('/')->with('message_ok', ['Lo sentimos, no encontramos información para la consulta '.$data.'.']);				
 	}
 
 	//Funcion para desplegar un modal den el index

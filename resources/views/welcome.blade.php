@@ -117,8 +117,20 @@
 						@endif
 					@endforeach					
 				</ul>
-			</div>
-	                
+			</div>  
+		@endif
+
+		@if(Session::has('message_ok'))
+			<div class="alert alert-info alert-dismissible fade in" role="alert" >
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>				
+				<ul>
+					@foreach (Session::get('message_ok') as $message)
+						<li>{{ $message }}</li>
+					@endforeach					
+				</ul>
+			</div>  
 		@endif
 		
 		@if(Session::has('alerta'))
@@ -265,9 +277,9 @@
 					<div class="col-md-12 col-md-offset-0">
 						{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
 						   <div class="input-group" style="width: 100%;">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;')) !!}
+								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;','maxlength' => 48)) !!}
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">Buscar!</button>
+									<button class="btn btn-default" type="submit">Buscar!</button>
 								</span>
 							</div>
 					    {!! Form::close() !!}
@@ -388,9 +400,9 @@
 					<div class="col-md-12 col-md-offset-0">
 						{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
 						   <div class="input-group" style="width: 100%;">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;')) !!}
+								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;','maxlength' => 48)) !!}
 								<span class="input-group-btn">
-									<button class="btn btn-default" type="button">Buscar!</button>
+									<button class="btn btn-default" type="submit">Buscar!</button>
 								</span>
 							</div>
 					    {!! Form::close() !!}

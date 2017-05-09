@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call('CityTableSeeder');
         $this->call('CategoryTableSeeder');	
         $this->call('StageTableSeeder');
+        $this->call('ConectorsTableSeeder');
     }
 }
