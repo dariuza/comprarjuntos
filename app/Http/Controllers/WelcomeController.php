@@ -191,8 +191,15 @@ class WelcomeController extends Controller {
 				}
 
 			}
+			if(array_key_exists('criterio',$request->input())){
+				$criterio = explode(' ',strtolower($request->input('criterio')));
+				$conectors = Conector::all()->toArray();			
+				foreach ($conectors as $key => $value) {
+					$conectores[] = $value['conector'];
+				}				
+				dd($conectores);
+			}
 		}else{
-
 			//no hay filtro
 			//algunas tiendas
 			$moduledata['tiendas'] = \DB::table('clu_store')
@@ -342,7 +349,9 @@ class WelcomeController extends Controller {
 			->skip(0)->take(1)
 			->get();
 
-			dd($productos);
+			if(count($productos)){
+				return redirect()->action('WelcomeController@index', ['criterio' => strtolower($data)]);	
+			}
 		}
 
 		//POR ULTIMO
