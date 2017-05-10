@@ -970,7 +970,8 @@
 		    });	        
 		 	$(this).popover('show');
 		 });
-		 
+		
+		//esta funcion es para que el popover se cierre cuando demos clic fuera de el 
 		$(document).on('click', function(e) {
 	        $('[data-toggle="popover"]').each(function () {
 		        //the 'is' for buttons that trigger popups

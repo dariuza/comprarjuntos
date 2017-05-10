@@ -833,7 +833,7 @@ seg_user.prototype.consultaRespuestaListarProductos = function(result) {
         html +=                     '<div class="col-md-4 col-mx-offset-0" style="font-size: 14px;">';
         html +=                         ''+result.data[i].name;
         html +=                     '</div>';
-        html +=                     '<div class="col-md-4 col-mx-offset-0 option_store">';
+        html +=                     '<div class="col-md-4 col-mx-offset-0 option_store" data-toggle="popover" title="'+result.data[i].name+'" data-placement="bottom" data-content="<div>'+result.data[i].description+'</div><div>Nº de veces comprado: '+result.data[i].ventas+'</div>" data-html="true">';
         html +=                         '<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>';
         html +=                         '<div style="font-size: 10px;">Descripciòn</div>';
         html +=                     '</div>';
@@ -880,6 +880,43 @@ seg_user.prototype.consultaRespuestaListarProductos = function(result) {
             $(paginas[i]).addClass('btn-paginatorslc');
         }
     }
+
+    $('[data-toggle="popover"]').popover({
+        html: true,
+        trigger: 'manual',          
+        container: 'body'
+     }).on('click', function(e) {
+        $('[data-toggle="popover"]').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup             
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });         
+        $(this).popover('show');
+     });
+
+     $(document).on('click', function(e) {
+        $('[data-toggle="popover"]').each(function () {
+            //the 'is' for buttons that trigger popups
+            //the 'has' for icons within a button that triggers a popup
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+        /*
+        //redirecciòn de subcategorias
+        $('.popover-content ul li').on('click', function(e) {               
+            window.location=$('#form_home').attr('action')+"/"+this.textContent;
+        });
+
+        //redirecciòn de categorias
+        $('.popover-title').on('click', function(e) {               
+            window.location=$('#form_home').attr('action')+"/"+this.textContent;
+        });
+        */
+    });
+
     
 }
 

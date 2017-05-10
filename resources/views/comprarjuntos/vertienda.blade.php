@@ -55,6 +55,17 @@
 		color: #ffcc00;
 	}
 
+	/*Debe funcionar solo para el boton del menu*/
+	.popover-content ul{
+		margin-left: -25px;
+	}
+	.popover-content ul li{
+		cursor:pointer;
+	}
+	.popover-content ul li:hover{
+		background-color: #dddddd;
+	}
+
 	.btn-paginator{		
 		color: #666;
 		box-sizing: border-box;
@@ -302,12 +313,13 @@
 			<div>{{$tendero[0]->names}} {{$tendero[0]->surnames}} </div>
 			<div><span class="glyphicon glyphicon-envelope" aria-hidden="true"> Contacto</span></div>
 		</div>		
-	</div>
+	</div>	
+
 	<div class="col-md-10 col-md-offset-1" style="margin-bottom: 2%;">
 		<div class="title m-b-md center-block">
-			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-default">Articulos</button>				
-				<button type="button" class="btn btn-default">Categorias</button>				
+			<div class="btn-group btn-menu" role="group">
+				<!--<button type="button" class="btn btn-default">Articulos</button>-->
+				<button type="button" class="btn btn-default" data-toggle="popover" title="Categorias" data-placement="bottom" data-content="{{ Html::ul($categorias)}}" data-html="true">Categorias</button>				
 				<button type="button" class="btn btn-default">Ubicaciòn</button>
 				<button type="button" class="btn btn-default">Estadisticas</button>				
 				<!--<button type="button" class="btn btn-default">Grupos de Consumo</button>-->
@@ -315,6 +327,14 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- buscador de productos de la tienda
+	<div class="col-md-10 col-md-offset-1" style="margin-bottom: 2%;">
+		<div class="input-group" style="width: 35%;margin: auto;">
+			{!! Form::text('store_finder','', array('class' => 'form-control','placeholder'=>'Buscar Productos','style'=>'text-align: center;border: 1px solid black','maxlength' => 48)) !!}
+		</div>
+	</div>
+	-->
 
 	<div id="url_app" style="display:none;">{{url('/')}}</div>
 	<div id="user_name" style="display:none;">{{$tienda[0]->user_name}}</div>
@@ -341,7 +361,7 @@
 				    			<div class="col-md-4 col-mx-offset-0" style="font-size: 14px;">
 					    			{{$producto->name}}				    			
 				    			</div>	
-				    			<div class="col-md-4 col-mx-offset-0 option_store">			    			
+				    			<div class="col-md-4 col-mx-offset-0 option_store" data-toggle="popover" title="{{$producto->name}}" data-placement="bottom" data-content="<div>{{$producto->description}}</div><div>Nº de veces comprado: {{$producto->ventas}}</div>" data-html="true">			    			
 				    				<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>
 				    				<div style="font-size: 10px;">Descripciòn</div>
 				    			</div>
@@ -384,6 +404,12 @@
 			<div id="productos_pagina" style="display:none;">{{$paginador['ppp']}}</div>
 		</div>
 	</div>
+
+	<!--Margin para el div paginador que es flotante-->
+	<div class="row visible-lg" style="margin-top: 0%;"></div>
+	<div class="row visible-md" style="margin-top: 6%;"></div>
+	<div class="row visible-sm" style="margin-top: 8%;"></div>
+	<div class="row visible-xs" style="margin-top: 10%;"></div>
 
 	<!--Listado de reseñas-->
 	<div id="calificaciones" class="col-md-10 col-md-offset-1" style="margin-top: 2%;">
@@ -700,6 +726,71 @@
 @section('script')
 	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript">
+		//ocultamos el buscador general
+		$('.div-finder').hide();
+		//agregamos el nuevo buscador via javascript
+
+		var div_finder_conteiner = document.getElementsByClassName("div-finder-conteiner");
+		
+		var div_finder0 = document.createElement("div");
+		div_finder0.setAttribute("class", "div-finder-store");
+		var input0 = document.createElement("input");
+		input0.setAttribute("class", "form-control");
+		input0.setAttribute("placeholder", "Busca productos de la Tienda "+"{!!ucwords($tienda[0]->name)!!}");
+		input0.setAttribute("style", "text-align: center;width: 85%;");
+		input0.setAttribute("maxlength", 48);
+		input0.setAttribute("name", "finder_store");
+		div_finder0.appendChild(input0);
+		var span0 = document.createElement("span");
+		span0.setAttribute("class", "input-group-btn");
+		var button0 = document.createElement("button");
+		button0.setAttribute("class", "btn btn-default");
+		button0.setAttribute("type", "button");
+		button0.innerHTML = "Buscar!";
+		span0.appendChild(button0);
+		div_finder0.appendChild(span0);
+
+		var div_finder1 = document.createElement("div");
+		div_finder1.setAttribute("class", "div-finder-store");
+		var input1 = document.createElement("input");
+		input1.setAttribute("class", "form-control");
+		input1.setAttribute("placeholder", "Busca productos de la Tienda "+"{!!ucwords($tienda[0]->name)!!}");
+		input1.setAttribute("style", "text-align: center;width: 70%;");
+		input1.setAttribute("maxlength", 48);
+		input1.setAttribute("name", "finder_store");
+		div_finder1.appendChild(input1);
+		var span1 = document.createElement("span");
+		span1.setAttribute("class", "input-group-btn");
+		var button1 = document.createElement("button");
+		button1.setAttribute("class", "btn btn-default");
+		button1.setAttribute("type", "button");
+		button1.innerHTML = "Buscar!";
+		span1.appendChild(button1);
+		div_finder1.appendChild(span1);		
+
+		var div_finder2 = document.createElement("div");
+		div_finder2.setAttribute("class", "div-finder-store");		
+		var input2 = document.createElement("input");
+		input2.setAttribute("class", "form-control");
+		input2.setAttribute("placeholder", "Busca productos de la Tienda "+"{!!ucwords($tienda[0]->name)!!}");
+		input2.setAttribute("style", "text-align: center;width: 65%;");
+		input2.setAttribute("maxlength", 48);
+		input2.setAttribute("name", "finder_store");
+		div_finder2.appendChild(input2);
+		var span2 = document.createElement("span");
+		span2.setAttribute("class", "input-group-btn");
+		var button2 = document.createElement("button");
+		button2.setAttribute("class", "btn btn-default");
+		button2.setAttribute("type", "button");
+		button2.innerHTML = "Buscar!";
+		span2.appendChild(button2);
+		div_finder2.appendChild(span2);		
+
+		//solo para el primer div
+		div_finder_conteiner[0].appendChild(div_finder0);
+		div_finder_conteiner[1].appendChild(div_finder1);
+		div_finder_conteiner[2].appendChild(div_finder2);
+
 		//listar las reseñas
 		javascript:seg_user.table_orders = $('#table_orders').DataTable( {
 		    "responsive": true,
@@ -1026,6 +1117,44 @@
 		    return true;
 		});
 
+		$('[data-toggle="popover"]').popover({
+			html: true,
+	        trigger: 'manual',			
+			container: 'body'
+		 }).on('click', function(e) {
+		 	$('[data-toggle="popover"]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup		        
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+		            $(this).popover('hide');
+		        }
+		    });	        
+		 	$(this).popover('show');
+		 });
+
+		 $(document).on('click', function(e) {
+	        $('[data-toggle="popover"]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+		            $(this).popover('hide');
+		        }
+		    });
+
+		    //redirecciòn de subcategorias
+		    /*
+			$('.popover-content ul li').on('click', function(e) {		        
+		        window.location=$('#form_home').attr('action')+"/"+this.textContent;
+		    });
+
+			//redirecciòn de categorias
+		    $('.popover-title').on('click', function(e) {		        
+		        window.location=$('#form_home').attr('action')+"/"+this.textContent;
+		    });
+		    */
+	    });
+
+
 		//al cerrar el modal de captacion de informaciòn se cierre el modal de carrito
 		$('#invitado_cart_modal').on('hidden.bs.modal', function () {			
 			$('#cart_modal').modal('hide');			
@@ -1076,6 +1205,5 @@
 			}
 			
 		});
-
 	</script>
 @endsection

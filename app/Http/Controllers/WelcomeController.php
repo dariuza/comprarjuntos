@@ -196,8 +196,44 @@ class WelcomeController extends Controller {
 				$conectors = Conector::all()->toArray();			
 				foreach ($conectors as $key => $value) {
 					$conectores[] = $value['conector'];
-				}				
-				dd($conectores);
+				}
+
+				$moduledata['tiendas'] = \DB::table('clu_store')
+				->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+				->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+				->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+				->leftjoin('clu_products', 'clu_store.id', '=', 'clu_products.store_id')
+				->where('clu_store.status','Activa')
+				->where(function($q) use ($criterio){
+					foreach($criterio as $key => $value){
+						$q->orwhere('clu_products.name', 'like', '%'.$value.'%')
+						->orwhere('clu_products.description', 'like', '%'.$value.'%')
+						->orwhere('clu_store.name', 'like', '%'.$value.'%')
+						->orwhere('clu_store.description', 'like', '%'.$value.'%');
+					}
+				})
+				->orderByRaw("RAND()")
+				->skip(0)->take(4)
+				->get();
+
+				$moduledata['productos'] = \DB::table('clu_products')
+				->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
+				->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
+				->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')			
+				->where('clu_products.active',1)
+				->where('clu_store.status','Activa')
+				->where(function($q) use ($criterio){
+					foreach($criterio as $key => $value){
+						$q->orwhere('clu_products.name', 'like', '%'.$value.'%')
+						->orwhere('clu_products.description', 'like', '%'.$value.'%')
+						->orwhere('clu_store.name', 'like', '%'.$value.'%')
+						->orwhere('clu_store.description', 'like', '%'.$value.'%');					
+					}
+				})
+				->orderByRaw("RAND()")
+				->skip(0)->take(12)
+				->get();
+
 			}
 		}else{
 			//no hay filtro
@@ -248,10 +284,51 @@ class WelcomeController extends Controller {
 			->where('seg_user.id',$moduledata['tienda'][0]->user_id)		
 			->get();
 
-			$moduledata['productos'] = \DB::table('clu_products')							
+			$moduledata['productos'] = \DB::table('clu_products')
+			->select('clu_products.*',\DB::raw('SUM(clu_order_detail.volume) as ventas'))			
+			->leftjoin('clu_order_detail', 'clu_products.id', '=', 'clu_order_detail.product_id')
+			//->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')			
 			->where('clu_products.store_id',$moduledata['tienda'][0]->id)
+			//->where('clu_order.stage_id',4)
+			->groupBy('clu_products.id')
 			->skip(0)->take(16)		
 			->get();
+
+			$ventas = \DB::table('clu_products')
+			->select('clu_products.*',\DB::raw('SUM(clu_order_detail.volume) as ventas'))			
+			->leftjoin('clu_order_detail', 'clu_products.id', '=', 'clu_order_detail.product_id')
+			->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')			
+			->where('clu_products.store_id',$moduledata['tienda'][0]->id)
+			->where('clu_order.stage_id',4)
+			->groupBy('clu_products.id')
+			->skip(0)->take(16)		
+			->get();
+
+			foreach ($moduledata['productos'] as $pkey => $producto) {
+				$producto->ventas = 0;				
+				foreach ($ventas as $vkey => $venta) {
+					if($producto->id == $venta->id){
+						//el producto tiene ventas reales
+						$producto->ventas = $venta->ventas;
+						 break; 
+					}
+				}				
+			}
+
+			//categorias para el boton del menu			
+			$tienda_categorias = explode(',',$moduledata['tienda'][0]->metadata);			
+			$categorias = \DB::table('clu_category')
+			->select('clu_category.*')
+			->where(function($q) use ($tienda_categorias){
+				foreach($tienda_categorias as $key => $value){
+					$q->orwhere('clu_category.category_id', '=', $value);
+				}
+			})		
+			->get();
+			$moduledata['categorias'] = array();
+			foreach ($categorias as $key => $value) {
+				$moduledata['categorias'][] = $value->name;
+			}			
 
 			//paginador
 			$moduledata['paginador']['total'] =Producto::count();
@@ -280,7 +357,7 @@ class WelcomeController extends Controller {
 				$moduledata['tienda'][0]->reputacion = ($reputacion_score / (count($ordenes)*5))*5;
 				$moduledata['tienda'][0]->reputacionpercent = ($reputacion_score / (count($ordenes)*5));	
 				$moduledata['tienda'][0]->ordenes = count($ordenes);	
-			}			
+			}		
 			//asignamos el id para listar las ordenes, en listarajaxorders
 			Session::put('store.id', $moduledata['tienda'][0]->id);			
 			return view('comprarjuntos/vertienda')->with($moduledata);
@@ -329,7 +406,7 @@ class WelcomeController extends Controller {
 			if(in_array($value, $conectores))unset($criterio[$key]);
 		}		
 		
-		if(count($criterio)){
+		if(count($conectors)){
 			//hay criterios de busqueda			
 
 			$productos = \DB::table('clu_products')
@@ -459,10 +536,36 @@ class WelcomeController extends Controller {
 		if(empty(Session::get('store.id'))){
 			return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
 		}
-		$productos = \DB::table('clu_products')							
+		
+		$productos = \DB::table('clu_products')
+		->select('clu_products.*',\DB::raw('COUNT(clu_products.id) as ventas'))
+		->leftjoin('clu_order_detail', 'clu_products.id', '=', 'clu_order_detail.product_id')								
 		->where('clu_products.store_id',Session::get('store.id'))
+		->groupBy('clu_products.id')
 		->skip($request->input('ppp')*($request->input('pagina_solicitada')-1))->take($request->input('ppp'))				
 		->get();
+
+		$ventas = \DB::table('clu_products')
+		->select('clu_products.*',\DB::raw('SUM(clu_order_detail.volume) as ventas'))			
+		->leftjoin('clu_order_detail', 'clu_products.id', '=', 'clu_order_detail.product_id')
+		->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')			
+		->where('clu_products.store_id',Session::get('store.id'))
+		->where('clu_order.stage_id',4)
+		->groupBy('clu_products.id')
+		->skip(0)->take(16)		
+		->get();
+
+		foreach ($productos as $pkey => $producto) {
+			$producto->ventas = 0;				
+			foreach ($ventas as $vkey => $venta) {
+				if($producto->id == $venta->id){
+					//el producto tiene ventas reales
+					$producto->ventas = $venta->ventas;
+					 break; 
+				}
+			}				
+		}
+
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
 	}
 
