@@ -22,7 +22,7 @@ class CreateCluStoreTable extends Migration
             $table->string('city')->nullable();
             $table->string('adress')->nullable(); 
             $table->string('description')->nullable();
-            $table->string('ubication')->nullable();
+            $table->string('ubication',512)->nullable();
             $table->string('image')->nullable();
             $table->string('banner')->nullable();
             $table->string('color_one')->nullable();

@@ -280,9 +280,15 @@ class StoreController extends Controller {
 			$store ->nit =  '';
 			$store->department =  $request->input()['departamento'];
 			$store->city =  $request->input()['municipio'];
-			$store->adress =  $request->input()['direccion'];
+			$store->adress =  $request->input()['direccion'];			
 			$store->description =  $request->input()['descripcion'];
-			$store->ubication =  $request->input()['ubicacion'];
+			//reemplazando dimensiones de iframe
+			$ubication = str_replace('width="400"','width="100%"',$request->input()['ubicacion']);
+			$ubication = str_replace('width="600"','width="100%"',$ubication);
+			$ubication = str_replace('width="800"','width="100%"',$ubication);
+			$ubication = str_replace('height="300"','height="450"',$ubication);
+			$ubication = str_replace('height="600"','height="450"',$ubication);
+			$store->ubication =  $ubication;
 			if(empty($store->image))$store->image =  'default.png';
 			if(!empty($fileName_image))$store->image =  $fileName_image;
 			if(empty($store->banner))$store->banner =  'default.png';

@@ -5,6 +5,7 @@ function seg_user() {
     this.cart_products = new Array();
     this.cart_contador = 1;
     this.table_orders = '';
+    this.datos_productos = [];
     //refrescamos el brand del carrito de compras, ante el refresh de seg_user
 }
 	
@@ -112,6 +113,9 @@ seg_user.prototype.validateCart = function(){
     
 };
 
+seg_user.prototype.validateFinder = function(){
+     return true;
+};
 
 seg_user.prototype.lugarRespuesta = function(result) {
 	//se evalua la respuesta
@@ -916,6 +920,9 @@ seg_user.prototype.consultaRespuestaListarProductos = function(result) {
         });
         */
     });
+
+    //asignamos el valor al input buscador
+    $('[name=finder_store]').val(result.request.finder_store);
 
     
 }

@@ -1,6 +1,6 @@
 @extends('app')
 
-@section('content')	
+@section('content')		
 	<style>
 	.panel-body {		    
 	    padding-bottom: 0px;
@@ -134,6 +134,16 @@
 		text-decoration: none;    	
 	}
 
+	.ui-autocomplete{
+	    color: #555555;
+    	background-color: #ffffff;
+    	background-image: none;
+    	font-size: 14px;
+    	line-height: 1.42857143;
+    	font-family: inherit;
+    	position: absolute; cursor: default;z-index:1060 !important;
+	}
+
 	</style>
 
 	<link rel="stylesheet" href="{{ url('css/font-awesome.min.css') }}">
@@ -206,7 +216,7 @@
 		</div>
 	</div>
 	
-	<div class="row tienda_banner" style="height: 200px;font-size: 40px; color: {{$tienda[0]->color_two}} !important; padding: 1%;margin-bottom: 1%; ">
+	<div class="row tienda_banner col-md-10 col-md-offset-1" style="height: 200px;font-size: 40px; color: {{$tienda[0]->color_two}} !important; padding: 1%;margin-bottom: 1%; ">
 		@if($tienda[0]->banner == 'default.png')
 			{{$tienda[0]->name}}
 		@endif
@@ -320,7 +330,7 @@
 			<div class="btn-group btn-menu" role="group">
 				<!--<button type="button" class="btn btn-default">Articulos</button>-->
 				<button type="button" class="btn btn-default" data-toggle="popover" title="Categorias" data-placement="bottom" data-content="{{ Html::ul($categorias)}}" data-html="true">Categorias</button>				
-				<button type="button" class="btn btn-default">Ubicaciòn</button>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ubication_modal">Ubicaciòn</button>
 				<button type="button" class="btn btn-default">Estadisticas</button>				
 				<!--<button type="button" class="btn btn-default">Grupos de Consumo</button>-->
 				<button type="button" class="btn btn-default" ><a href="#calificaciones" id="link1" class="bnt-catacteristicas">Calificaciones</a></button>
@@ -405,13 +415,14 @@
 		</div>
 	</div>
 
-	<!--Margin para el div paginador que es flotante-->
+	<!--Margin para el div paginador que es flotante, para que se vea en los diferentes dispositivos.-->
 	<div class="row visible-lg" style="margin-top: 0%;"></div>
 	<div class="row visible-md" style="margin-top: 6%;"></div>
 	<div class="row visible-sm" style="margin-top: 8%;"></div>
 	<div class="row visible-xs" style="margin-top: 10%;"></div>
 
 	<!--Listado de reseñas-->
+	<a name="calificaciones"></a>
 	<div id="calificaciones" class="col-md-10 col-md-offset-1" style="margin-top: 2%;">
 		<div class="panel panel-default">
 			<div class="panel-heading" style="text-align: center;"><b>CALIFICACIONES DEL SERVICIO</b></div>
@@ -429,7 +440,7 @@
 				</table>
 			</div>
 		</div>		
-	</div>
+	</div>	
 	
 @endsection
 
@@ -582,6 +593,26 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="ubication_modal" role="dialog">
+		<div class="modal-dialog modal-lg" style="text-align: center;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Ubicación Tienda {!!ucwords($tienda[0]->name)!!}</h4>
+				</div>
+				<div class = "alerts-module" style="font-size: 14px;"></div>
+				<div class="modal-body" >
+					{!!$tienda[0]->ubication!!}
+				</div>
+				<div class="modal-footer">
+					<div class="col-md-12">						
+				    	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	@if (Auth::guest())
 	<!-- Modals para invitados -->
 
@@ -725,66 +756,121 @@
 
 @section('script')
 	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
+
+	<!--Autocomplete para buscador-->
+	@foreach($products_name as $producto)
+		<script type="text/javascript" charset="utf-8">  seg_user.datos_productos.push("{!!$producto!!}"); </script>
+	@endforeach
+
 	<script type="text/javascript">
 		//ocultamos el buscador general
 		$('.div-finder').hide();
 		//agregamos el nuevo buscador via javascript
-
 		var div_finder_conteiner = document.getElementsByClassName("div-finder-conteiner");
 		
 		var div_finder0 = document.createElement("div");
 		div_finder0.setAttribute("class", "div-finder-store");
+		var form0 = document.createElement("form");
+		form0.setAttribute("class", "navbar-form navbar-left visible-lg");
+		form0.setAttribute("method", "GET");
+		form0.setAttribute("action", ""+"{{url('/')}}");
+		form0.setAttribute("accept-charset", "UTF-8");
+		form0.setAttribute("onsubmit", "javascript:return seg_user.validateFinder()");
+		var div_group0 = document.createElement("div");
+		div_group0.setAttribute("class", "input-group");
+		div_group0.setAttribute("style", "width: 35%;position: absolute;margin-left: 15%;");
 		var input0 = document.createElement("input");
 		input0.setAttribute("class", "form-control");
 		input0.setAttribute("placeholder", "Busca productos de la Tienda "+"{!!ucwords($tienda[0]->name)!!}");
-		input0.setAttribute("style", "text-align: center;width: 85%;");
+		input0.setAttribute("style", "text-align: center;");
 		input0.setAttribute("maxlength", 48);
 		input0.setAttribute("name", "finder_store");
-		div_finder0.appendChild(input0);
+		inputhidden0 = document.createElement("input");
+        inputhidden0.setAttribute("type", "hidden");
+        inputhidden0.setAttribute("name", "store");
+        inputhidden0.value = "{{ucwords($tienda[0]->id)}}";	
 		var span0 = document.createElement("span");
 		span0.setAttribute("class", "input-group-btn");
 		var button0 = document.createElement("button");
 		button0.setAttribute("class", "btn btn-default");
-		button0.setAttribute("type", "button");
-		button0.innerHTML = "Buscar!";
+		button0.setAttribute("type", "submit");
+		button0.innerHTML = "Buscar!";		
+		div_group0.appendChild(input0);
+		div_group0.appendChild(inputhidden0);
 		span0.appendChild(button0);
-		div_finder0.appendChild(span0);
+		div_group0.appendChild(span0);		
+		form0.appendChild(div_group0);
+		div_finder0.appendChild(form0);
 
 		var div_finder1 = document.createElement("div");
-		div_finder1.setAttribute("class", "div-finder-store");
+		div_finder1.setAttribute("class", "div-finder-store");		
+		var form1 = document.createElement("form");
+		form1.setAttribute("class", "navbar-form navbar-left visible-md");
+		form1.setAttribute("method", "GET");
+		form1.setAttribute("action", ""+"{{url('/')}}");
+		form1.setAttribute("accept-charset", "UTF-8");
+		form1.setAttribute("style", "width: 100%");
+		form1.setAttribute("onsubmit", "javascript:return seg_user.validateFinder()");
+		var div_group1 = document.createElement("div");
+		div_group1.setAttribute("class", "input-group");
+		div_group1.setAttribute("style", "width: 100%;");
 		var input1 = document.createElement("input");
 		input1.setAttribute("class", "form-control");
-		input1.setAttribute("placeholder", "Busca productos de la Tienda "+"{!!ucwords($tienda[0]->name)!!}");
-		input1.setAttribute("style", "text-align: center;width: 70%;");
+		input1.setAttribute("placeholder", "Buscador de "+"{!!ucwords($tienda[0]->name)!!}");
+		input1.setAttribute("style", "text-align: center;");
 		input1.setAttribute("maxlength", 48);
 		input1.setAttribute("name", "finder_store");
-		div_finder1.appendChild(input1);
+		inputhidden1 = document.createElement("input");
+        inputhidden1.setAttribute("type", "hidden");
+        inputhidden1.setAttribute("name", "store");
+        inputhidden1.value = "{{ucwords($tienda[0]->id)}}";			
 		var span1 = document.createElement("span");
 		span1.setAttribute("class", "input-group-btn");
 		var button1 = document.createElement("button");
 		button1.setAttribute("class", "btn btn-default");
-		button1.setAttribute("type", "button");
-		button1.innerHTML = "Buscar!";
+		button1.setAttribute("type", "submit");
+		button1.innerHTML = "Buscar!";		
+		div_group1.appendChild(input1);
 		span1.appendChild(button1);
-		div_finder1.appendChild(span1);		
+		div_group1.appendChild(span1);		
+		div_group1.appendChild(inputhidden1);
+		form1.appendChild(div_group1);
+		div_finder1.appendChild(form1);
 
 		var div_finder2 = document.createElement("div");
 		div_finder2.setAttribute("class", "div-finder-store");		
+		var form2 = document.createElement("form");
+		form2.setAttribute("class", "navbar-form navbar-left visible-sm");
+		form2.setAttribute("method", "GET");
+		form2.setAttribute("action", ""+"{{url('/')}}");
+		form2.setAttribute("accept-charset", "UTF-8");
+		form2.setAttribute("style", "width: 100%");
+		form2.setAttribute("onsubmit", "javascript:return seg_user.validateFinder()");
+		var div_group2 = document.createElement("div");
+		div_group2.setAttribute("class", "input-group");
+		div_group2.setAttribute("style", "width: 100%;");
 		var input2 = document.createElement("input");
 		input2.setAttribute("class", "form-control");
-		input2.setAttribute("placeholder", "Busca productos de la Tienda "+"{!!ucwords($tienda[0]->name)!!}");
-		input2.setAttribute("style", "text-align: center;width: 65%;");
+		input2.setAttribute("placeholder", "Buscador de "+"{!!ucwords($tienda[0]->name)!!}");
+		input2.setAttribute("style", "text-align: center;");
 		input2.setAttribute("maxlength", 48);
 		input2.setAttribute("name", "finder_store");
-		div_finder2.appendChild(input2);
+		inputhidden2 = document.createElement("input");
+        inputhidden2.setAttribute("type", "hidden");
+        inputhidden2.setAttribute("name", "store");
+        inputhidden2.value = "{{ucwords($tienda[0]->id)}}";				
 		var span2 = document.createElement("span");
 		span2.setAttribute("class", "input-group-btn");
 		var button2 = document.createElement("button");
 		button2.setAttribute("class", "btn btn-default");
-		button2.setAttribute("type", "button");
-		button2.innerHTML = "Buscar!";
+		button2.setAttribute("type", "submit");
+		button2.innerHTML = "Buscar!";		
+		div_group2.appendChild(input2);
 		span2.appendChild(button2);
-		div_finder2.appendChild(span2);		
+		div_group2.appendChild(span2);
+		div_group2.appendChild(inputhidden2);		
+		form2.appendChild(div_group2);
+		div_finder2.appendChild(form2);
 
 		//solo para el primer div
 		div_finder_conteiner[0].appendChild(div_finder0);
@@ -1173,8 +1259,9 @@
 						datos['total'] = $('#total_productos').text();
 						datos['ppp'] = $('#productos_pagina').text(); 
 						datos['pagina'] = $('#pagina_actual').text();
-						datos['paginas'] = $('#paginas').text();
+						datos['paginas'] = $('#paginas').text();						
 						datos['pagina_solicitada'] = parseInt($('#pagina_actual').text())-1 ;
+						datos['finder_store'] = $('[name=finder_store]').val();
 						seg_ajaxobject.peticionajax($('#form_from_products').attr('action'),datos,"seg_user.consultaRespuestaListarProductos");					
 					}				
 				}
@@ -1188,6 +1275,7 @@
 						datos['pagina'] = $('#pagina_actual').text();
 						datos['paginas'] = $('#paginas').text();
 						datos['pagina_solicitada'] = parseInt($('#pagina_actual').text())+1 ;
+						datos['finder_store'] = $('[name=finder_store]').val();
 						seg_ajaxobject.peticionajax($('#form_from_products').attr('action'),datos,"seg_user.consultaRespuestaListarProductos");				
 					}				
 				}
@@ -1200,10 +1288,21 @@
 					datos['pagina'] = $('#pagina_actual').text();
 					datos['paginas'] = $('#paginas').text();
 					datos['pagina_solicitada'] = this.textContent;
+					datos['finder_store'] = $('[name=finder_store]').val();
 					seg_ajaxobject.peticionajax($('#form_from_products').attr('action'),datos,"seg_user.consultaRespuestaListarProductos");					
 				}
 			}
 			
 		});
+
+		//autocomplete con los datos iniciales
+		$('[name=finder_store]').autocomplete({
+		      source:seg_user.datos_productos
+	    });
+
+		//limpiado de array
+	    seg_user.datos_productos= [];
+
 	</script>
+
 @endsection

@@ -58,36 +58,45 @@
 						</ul>
 					</li>				
 					</ul>
-					{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
-					   <div class="input-group div-finder-conteiner" style="width: 35%;position: absolute;margin-left: 15%;">
-					   		<div class="div-finder">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 85%;','maxlength' => 48)) !!}
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">Buscar!</button>
-								</span>
+					<div class="visible-lg div-finder-conteiner">
+						<div class="div-finder">
+							{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
+							   <div class="input-group " style="width: 35%;position: absolute;margin-left: 15%;">						   		
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;','maxlength' => 48)) !!}
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Buscar!</button>
+									</span>								
+								</div>
+						    {!! Form::close() !!}
+					    </div>
+				    </div>
+
+				    <div class="visible-md div-finder-conteiner" style="margin-left: 30%;position: absolute;width: 35%;">
+					    <div class="div-finder">					    
+						   <div class="input-group" style="width: 100%;">					   		
+						   		{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-md','onsubmit'=>'javascript:return seg_user.validateFinder()','style'=>'width: 100%;')) !!}
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Buscar!</button>
+									</span>							
+								{!! Form::close() !!}
+							</div>					    
+					    </div>
+				    </div>
+
+				    <div class="visible-sm div-finder-conteiner" style="width: 35%;position: absolute;margin-left: 30%;">
+			    		<div class="div-finder">				    					    
+					   		<div class="input-group div-finder-conteiner" style="width: 100%;">
+					   			{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()','style'=>'width: 100%;')) !!}	
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Buscar!</button>
+									</span>
+								{!! Form::close() !!}							
 							</div>
-						</div>
-				    {!! Form::close() !!}
-				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-md','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
-					   <div class="input-group div-finder-conteiner" style="width: 30%;position: absolute;margin-left: 10%;">
-					   		<div class="div-finder">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">Buscar!</button>
-								</span>
-							</div>
-						</div>
-				    {!! Form::close() !!}
-				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}				    
-					   <div class="input-group div-finder-conteiner" style="width: 25%;position: absolute;margin-left: 0%;">
-					   		<div class="div-finder">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 65%;','maxlength' => 48)) !!}
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">Buscar!</button>
-								</span>
-							</div>
-						</div>
-				    {!! Form::close() !!}
+				    	</div>
+				    </div>
+
 					<ul class="nav navbar-nav navbar-right">				
 						<li><a href="#" data-toggle="modal" data-target="#registry_modal" >Registrate</a></li>
 						<li><a href="#" data-toggle="modal" data-target="#login_modal" >Ingresa</a></li>
@@ -142,36 +151,44 @@
 						</li>
 					@endforeach				
 					</ul>
-					{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
-					   <div class="input-group div-finder-conteiner" style="width: 35%;position: absolute;margin-left: 15%;">
-							<div class="div-finder">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 85%;','maxlength' => 48)) !!}							
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">Buscar!</button>
-								</span>
+					<div class="visible-lg div-finder-conteiner">
+						<div class="div-finder">
+							{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
+							   <div class="input-group " style="width: 35%;position: absolute;margin-left: 15%;">						   		
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;','maxlength' => 48)) !!}
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Buscar!</button>
+									</span>								
+								</div>
+						    {!! Form::close() !!}
+					    </div>
+				    </div>
+
+				    <div class="visible-md div-finder-conteiner" style="margin-left: 30%;position: absolute;width: 35%;">
+					    <div class="div-finder">					    
+						   <div class="input-group" style="width: 100%;">					   		
+						   		{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-md','onsubmit'=>'javascript:return seg_user.validateFinder()','style'=>'width: 100%;')) !!}
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Buscar!</button>
+									</span>							
+								{!! Form::close() !!}
+							</div>					    
+					    </div>
+				    </div>
+
+				    <div class="visible-sm div-finder-conteiner" style="width: 35%;position: absolute;margin-left: 30%;">
+			    		<div class="div-finder">				    					    
+					   		<div class="input-group div-finder-conteiner" style="width: 100%;">
+					   			{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()','style'=>'width: 100%;')) !!}	
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Buscar!</button>
+									</span>
+								{!! Form::close() !!}							
 							</div>
-						</div>
-				    {!! Form::close() !!}
-				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-md','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
-					   <div class="input-group div-finder-conteiner" style="width: 30%;position: absolute;margin-left: 10%;">
-							<div class="div-finder">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">Buscar!</button>
-								</span>
-							</div>
-						</div>
-				    {!! Form::close() !!}
-				    {!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}				    
-					   <div class="input-group div-finder-conteiner" style="width: 25%;position: absolute;margin-left: 0%;">
-							<div class="div-finder">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 65%;','maxlength' => 48)) !!}
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">Buscar!</button>
-								</span>
-							</div>
-						</div>
-				    {!! Form::close() !!}
+				    	</div>
+				    </div>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
 							<a href="#" data-submenu="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" tabindex="0">{{Session::get('comjunplus.usuario.name')}}<span class="caret"></span></a>
