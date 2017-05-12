@@ -622,10 +622,10 @@
 					<h4 class="modal-title">Resumen Tienda {!!ucwords($tienda[0]->name)!!}</h4>
 				</div>
 				<div class = "alerts-module" style="font-size: 14px;"></div>
-				<div class="modal-body" style="overflow: hidden;">
+				<div class="modal-body" >
 					<div class="row">
 						<div class="col-md-12 col-md-offset-0">
-							<div class="" id="container_pie_ordenes" style="position: relative;"></div>	
+							<div class="" id="container_pie_ordenes"></div>	
 						</div>
 					</div>					
 				</div>
@@ -1332,6 +1332,16 @@
 	    });
 
 	    seg_user.iniciarPie('#container_pie_ordenes','Distribución de pedidos por estado',seg_user.datos_pie_orders,seg_user.colores_pie_orders);
+
+	    //para hacer que el chart quepa ene l modal.
+	    var chart = $('#container_pie_ordenes').highcharts();
+	    $('#resumen_modal').on('show.bs.modal', function() {
+		    $('#container_pie_ordenes').css('visibility', 'hidden');
+		});
+		$('#resumen_modal').on('shown.bs.modal', function() {
+		    $('#container_pie_ordenes').css('visibility', 'initial');
+		    chart.reflow();
+		});
 
 		//limpiado de array
 	    seg_user.datos_productos= [];
