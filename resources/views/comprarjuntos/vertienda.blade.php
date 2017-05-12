@@ -331,7 +331,7 @@
 				<!--<button type="button" class="btn btn-default">Articulos</button>-->
 				<button type="button" class="btn btn-default" data-toggle="popover" title="Categorias" data-placement="bottom" data-content="{{ Html::ul($categorias)}}" data-html="true">Categorias</button>				
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ubication_modal">Ubicaciòn</button>
-				<button type="button" class="btn btn-default">Estadisticas</button>				
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#resumen_modal">Resumen</button>				
 				<!--<button type="button" class="btn btn-default">Grupos de Consumo</button>-->
 				<button type="button" class="btn btn-default" ><a href="#calificaciones" id="link1" class="bnt-catacteristicas">Calificaciones</a></button>
 			</div>
@@ -441,7 +441,6 @@
 			</div>
 		</div>		
 	</div>	
-	
 @endsection
 
 @section('modal')
@@ -593,8 +592,9 @@
 		</div>
 	</div>
 
+	<!--Modal para la ubicaciòn-->
 	<div class="modal fade" id="ubication_modal" role="dialog">
-		<div class="modal-dialog modal-lg" style="text-align: center;">
+		<div class="modal-dialog" style="text-align: center;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -603,6 +603,31 @@
 				<div class = "alerts-module" style="font-size: 14px;"></div>
 				<div class="modal-body" >
 					{!!$tienda[0]->ubication!!}
+				</div>
+				<div class="modal-footer">
+					<div class="col-md-12">						
+				    	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--Modal para estadisticas-->
+	<div class="modal fade" id="resumen_modal" role="dialog">
+		<div class="modal-dialog" style="text-align: center;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Resumen Tienda {!!ucwords($tienda[0]->name)!!}</h4>
+				</div>
+				<div class = "alerts-module" style="font-size: 14px;"></div>
+				<div class="modal-body" style="overflow: hidden;">
+					<div class="row">
+						<div class="col-md-12 col-md-offset-0">
+							<div class="" id="container_pie_ordenes" style="position: relative;"></div>	
+						</div>
+					</div>					
 				</div>
 				<div class="modal-footer">
 					<div class="col-md-12">						
@@ -761,6 +786,12 @@
 	@foreach($products_name as $producto)
 		<script type="text/javascript" charset="utf-8">  seg_user.datos_productos.push("{!!$producto!!}"); </script>
 	@endforeach
+
+	<!--Resumen torta-->
+	@foreach ($orders as $llave_ord => $order)		
+		<script type="text/javascript">  seg_user.datos_pie_orders.push({name:"{{$order->stage}}",y:{{$order->total}}});</script>
+		<script type="text/javascript">  seg_user.colores_pie_orders.push('{{$order->color}}');</script>
+	@endforeach	
 
 	<script type="text/javascript">
 		//ocultamos el buscador general
@@ -1300,8 +1331,12 @@
 		      source:seg_user.datos_productos
 	    });
 
+	    seg_user.iniciarPie('#container_pie_ordenes','Distribución de pedidos por estado',seg_user.datos_pie_orders,seg_user.colores_pie_orders);
+
 		//limpiado de array
 	    seg_user.datos_productos= [];
+	    seg_user.datos_pie_orders = [];
+		seg_user.colores_pie_orders = [];
 
 	</script>
 

@@ -6,6 +6,8 @@ function seg_user() {
     this.cart_contador = 1;
     this.table_orders = '';
     this.datos_productos = [];
+    this.datos_pie_orders = [];
+    this.colores_pie_orders = [];
     //refrescamos el brand del carrito de compras, ante el refresh de seg_user
 }
 	

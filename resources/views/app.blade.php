@@ -244,6 +244,8 @@
 		<script type="text/javascript" src="{{ url('js/locales/bootstrap-datepicker.es.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url('js/datatables_row.min.js') }}"></script>
 		<script type="text/javascript" src="{{ url('js/datatables-responsive.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url('js/highcharts.js') }}"></script>	
+		<script type="text/javascript" src="{{ url('js/exporting.js') }}"></script>		
 
 		<script type="text/javascript" src="{{ url('js/seguridad/seg_user.js') }}"></script>
 		<script type="text/javascript" src="{{ url('js/seguridad/seg_ajaxobject.js') }}"></script>

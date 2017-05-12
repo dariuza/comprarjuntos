@@ -187,10 +187,8 @@ class WelcomeController extends Controller {
 						->orderByRaw("RAND()")
 						->skip(0)->take(12)
 						->get();
-					}
-					
+					}					
 				}
-
 			}
 
 			if(array_key_exists('criterio',$request->input())){
@@ -332,7 +330,21 @@ class WelcomeController extends Controller {
 				$moduledata['products_name'] = array();
 				foreach ($products as $key => $value) {
 					$moduledata['products_name'][] = $value->pname.' '.$value->cname;
-				}		
+				}
+
+				//resumen estadistico
+				$moduledata['orders'] = \DB::table('clu_order')
+				->select('clu_stage.stage', \DB::raw('count(*) as total'))
+				->join('clu_stage', 'clu_order.stage_id', '=', 'clu_stage.id')
+				->where('clu_order.store_id',$moduledata['tienda'][0]->id)
+				->groupBy('clu_order.stage_id')	
+				->get();
+				foreach ($moduledata['orders'] as $key => $value) {
+					if($value->stage == "PENDIENTE") $value->color = "#e6e600";
+					if($value->stage == "ACEPTADO") $value->color = "#0099cc";
+					if($value->stage == "RECHAZADO") $value->color = "#ff5c33";
+					if($value->stage == "FINALIZADO") $value->color = "#33cc33";
+				}	
 
 				//paginador
 				$moduledata['paginador']['total'] =Producto::count();
@@ -473,7 +485,21 @@ class WelcomeController extends Controller {
 			foreach ($products as $key => $value) {
 				$moduledata['products_name'][] = $value->pname.' '.$value->cname;
 			}
-			
+
+			//resumen estadistico		
+			$moduledata['orders'] = \DB::table('clu_order')
+			->select('clu_stage.stage', \DB::raw('count(*) as total'))
+			->join('clu_stage', 'clu_order.stage_id', '=', 'clu_stage.id')
+			->where('clu_order.store_id',$moduledata['tienda'][0]->id)
+			->groupBy('clu_order.stage_id')	
+			->get();
+			foreach ($moduledata['orders'] as $key => $value) {
+				if($value->stage == "PENDIENTE") $value->color = "#e6e600";
+				if($value->stage == "ACEPTADO") $value->color = "#0099cc";
+				if($value->stage == "RECHAZADO") $value->color = "#ff5c33";
+				if($value->stage == "FINALIZADO") $value->color = "#33cc33";
+			}
+									
 			//paginador
 			$moduledata['paginador']['total'] =Producto::count();
 			$moduledata['paginador']['ppp'] =16;//productospor pagina
