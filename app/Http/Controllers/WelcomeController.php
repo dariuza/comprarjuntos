@@ -235,11 +235,11 @@ class WelcomeController extends Controller {
 				})
 				->orderByRaw("RAND()")
 				->skip(0)->take(12)
-				->get();
+				->get();				
 			}
 
 			if(array_key_exists('finder_store',$request->input())){
-				//buscdor de la tienda, intentan buscar productos o categorias
+				//buscador de la tienda, intentan buscar productos o categorias
 				$criterio = explode(' ',strtolower($request->input('finder_store')));
 				$conectors = Conector::all()->toArray();			
 				foreach ($conectors as $key => $value) {
@@ -344,6 +344,18 @@ class WelcomeController extends Controller {
 					if($value->stage == "ACEPTADO") $value->color = "#0099cc";
 					if($value->stage == "RECHAZADO") $value->color = "#ff5c33";
 					if($value->stage == "FINALIZADO") $value->color = "#33cc33";
+				}
+				$moduledata['calificaciones'] = \DB::table('clu_order')
+				->select('clu_order.resenia', \DB::raw('count(*) as total'))			
+				->where('clu_order.store_id',$moduledata['tienda'][0]->id)
+				->groupBy('clu_order.resenia')	
+				->get();			
+				foreach ($moduledata['calificaciones'] as $key => $value) {
+					if($value->resenia == 1){$value->resenia_text = "Muy Malo";$value->color = "red";}
+					if($value->resenia == 2){$value->resenia_text = "Malo";$value->color = "#ff9900";}
+					if($value->resenia == 3){$value->resenia_text = "Regular";$value->color = "#ffcc00";}
+					if($value->resenia == 4){$value->resenia_text = "Bueno";$value->color = "#66ccff";}
+					if($value->resenia == 5){$value->resenia_text = "Muy Bueno";$value->color = "#00cc66";}
 				}	
 
 				//paginador
@@ -499,7 +511,19 @@ class WelcomeController extends Controller {
 				if($value->stage == "RECHAZADO") $value->color = "#ff5c33";
 				if($value->stage == "FINALIZADO") $value->color = "#33cc33";
 			}
-									
+			$moduledata['calificaciones'] = \DB::table('clu_order')
+			->select('clu_order.resenia', \DB::raw('count(*) as total'))			
+			->where('clu_order.store_id',$moduledata['tienda'][0]->id)
+			->groupBy('clu_order.resenia')	
+			->get();			
+			foreach ($moduledata['calificaciones'] as $key => $value) {
+				if($value->resenia == 1){$value->resenia_text = "Muy Malo";$value->color = "red";}
+				if($value->resenia == 2){$value->resenia_text = "Malo";$value->color = "#ff9900";}
+				if($value->resenia == 3){$value->resenia_text = "Regular";$value->color = "#ffcc00";}
+				if($value->resenia == 4){$value->resenia_text = "Bueno";$value->color = "#66ccff";}
+				if($value->resenia == 5){$value->resenia_text = "Muy Bueno";$value->color = "#00cc66";}
+			}
+												
 			//paginador
 			$moduledata['paginador']['total'] =Producto::count();
 			$moduledata['paginador']['ppp'] =16;//productospor pagina
@@ -576,7 +600,7 @@ class WelcomeController extends Controller {
 			if(in_array($value, $conectores))unset($criterio[$key]);
 		}		
 		
-		if(count($conectors)){
+		if(count($criterio)){
 			//hay criterios de busqueda			
 
 			$productos = \DB::table('clu_products')
@@ -589,13 +613,14 @@ class WelcomeController extends Controller {
 				foreach($criterio as $key => $value){
 					$q->orwhere('clu_products.name', 'like', '%'.$value.'%')
 					->orwhere('clu_products.description', 'like', '%'.$value.'%')
-					->orwhere('clu_store.description', 'like', '%'.$value.'%');
+					->orwhere('clu_store.description', 'like', '%'.$value.'%')
+					->orwhere('clu_products.description', 'like', $value.'%');
 				}
 			})
 			->orderByRaw("RAND()")
 			->skip(0)->take(1)
 			->get();
-
+			
 			if(count($productos)){
 				return redirect()->action('WelcomeController@index', ['criterio' => strtolower($data)]);	
 			}

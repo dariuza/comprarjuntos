@@ -122,9 +122,11 @@
 				<div class="panel-body">
 					<div class="col-md-12 col-md-offset-0 data_cell_b" id="btn_edit_up" data-toggle="modal" data-target="#cpep_modal"> Editar Los Datos De Mi Perfil</div>
 					<div class="col-md-12 col-md-offset-0 data_cell_b"  id="btn_new_psw" data-toggle="modal" data-target="#cpsw_modal"> Cambiar Mi Contraseña</div>					
-					<div class="col-md-12 col-md-offset-0 data_cell_b" style = "margin-top: 0px;"> Ir a Mi Buzón de Mensajes</div>
+					<!--<div class="col-md-12 col-md-offset-0 data_cell_b" style = "margin-top: 0px;"> Ir a Mi Buzón de Mensajes</div>-->
+					<div class="col-md-12 col-md-offset-0 data_cell_b" data-toggle="popover" title="Cuenta {!! ucwords(Session::get('comjunplus.usuario.account'))!!}" data-placement="bottom" data-content="<div>Rol: {!!Session::get('comjunplus.usuario.rol')!!}</div><div>Nº de Tiendas: {!!Session::get('comjunplus.usuario.stores')!!}</div><div style='margin-bottom: 10%;'>Nº de Productos por Tienda: {!!Session::get('comjunplus.usuario.products')!!}</div><div style='font-size: 12px;'>Nota: Puedes modificar tu cuenta para que soporte más productos o más tiendas. <div style='color: blue;cursor: pointer;' data-toggle='modal' data-target='#mesadmin_modal'>Comunicate con soporte Aqui!.</div></div>" data-html="true">Resumen de Cuenta</div>
 					<div class="col-md-12 col-md-offset-0 data_cell_b"> Preguntas Frecuentes</div>
 					<div class="col-md-12 col-md-offset-0 data_cell_b_c"> Envianos tus Sugerencia</div>
+
 				</div>
 			</div>
 		</div>
@@ -353,6 +355,29 @@
 	      </div>
       </div>
 	</div>
+
+	<div class="modal fade" id="mesadmin_modal" role="dialog" >
+		<div class="modal-dialog  modal-sm">
+			<!-- Modal content-->
+	      <div class="modal-content">
+	      	<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Contacto Soporte</h4>
+			</div>
+			<div class = "alerts-module"></div>
+			<div class="modal-body">
+				<div class="row ">
+					<div class="col-md-12 col-md-offset-0 row_init">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+		        <button type="submit" form = "" class="btn btn-default " >Enviar</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
+		    </div>   
+	      </div>	    
+		</div>
+	</div>
 	<!-- Form en blanco para consultar Ciudades -->
 	{!! Form::open(array('id'=>'form_consult_city','url' => 'user/consultarcity')) !!}		
     {!! Form::close() !!}
@@ -371,6 +396,31 @@
 			datos['id'] =$( "#departamento option:selected" ).val();			   
 			seg_ajaxobject.peticionajax($('#form_consult_city').attr('action'),datos,"seg_user.consultaRespuestaCity");
 		});
+		$('[data-toggle="popover"]').popover({
+			html: true,
+	        trigger: 'manual',			
+			container: 'body'
+		 }).on('click', function(e) {
+		 	$('[data-toggle="popover"]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup		        
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+		            $(this).popover('hide');
+		        }
+		    });	        
+		 	$(this).popover('show');
+		 });
+
+		 $(document).on('click', function(e) {
+	        $('[data-toggle="popover"]').each(function () {
+		        //the 'is' for buttons that trigger popups
+		        //the 'has' for icons within a button that triggers a popup
+		        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+		            $(this).popover('hide');
+		        }
+		    });
+		   
+	    });
 	</script>
 @endsection
 

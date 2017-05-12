@@ -69,6 +69,11 @@
 		    	margin-left: -40% !important;
 		    } 
 		}
+		.btn{
+			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+			font-size: 15px;
+		}
+
 
 
 	</style>

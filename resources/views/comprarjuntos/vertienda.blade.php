@@ -133,6 +133,10 @@
 	.bnt-catacteristicas:hover{
 		text-decoration: none;    	
 	}
+	.btn{
+		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-size: 15px;
+	}
 
 	.ui-autocomplete{
 	    color: #555555;
@@ -143,6 +147,12 @@
     	font-family: inherit;
     	position: absolute; cursor: default;z-index:1060 !important;
 	}
+	.marco{
+		border: 1px solid #ddd;
+		border-radius: 5px;
+		margin-bottom: 2%;
+		box-shadow: 4px 4px 2px #ddd;
+	}	
 
 	</style>
 
@@ -321,7 +331,7 @@
 			<div> PROPIETARIO DE LA TIENDA</div>
 			{{ Html::image('users/'.$tendero[0]->user_name.'/profile/'.$tendero[0]->avatar,'Imagen no disponible',array( 'style'=>'width: auto; height: 150px;border:2px solid #ddd;border-radius: 50%;' ))}}
 			<div>{{$tendero[0]->names}} {{$tendero[0]->surnames}} </div>
-			<div><span class="glyphicon glyphicon-envelope" aria-hidden="true"> Contacto</span></div>
+			<!--<div><span class="glyphicon glyphicon-envelope" aria-hidden="true"> Contacto</span></div>-->
 		</div>		
 	</div>	
 
@@ -615,7 +625,7 @@
 
 	<!--Modal para estadisticas-->
 	<div class="modal fade" id="resumen_modal" role="dialog">
-		<div class="modal-dialog" style="text-align: center;">
+		<div class="modal-dialog modal-lg" style="text-align: center;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -624,8 +634,13 @@
 				<div class = "alerts-module" style="font-size: 14px;"></div>
 				<div class="modal-body" >
 					<div class="row">
-						<div class="col-md-12 col-md-offset-0">
-							<div class="" id="container_pie_ordenes"></div>	
+						<div class="col-md-12">
+							<div class="col-md-12 col-md-offset-0 marco">
+								<div class="" id="container_pie_ordenes"></div>	
+							</div>
+							<div class="col-md-12 col-md-offset-0 marco">
+								<div class="" id="container_pie_calificaciones"></div>	
+							</div>
 						</div>
 					</div>					
 				</div>
@@ -791,6 +806,11 @@
 	@foreach ($orders as $llave_ord => $order)		
 		<script type="text/javascript">  seg_user.datos_pie_orders.push({name:"{{$order->stage}}",y:{{$order->total}}});</script>
 		<script type="text/javascript">  seg_user.colores_pie_orders.push('{{$order->color}}');</script>
+	@endforeach	
+
+	@foreach ($calificaciones as $llave_cal => $calificacion)		
+		<script type="text/javascript">  seg_user.datos_pie_resenias.push({name:"{{$calificacion->resenia_text}}",y:{{$calificacion->total}}});</script>
+		<script type="text/javascript">  seg_user.colores_pie_resenias.push('{{$calificacion->color}}');</script>
 	@endforeach	
 
 	<script type="text/javascript">
@@ -1332,6 +1352,7 @@
 	    });
 
 	    seg_user.iniciarPie('#container_pie_ordenes','Distribución de pedidos por estado',seg_user.datos_pie_orders,seg_user.colores_pie_orders);
+	    seg_user.iniciarPie('#container_pie_calificaciones','Resumen de Calificaciones del servicio',seg_user.datos_pie_resenias,seg_user.colores_pie_resenias);
 
 	    //para hacer que el chart quepa ene l modal.
 	    var chart = $('#container_pie_ordenes').highcharts();
@@ -1343,10 +1364,21 @@
 		    chart.reflow();
 		});
 
+		var chart2 = $('#container_pie_calificaciones').highcharts();
+	    $('#resumen_modal').on('show.bs.modal', function() {
+		    $('#container_pie_calificaciones').css('visibility', 'hidden');
+		});
+		$('#resumen_modal').on('shown.bs.modal', function() {
+		    $('#container_pie_calificaciones').css('visibility', 'initial');
+		    chart2.reflow();
+		});
+
 		//limpiado de array
 	    seg_user.datos_productos= [];
 	    seg_user.datos_pie_orders = [];
 		seg_user.colores_pie_orders = [];
+		seg_user.datos_pie_resenias = [];
+    	seg_user.colores_pie_resenias = [];
 
 	</script>
 

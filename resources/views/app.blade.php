@@ -21,15 +21,15 @@
 		@php ($style = "default")
 		@if (Session::has('style'))
 			@php ($style=Session::get('style'))
-		@endif
-		
+		@endif		
 			
 		<link  rel="stylesheet" href="{{ url('css/'.$style.'/app.css') }}" type="text/css" />		
 		<link  rel="stylesheet" href="{{ url('css/jquery-ui.css') }}" type="text/css" />
 		<link  rel="stylesheet" href="{{ url('css/bootstrap-submenu.min.css') }}" type="text/css" />
 		<link  rel="stylesheet" href="{{ url('css/bootstrap-datepicker.min.css') }}" type="text/css" />	
 		<link  rel="stylesheet" href="{{ url('css/datatables.min.css') }}" type="text/css" />	
-		<link  rel="stylesheet" href="{{ url('css/datatables-responsive.min.css') }}" type="text/css" />				
+		<link  rel="stylesheet" href="{{ url('css/datatables-responsive.min.css') }}" type="text/css" />	
+		
 	</head>
 	
 	<body>		
@@ -42,7 +42,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{{ url('/') }}"><b>{{ Session::get('app') }}</b></a>					 
+					<a class="navbar-brand" style="font-family: 'Calligraffitti';font-size:20px ;" href="{{ url('/') }}"><b>{{ Session::get('app') }}</b></a>					 
 				</div>
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -88,7 +88,7 @@
 			    		<div class="div-finder">				    					    
 					   		<div class="input-group div-finder-conteiner" style="width: 100%;">
 					   			{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()','style'=>'width: 100%;')) !!}	
-									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 60%;','maxlength' => 48)) !!}
 									<span class="input-group-btn">
 										<button class="btn btn-default" type="submit">Buscar!</button>
 									</span>
@@ -181,7 +181,7 @@
 			    		<div class="div-finder">				    					    
 					   		<div class="input-group div-finder-conteiner" style="width: 100%;">
 					   			{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-sm','onsubmit'=>'javascript:return seg_user.validateFinder()','style'=>'width: 100%;')) !!}	
-									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 70%;','maxlength' => 48)) !!}
+									{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'Busca Productos o Tiendas','style'=>'text-align: center;width: 60%;','maxlength' => 48)) !!}
 									<span class="input-group-btn">
 										<button class="btn btn-default" type="submit">Buscar!</button>
 									</span>
@@ -193,16 +193,18 @@
 						<li class="dropdown">
 							<a href="#" data-submenu="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" tabindex="0">{{Session::get('comjunplus.usuario.name')}}<span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">							
+								<!--
 								<li>
 									<a href="{{ url('/buzon/'.Session::get('comjunplus.usuario.id')) }}">
 										<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>										
 										<span class="" aria-hidden="true" style = "font-size: 10px;" >{{Session::get('comjunplus.usuario.messages')}}</span>
 										Buzón de Mensajes
-										<!--<span class="badge">5</span>-->
+										<span class="badge">5</span>
 									</a>
 								</li>
+								-->
 								<li>
-									<a href="{{ url('/perfil/'.Session::get('comjunplus.usuario.id')) }}">
+									<a href="{{ url('/perfil/'.Session::get('comjunplus.usuario.name')) }}">
 										<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 										Perfil de Usuario
 									</a>

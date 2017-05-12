@@ -21,8 +21,9 @@ class CreateSegUserTable extends Migration
     		$table->string('password', 60);
     		$table->boolean('active')->default(true);
     		$table->boolean('login')->default(false);
-            $table->string('stores',env('APP_STORES',4));
-            $table->string('products',env('APP_PRODUCTS',60));
+            $table->string('stores')->default(env('APP_STORES',2));
+            $table->string('products')->default(env('APP_PRODUCTS',120));
+            $table->string('account')->default('basica');
     		$table->string('ip');
     		$table->integer('rol_id')->unsigned();
     		$table->rememberToken();

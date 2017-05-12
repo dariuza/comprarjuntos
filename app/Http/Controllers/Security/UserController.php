@@ -54,7 +54,8 @@ class UserController extends Controller {
 	}
 	
 	//función para mostrar la vista perfil
-	public function getPerfil(){		
+	public function getPerfil(){
+					
 		/**
 		 * REALIZAMOS CONSULTAS PARA PERFIL, GRAFICAS, EMAIL	 
 		 */

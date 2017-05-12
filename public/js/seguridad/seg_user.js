@@ -8,6 +8,9 @@ function seg_user() {
     this.datos_productos = [];
     this.datos_pie_orders = [];
     this.colores_pie_orders = [];
+    this.datos_pie_resenias = [];
+    this.colores_pie_resenias = [];
+    
     //refrescamos el brand del carrito de compras, ante el refresh de seg_user
 }
 	
@@ -215,7 +218,8 @@ seg_user.prototype.iniciarPie= function(contenedor_id,titulo,datos,colores){
                 cursor: 'pointer',                              
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}% - [{point.y}]',
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'                      
                     

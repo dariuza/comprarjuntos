@@ -137,6 +137,7 @@ class LoginController extends Controller
 					$array['usuario']['rol_id']=$result['rol_id'];
 					$array['usuario']['stores']=$result['stores'];
 					$array['usuario']['products']=$result['products'];
+					$array['usuario']['account']=$result['account'];
 					$array['usuario']['rol']=$result['rol'];					
 					$array['usuario']['identificacion']=$result['identificacion'];					
 					$array['usuario']['names']=$result['names'];
