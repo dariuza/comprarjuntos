@@ -360,7 +360,7 @@
 						<div class="panel panel-default">					
 							<div class="panel-body">
 						    	<div class="row">
-						    		<div class="col-md-12">
+						    		<div class="col-md-12 popoverStore" data-content="<div>{{$tienda->description}}</div><div><b>Tendero:</b> {{$tienda->tnames}} {{$tienda->tsurnames}}</div>" rel="popover" data-placement="bottom" data-original-title="{{$tienda->name}}" data-trigger="hover" data-html="true">
 						    			<a href="{{url('/'.$tienda->name)}}">
 						    				{{ Html::image('users/'.$tienda->user_name.'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}	    				
 						    			</a>					    				    									    			
@@ -973,6 +973,7 @@
 		
 		//esta funcion es para que el popover se cierre cuando demos clic fuera de el 
 		$(document).on('click', function(e) {
+			
 	        $('[data-toggle="popover"]').each(function () {
 		        //the 'is' for buttons that trigger popups
 		        //the 'has' for icons within a button that triggers a popup
@@ -991,6 +992,9 @@
 		        window.location=$('#form_home').attr('action')+"/"+this.textContent;
 		    });
 	    });
+
+	   	$('.popoverStore').popover();
+	    //$(".popoverStore").popover({ trigger: "hover focus" });
 
 		$('#rsn_resenia').val(3);
 	    $(".star").mouseover(function() {

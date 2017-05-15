@@ -123,8 +123,8 @@
 					<div class="col-md-12 col-md-offset-0 data_cell_b"  id="btn_new_psw" data-toggle="modal" data-target="#cpsw_modal"> Cambiar Mi Contraseña</div>					
 					<!--<div class="col-md-12 col-md-offset-0 data_cell_b" style = "margin-top: 0px;"> Ir a Mi Buzón de Mensajes</div>-->
 					<div class="col-md-12 col-md-offset-0 data_cell_b" data-toggle="popover" title="Cuenta {!! ucwords(Session::get('comjunplus.usuario.account'))!!}" data-placement="bottom" data-content="<div>Rol: {!!Session::get('comjunplus.usuario.rol')!!}</div><div>Nº de Tiendas: {!!Session::get('comjunplus.usuario.stores')!!}</div><div style='margin-bottom: 10%;'>Nº de Productos por Tienda: {!!Session::get('comjunplus.usuario.products')!!}</div><div style='font-size: 12px;'>Nota: Puedes modificar tu cuenta para que soporte más productos o más tiendas. <div style='color: blue;cursor: pointer;' data-toggle='modal' data-target='#mesadmin_modal'>Comunicate con soporte Aqui!.</div></div>" data-html="true">Resumen de Cuenta</div>
-					<div class="col-md-12 col-md-offset-0 data_cell_b"> Preguntas Frecuentes</div>
-					<div class="col-md-12 col-md-offset-0 data_cell_b_c"> Envianos tus Sugerencia</div>
+					<!--<div class="col-md-12 col-md-offset-0 data_cell_b"> Preguntas Frecuentes</div>-->
+					<div class="col-md-12 col-md-offset-0 data_cell_b_c" data-toggle='modal' data-target='#mesadmin_modal'> Envianos tus Sugerencia</div>
 				</div>
 			</div>
 		</div>

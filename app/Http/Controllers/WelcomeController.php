@@ -129,7 +129,7 @@ class WelcomeController extends Controller {
 					//es subcategoria, consultamos con su padre				
 
 					$moduledata['tiendas'] = \DB::table('clu_store')
-					->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+					->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar','seg_user_profile.names as tnames','seg_user_profile.surnames as tsurnames')
 					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 					->where('clu_store.metadata','like','%'.$categoria[0]->category_id.'%')
@@ -153,7 +153,7 @@ class WelcomeController extends Controller {
 				}else{
 					//es categoria, consultamos con su id
 					$moduledata['tiendas'] = \DB::table('clu_store')
-					->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+					->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar','seg_user_profile.names as tnames','seg_user_profile.surnames as tsurnames')
 					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 					->where('clu_store.metadata','like','%'.$categoria[0]->id.'%')
@@ -203,7 +203,7 @@ class WelcomeController extends Controller {
 					if(in_array($value, $conectores))unset($criterio[$key]);
 				}
 				$moduledata['tiendas'] = \DB::table('clu_store')
-				->distinct()->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+				->distinct()->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar','seg_user_profile.names as tnames','seg_user_profile.surnames as tsurnames')
 				->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 				->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 				->leftjoin('clu_products', 'clu_store.id', '=', 'clu_products.store_id')
@@ -397,7 +397,7 @@ class WelcomeController extends Controller {
 			//no hay filtro
 			//algunas tiendas
 			$moduledata['tiendas'] = \DB::table('clu_store')
-			->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar')
+			->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar','seg_user_profile.names as tnames','seg_user_profile.surnames as tsurnames')
 			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 			->where('clu_store.status','Activa')
@@ -820,7 +820,11 @@ class WelcomeController extends Controller {
 			'email' => Session::get('support'),
 			'user' => Session::get('comjunplus.usuario.name'),
 			'names' => Session::get('comjunplus.usuario.names'),
-			'surname' => Session::get('comjunplus.usuario.surnames'),
+			'surnames' => Session::get('comjunplus.usuario.surnames'),
+			'uemail' => Session::get('comjunplus.usuario.email'),
+			'movil' => Session::get('comjunplus.usuario.movil_number'),
+			'fix' => Session::get('comjunplus.usuario.fix_number'),
+			'adress' => Session::get('comjunplus.usuario.adress'),
 			'text' => $request->input('message_admin_text'),
 		);		
 				
@@ -828,10 +832,31 @@ class WelcomeController extends Controller {
 			$message->from(Session::get('mail'),Session::get('copy'));
 			$message->to($data['email'],'Soporte')->subject('Solicitud de Usuario.');
 		});
+
+		//enviar mensaje a super de tendero en mailbox		
+		$mensaje = new Mensaje();
+		$mensaje->subject = 'Solicitud a Soporte';
+		$mensaje->date = $hoy->format('Y-m-d H:i:s');
+		$mensaje->object = 'seg_user';
+		$mensaje->object_id = 1;		
+		$mensaje->user_sender_id = Session::get('comjunplus.usuario.id');//envia el tendero
+		$mensaje->user_receiver_id = 1;//superadmin					
+		$mensaje->message = $request->input('message_admin_text');
+		$html = '<div>'.
+				''.$request->input('message_admin_text').''.
+				'</div>';
+		$mensaje->body = $html;
+
+		try {				
+			$mensaje->save();	
+		}catch (ModelNotFoundException $e) {				
+			//no hacer nada
+		}	
 		
-		return Redirect::to('/')->with('message', ['Revisa tu correo elecronico, '. Session::get('copy') .' acaba de enviarte un mensaje que te ayudara a recuperar tu contraseña']);
+		return Redirect::to('/')->with('message', ['Tu solicitud se ha enviado correctamente a Soporte']);
 	}
 
+	//envio de mensaje de un cliente a un tendero en modal de inicio
 	public function postMessageorder(Request $request){
 		try {
 			//enviar mensaje a tendero			
@@ -910,7 +935,28 @@ class WelcomeController extends Controller {
 				}
 			}				
 			
-			//agregar en message interno
+			//agregar en message interno a mailbox
+			$mensaje = new Mensaje();
+			$mensaje->subject = 'Respuesta orden de pedido';
+			$mensaje->date = $hoy->format('Y-m-d H:i:s');
+			$mensaje->object = 'seg_order';
+			$mensaje->object_id = $request->input()['msg_orden_id'];
+			$mensaje->user_sender_id = 0;//envia el cliente
+			if(Session::get('comjunplus.usuario.id'))$mensaje->user_sender_id = Session::get('comjunplus.usuario.id');//envia el cliente
+			$mensaje->user_receiver_id = $tienda[0]->user_id;//tendero recive
+			$mensaje->message = 'Orden de pedido, codigo: '.$request->input()['msg_orden_id'].', Respuesta: '. $request->input()['message_orden_text'];
+			$html = '<div>'.
+					'Orden de pedido, codigo: '.$request->input()['msg_orden_id'].''.
+					''.$request->input()['message_orden_text'].''.
+					'</div>';
+			$mensaje->body = $html;
+
+			try {				
+				$mensaje->save();	
+			}catch (ModelNotFoundException $e) {				
+				//no hacer nada
+			}
+
 			$message[] = 'Mensaje enviado con exito al tendero.';
 			
 		}catch (ModelNotFoundException $e) {			
@@ -1101,17 +1147,18 @@ class WelcomeController extends Controller {
 				$mensage[]='Si no eres usuario de ComprarJuntos lo mejor es realizar nuevamente el pedido. Si ya eres usuario, tu correo electronico esta mal diligenciado y deberias correjirlo';				
 			}
 
-			//envio a buzon interno de pedido, a tendero
+			//envio a buzon interno mailbox de pedido, a tendero
 			$mensaje = new Mensaje();
 			$mensaje->subject = 'Orden de Pedido';
 			$mensaje->date = $hoy->format('Y-m-d H:i:s');
 			$mensaje->object = 'clu_order';
 			$mensaje->object_id = $orden->id;
-			$mensaje->user_receiver_id = $tienda[0]->user_id;//tendero			
-			$mensaje->user_sender_id = 1;//envia el sistema, super admin			
-
+			$mensaje->user_sender_id = $tienda[0]->user_id;//tendero			
+			$mensaje->user_receiver_id = 0;//enviada al cliente
+			if($orden->client_id)$mensaje->user_receiver_id = $orden->client_id;//enviada al cliente
+			$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id;
 			$html = '<div>'.
-					'Nueva Orden'.
+					'Nueva Orden de pedido, codigo: '.$orden->id.''.
 					'</div>';
 			$mensaje->body = $html;
 
@@ -1119,29 +1166,7 @@ class WelcomeController extends Controller {
 				$mensaje->save();	
 			}catch (ModelNotFoundException $e) {				
 				//no hacer nada
-			}
-
-			//envio a buzon interno de pedido, a cliente
-			if($orden->client_id){
-				$mensaje = new Mensaje();
-				$mensaje->subject = 'Orden de Pedido';
-				$mensaje->date = $hoy->format('Y-m-d H:i:s');
-				$mensaje->object = 'clu_order';
-				$mensaje->object_id = $orden->id;
-				$mensaje->user_receiver_id = $orden->client_id;//tendero			
-				$mensaje->user_sender_id = 1;//envia el sistema. superadmin
-
-				$html = '<div>'.
-						'Nueva Orden'.
-						'</div>';
-				$mensaje->body = $html;
-
-				try {				
-					$mensaje->save();	
-				}catch (ModelNotFoundException $e) {				
-					//no hacer nada
-				}
-			}
+			}		
 
 			//retornar ala tienda con mensajes de ejecuciòn			
 			$mensage[]='El pedido fue enviado con EXITO!, Con Consecutivo: '.$orden->id;

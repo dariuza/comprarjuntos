@@ -16,6 +16,7 @@ class CreateCluMailbox extends Migration
             $table->increments('id');
             $table->string('subject');
             $table->string('body');//beria ser puro html
+            $table->string('message');//beria ser puro html
             $table->dateTime('date');
             $table->string('object');//tiene que ber casi con la tabla de datos
             $table->string('object_id');//el ide del objeto            

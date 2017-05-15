@@ -96,8 +96,7 @@
 	    background: -moz-linear-gradient(top, #000 0%, #000 100%);
 	    background: -ms-linear-gradient(top, #000 0%, #000 100%);
 	    background: -o-linear-gradient(top, #000 0%, #000 100%);
-	    background: linear-gradient(to bottom, #000 0%, #000 100%);
-	    
+	    background: linear-gradient(to bottom, #000 0%, #000 100%);	    
 	    border-radius: 2px;
 	    
 	}

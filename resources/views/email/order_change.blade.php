@@ -111,13 +111,16 @@
 						
 					@else
 						@if($estado == "ETREGADO")
-							<div>Te pedimos que 
-							<a href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">aportes con tu reseña al servicio prestado</a>, ya que actualmente la orden aporta una reseña neutral para esta tienda y tu 
-							aporte nos ayuda a cuantificar la repuraciòn de las tiendas de ComprarJuntos.</div>
-							<p>
-							<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">Puedes contribuir con tu calificaciòn al servicio. Aquì!!</a>
-							</p>
-							<div style="font-size: 12px;">Nota: Si te llego este mensaje significa que ya tienes el pedido en tus manos, ya puedes verificar su calidad y cuantificar el servicio.</div>
+							<!--Si el cliente es el tendero no se le permitira calificar el servicio-->
+							@if($id_client != $id_tender)						
+								<div>Te pedimos que 
+								<a href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">aportes con tu reseña al servicio prestado</a>, ya que actualmente la orden aporta una reseña neutral para esta tienda y tu 
+								aporte nos ayuda a cuantificar la repuraciòn de las tiendas de ComprarJuntos.</div>
+								<p>
+								<a  href = "{{url('/modal/modalresenatostore/'.$orden_id)}}">Puedes contribuir con tu calificaciòn al servicio. Aquì!!</a>
+								</p>
+								<div style="font-size: 12px;">Nota: Si te llego este mensaje significa que ya tienes el pedido en tus manos, ya puedes verificar su calidad y cuantificar el servicio.</div>
+							@endif
 						@else
 							<a  href = "{{url('/modal/modalmessagetotender/'.$orden_id)}}">Escribe un mensaje al tendero. Aquì!!</a>
 						@endif						

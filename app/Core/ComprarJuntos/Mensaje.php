@@ -11,6 +11,6 @@ class Mensaje extends Model
      */
 	protected $table = 'clu_mailbox';
 	
-	protected $fillable = ['id','subject','body','date','object','object_id','user_sender_id','user_receiver_id','active'];
+	protected $fillable = ['id','subject','body','message','date','object','object_id','user_sender_id','user_receiver_id','active'];
 			
 }

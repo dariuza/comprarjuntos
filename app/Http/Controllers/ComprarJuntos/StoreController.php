@@ -716,7 +716,7 @@ class StoreController extends Controller {
 
 	}
 
-	//funciòn paara cambiar de estado a las ordenes
+	//funciòn para ante el cambio de estado de la orden
 	public function postCambioestadoorder(Request $request){
 		//verificamos la orden y la tienda
 		//Tiendas
@@ -802,9 +802,10 @@ class StoreController extends Controller {
 					$data['url'] = $request->url();
 
 					$data['detalles'] = $detalles;
-					$data['mensaje_orden'] = $request->input()['menssage_order'];
+					$data['mensaje_orden'] = $request->input()['menssage_order'];//puede estar vacio
 					$data['anotaciones'] = $anotaciones;
 
+					$data['id_tender'] = $tienda[0]->user_id;
 					$data['id_client'] = $orden[0]->client_id;
 					
 					try{
@@ -833,6 +834,28 @@ class StoreController extends Controller {
 							Session::flash('orden_id', $request->input()['id_order']);
 							return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>true]);
 						}
+
+						//envio de mensaje al mailbox del ciente, copia para tendero en caso de existir
+						$mensaje = new Mensaje();
+						$mensaje->subject = 'Cambio de estado en Orden de Pedido';
+						$mensaje->date = $hoy->format('Y-m-d H:i:s');
+						$mensaje->object = 'clu_order';
+						$mensaje->object_id = $data['orden_id'];
+						$mensaje->user_sender_id = $tienda[0]->user_id;//tendero			
+						$mensaje->user_receiver_id = 0;//enviada al cliente
+						if($orden->client_id)$mensaje->user_receiver_id = $orden->client_id;//enviada al cliente
+						$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado;
+						$html = '<div>'.
+									'Nuevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].''.
+									''.$data['mensaje_orden'].', Estado actual: '.$estado.''.
+								'</div>';
+						$mensaje->body = $html;
+
+						try {				
+							$mensaje->save();	
+						}catch (ModelNotFoundException $e) {				
+							//no hacer nada
+						}		
 					}					
 					
 					Session::flash('orden_id', $request->input()['id_order']);

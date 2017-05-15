@@ -292,7 +292,7 @@
 
 												{!! Form::label('descripcion', 'Descripciòn', array('class' => 'col-md-12 control-label')) !!}
 												<div class="col-md-12">
-													{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows' => 3,'placeholder'=>'Descripciòn de tu Tienda','maxlength' => 64)) !!}
+													{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows' => 3,'placeholder'=>'Descripciòn de tu Tienda','maxlength' => 256)) !!}
 												</div>
 
 											</div>
