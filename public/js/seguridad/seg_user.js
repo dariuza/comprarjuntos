@@ -119,7 +119,11 @@ seg_user.prototype.validateCart = function(){
 };
 
 seg_user.prototype.validateFinder = function(){
-     return true;
+    return true;
+};
+
+seg_user.prototype.validateMessageAdmin = function(){
+    return true;
 };
 
 seg_user.prototype.lugarRespuesta = function(result) {

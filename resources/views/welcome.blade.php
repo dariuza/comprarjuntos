@@ -71,10 +71,8 @@
 		}
 		.btn{
 			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-			font-size: 15px;
+			font-size: 14px;
 		}
-
-
 
 	</style>
 
@@ -525,16 +523,14 @@
 									<div class="col-md-12" data-toggle="modal" data-target="#rpsw_modal">
 										{!! Form::password('contraseña_dos', array('class' => 'form-control','placeholder'=>'Ingresa nuevamente tu contraseña')) !!}
 									</div>
-									
 								</div>
-								      
 					        {!! Form::close() !!}
 						</div>						
 					</div>
 		        </div>
 		        <div class="modal-footer">
 		          <button type="submit" form = "cpsw" class="btn btn-default " >Enviar</button>
-		          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>	                  
 		        </div>     
 	      </div>
       </div>
@@ -815,7 +811,6 @@
 								@endforeach							
 							</div>							
 						@endif
-
 						<div class="col-md-12 col-md-offset-0 row_init">
 							{!! Form::open(array('id'=>'formordmess','url' => 'welcome/messageorder','method'=>'post','onsubmit'=>'javascript:return seg_user.validateMessageOrder()')) !!}
 								{!! Form::hidden('msg_usuario_id',null,array('id'=>'msg_usuario_id')) !!}	

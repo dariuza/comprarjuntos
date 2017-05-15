@@ -54,6 +54,7 @@ class WelcomeController extends Controller {
 		Session::put('app', env('APP_NAME','ComprarJuntos'));
 		Session::put('copy', env('APP_RIGTH','ComprarJuntos'));
 		Session::put('mail', env('MAIL_USERNAME','info.comprarjuntos@gmail.com'));
+		Session::put('support', env('APP_SUPPORT','daruiza@gmail.com'));
 		//Session::put('style', env('APP_STYLE','default'));		
 		/**
 		 * REALIZAMOS CONSULTAS PARA INDEX
@@ -810,6 +811,25 @@ class WelcomeController extends Controller {
 		}
 
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
+	}
+	public function postMessageamin(Request $request){
+		//verificamos si el email corresponde a un usuario de la aplicacion
+		$data = array(
+			'name' => Session::get('copy'),
+			'mail' => Session::get('mail'),
+			'email' => Session::get('support'),
+			'user' => Session::get('comjunplus.usuario.name'),
+			'names' => Session::get('comjunplus.usuario.names'),
+			'surname' => Session::get('comjunplus.usuario.surnames'),
+			'text' => $request->input('message_admin_text'),
+		);		
+				
+		Mail::send('email.support',$data,function($message) use ($data) {
+			$message->from(Session::get('mail'),Session::get('copy'));
+			$message->to($data['email'],'Soporte')->subject('Solicitud de Usuario.');
+		});
+		
+		return Redirect::to('/')->with('message', ['Revisa tu correo elecronico, '. Session::get('copy') .' acaba de enviarte un mensaje que te ayudara a recuperar tu contraseña']);
 	}
 
 	public function postMessageorder(Request $request){

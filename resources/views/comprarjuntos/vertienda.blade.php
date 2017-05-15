@@ -135,7 +135,7 @@
 	}
 	.btn{
 		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-		font-size: 15px;
+		font-size: 14px;
 	}
 
 	.ui-autocomplete{
