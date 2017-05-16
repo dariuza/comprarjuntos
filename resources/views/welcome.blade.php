@@ -415,7 +415,7 @@
 				<div class="row col-md-4 col-md-offset-0" style="font-size: 22px;text-align: center;">
 					<div>Tiendas</div>
 					<div>Productos</div>
-					<div>Grupos de Consumo</div>
+					<!--<div>Grupos de Consumo</div>-->
 					<div>Tenderos</div>
 				</div>
 			</div>
@@ -428,7 +428,7 @@
 				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
 					@php ($p=0)
 					@php ($j=1)
-					@foreach($productos as $producto)
+					@foreach($productos as $producto)						
 						@if($p%4==0)
 							<div class="col-md-12 col-md-offset-0">
 						@endif
@@ -436,7 +436,7 @@
 							<div class="panel panel-default">					
 								<div class="panel-body">
 							    	<div class="row">
-							    		<div class="col-md-12">
+							    		<div class="col-md-12 popoverStore" data-content="<div><b>Precio:</b> ${{$producto->price}}</div>@if($producto->colors)<div> Colores: {{$producto->colors}}</div>@endif @if($producto->sizes)<div> Tamaños: {{$producto->sizes}}</div>@endif @if($producto->flavors)<div> Sabores: {{$producto->flavors}}</div>@endif @if($producto->materials)<div> Materiales: {{$producto->materials}}</div>@endif" rel="popover" data-placement="bottom" data-original-title="{{$producto->name}}" data-trigger="hover" data-html="true">
 							    			<a href="{{url('/'.$producto->store_name)}}">
 							    				{{ Html::image('users/'.$producto->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
 							    			</a>				    			
