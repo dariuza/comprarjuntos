@@ -247,7 +247,7 @@
 				    				</a>	
 						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
 						    	{{$tienda->color_two}};padding: 0px;">					    			
-						    			<div class="col-md-12" style="padding: 0px;" >S				    				
+						    			<div class="col-md-12" style="padding: 0px;" >
 					    					<div style="text-align: center;">
 					    						<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;text-decoration:none;	">	
 						    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$tienda->name}}
