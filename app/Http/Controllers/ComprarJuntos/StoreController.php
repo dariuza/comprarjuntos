@@ -784,7 +784,6 @@ class StoreController extends Controller {
 					->where('clu_order_annotation.order_id',$request->input()['id_order'])
 					->get();
 
-
 					$data = Array();					
 					$data['tienda'] = $tienda[0]->name;
 					$data['orden_id'] = $request->input()['id_order'];
@@ -843,8 +842,13 @@ class StoreController extends Controller {
 						$mensaje->object_id = $data['orden_id'];
 						$mensaje->user_sender_id = $tienda[0]->user_id;//tendero			
 						$mensaje->user_receiver_id = 0;//enviada al cliente
-						if($orden->client_id)$mensaje->user_receiver_id = $orden->client_id;//enviada al cliente
 						$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado;
+						//enviada al cliente
+						if($orden->client_id){
+							$mensaje->user_receiver_id = $orden->client_id;
+						}else{
+							$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado.' Cliente: '.$orden[0]->name_client.' - '.$orden[0]->email_client.' - '.$orden[0]->number_client.' - '.$orden[0]->adress_client;
+						}						
 						$html = '<div>'.
 									'Nuevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].''.
 									''.$data['mensaje_orden'].', Estado actual: '.$estado.''.

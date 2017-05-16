@@ -183,8 +183,20 @@
 		
 		<div class="col-md-6 col-md-offset-0">
 			<div class="panel panel-default">
-				<div class="panel-heading">Últimos 10 Mensajes</div>
-				<div class="panel-body"></div>
+				<div class="panel-heading">Mensajes Recibidos</div>
+				<div class="panel-body">
+					<table id="table_orders" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
+						<thead >
+				            <tr>
+				            	<td></td>			            			            	
+			        			<td>CLIENTE</td>
+			        			<td>CALIFICACIÓN</td>
+			        			<td>RESEÑA</td>
+			        			<td>FECHA</td>		        			
+				            </tr>
+				        </thead>              
+					</table>
+				</div>
 			</div>
 		</div>
 		
