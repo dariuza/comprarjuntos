@@ -1162,8 +1162,11 @@ class WelcomeController extends Controller {
 				$mensaje->user_receiver_id = $orden->client_id;
 			}else{
 				$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client;
+				if(!empty($request->input('description'))){
+					$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client.' Indicaciones: '.$request->input('description');
+				}
 			}
-			$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id;
+			
 			$html = '<div>'.
 					'Nueva Orden de pedido, codigo: '.$orden->id.''.
 					'</div>';
