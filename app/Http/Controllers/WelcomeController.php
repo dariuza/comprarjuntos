@@ -360,7 +360,7 @@ class WelcomeController extends Controller {
 				}	
 
 				//paginador
-				$moduledata['paginador']['total'] =Producto::count();
+				$moduledata['paginador']['total'] =Producto::where('clu_order.store_id',$moduledata['tienda'][0]->id)->count();
 				$moduledata['paginador']['ppp'] =16;//productospor pagina
 				$moduledata['paginador']['pagina'] =1;
 				$moduledata['paginador']['paginas'] = ceil($moduledata['paginador']['total'] / $moduledata['paginador']['ppp']);
@@ -526,7 +526,7 @@ class WelcomeController extends Controller {
 			}
 												
 			//paginador
-			$moduledata['paginador']['total'] =Producto::count();
+			$moduledata['paginador']['total'] =Producto::where('clu_products.store_id',$moduledata['tienda'][0]->id)->count();
 			$moduledata['paginador']['ppp'] =16;//productospor pagina
 			$moduledata['paginador']['pagina'] =1;
 			$moduledata['paginador']['paginas'] = ceil($moduledata['paginador']['total'] / $moduledata['paginador']['ppp']);
@@ -694,7 +694,7 @@ class WelcomeController extends Controller {
 			//algo anda muy mal, no se udo asignar el id de tienda en la funcion Consultarproductos
 			return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]]);
 		}
-		$moduledata['total']=Orden::count();
+		$moduledata['total']=Orden::where('clu_order.store_id',Session::get('store.id'))->count();
 		if(!empty($request->input('search')['value'])){
 			Session::flash('search', $request->input('search')['value']);			
 			
@@ -812,6 +812,7 @@ class WelcomeController extends Controller {
 
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$productos]);
 	}
+
 	public function postMessageamin(Request $request){
 		//verificamos si el email corresponde a un usuario de la aplicacion
 		$data = array(
@@ -1160,7 +1161,7 @@ class WelcomeController extends Controller {
 			if($orden->client_id){
 				$mensaje->user_receiver_id = $orden->client_id;
 			}else{
-				$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden[0]->name_client.' - '.$orden[0]->email_client.' - '.$orden[0]->number_client.' - '.$orden[0]->adress_client;
+				$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client;
 			}
 			$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id;
 			$html = '<div>'.

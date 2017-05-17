@@ -5,6 +5,8 @@ function seg_user() {
     this.cart_products = new Array();
     this.cart_contador = 1;
     this.table_orders = '';
+    this.table_senders = '';
+    this.table_receiver = '';
     this.datos_productos = [];
     this.datos_pie_orders = [];
     this.colores_pie_orders = [];

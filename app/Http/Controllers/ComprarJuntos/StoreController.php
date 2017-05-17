@@ -412,6 +412,7 @@ class StoreController extends Controller {
 		}
 	}
 
+	//FUNCION PARA CAMBIAR EL ID DE LA TIENDA, ANTE UN CLIC EN LA OPCION PROCUDTOS
 	public function postConsultarproducts(Request $request){
 		//total de productos
 		$productos=Producto::where('store_id',$request->input('id'))->count();
@@ -420,7 +421,7 @@ class StoreController extends Controller {
 		$categorias=array();
 		try {$categorias=\DB::table('clu_store')
 		->select('metadata')
-		->where('clu_store.id',1)		
+		->where('clu_store.id',$request->input('id'))		
 		->get()[0]->metadata;
 		}catch (ModelNotFoundException $e) {
 			$message = ['Problemas al hallar categorias de la Tienda'];			
@@ -455,7 +456,7 @@ class StoreController extends Controller {
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);	
 	}
 
-	//LISTAR LOS PRODUCTOS
+	//LISTAR LOS PRODUCTOS DE UNA TIENDA
 	public function getListarajax(Request $request){
 
 		//Tienda id
@@ -464,7 +465,7 @@ class StoreController extends Controller {
 			return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]]);
 		}
 
-		$moduledata['total']=Producto::count();
+		$moduledata['total']=Producto::where('store_id',Session::get('store.id'))->count();
 
 		if(!empty($request->input('search')['value'])){
 			Session::flash('search', $request->input('search')['value']);			
@@ -667,7 +668,7 @@ class StoreController extends Controller {
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>null]);
 	}
 
-	//LISTAR LAS ORDENES
+	//LISTAR LAS ORDENES DE UNA TIENDA
 	public function getListarajaxorders(Request $request){
 		//Tienda id
 		if(empty(Session::get('store.id'))){
@@ -675,7 +676,7 @@ class StoreController extends Controller {
 			return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>0,'recordsFiltered'=>0,'data'=>[]]);
 		}
 
-		$moduledata['total']=Orden::count();
+		$moduledata['total']=Orden::where('store_id',Session::get('store.id'))->count();
 
 		if(!empty($request->input('search')['value'])){
 			Session::flash('search', $request->input('search')['value']);			
@@ -847,7 +848,7 @@ class StoreController extends Controller {
 						if($orden->client_id){
 							$mensaje->user_receiver_id = $orden->client_id;
 						}else{
-							$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado.' Cliente: '.$orden[0]->name_client.' - '.$orden[0]->email_client.' - '.$orden[0]->number_client.' - '.$orden[0]->adress_client;
+							$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client;
 						}						
 						$html = '<div>'.
 									'Nuevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].''.

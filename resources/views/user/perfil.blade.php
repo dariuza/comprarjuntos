@@ -115,83 +115,83 @@
 	</div>
 	</div>
 	<div class="row">		
-		<div class="col-md-3 col-md-offset-0">
-			<div class="panel panel-default">
-				<div class="panel-heading">Menú de Opciones</div>					
-				<div class="panel-body">
-					<div class="col-md-12 col-md-offset-0 data_cell_b" id="btn_edit_up" data-toggle="modal" data-target="#cpep_modal"> Editar Los Datos De Mi Perfil</div>
-					<div class="col-md-12 col-md-offset-0 data_cell_b"  id="btn_new_psw" data-toggle="modal" data-target="#cpsw_modal"> Cambiar Mi Contraseña</div>					
-					<!--<div class="col-md-12 col-md-offset-0 data_cell_b" style = "margin-top: 0px;"> Ir a Mi Buzón de Mensajes</div>-->
-					<div class="col-md-12 col-md-offset-0 data_cell_b" data-toggle="popover" title="Cuenta {!! ucwords(Session::get('comjunplus.usuario.account'))!!}" data-placement="bottom" data-content="<div>Rol: {!!Session::get('comjunplus.usuario.rol')!!}</div><div>Nº de Tiendas: {!!Session::get('comjunplus.usuario.stores')!!}</div><div style='margin-bottom: 10%;'>Nº de Productos por Tienda: {!!Session::get('comjunplus.usuario.products')!!}</div><div style='font-size: 12px;'>Nota: Puedes modificar tu cuenta para que soporte más productos o más tiendas. <div style='color: blue;cursor: pointer;' data-toggle='modal' data-target='#mesadmin_modal'>Comunicate con soporte Aqui!.</div></div>" data-html="true">Resumen de Cuenta</div>
-					<!--<div class="col-md-12 col-md-offset-0 data_cell_b"> Preguntas Frecuentes</div>-->
-					<div class="col-md-12 col-md-offset-0 data_cell_b_c" data-toggle='modal' data-target='#mesadmin_modal'> Envianos tus Sugerencia</div>
+		<div class="col-md-12 col-md-offset-0">
+			<div class="col-md-3 col-md-offset-0">
+				<div class="panel panel-default">
+					<div class="panel-heading">Menú de Opciones</div>					
+					<div class="panel-body">
+						<div class="col-md-12 col-md-offset-0 data_cell_b" id="btn_edit_up" data-toggle="modal" data-target="#cpep_modal"> Editar Los Datos De Mi Perfil</div>
+						<div class="col-md-12 col-md-offset-0 data_cell_b"  id="btn_new_psw" data-toggle="modal" data-target="#cpsw_modal"> Cambiar Mi Contraseña</div>					
+						<!--<div class="col-md-12 col-md-offset-0 data_cell_b" style = "margin-top: 0px;"> Ir a Mi Buzón de Mensajes</div>-->
+						<div class="col-md-12 col-md-offset-0 data_cell_b" data-toggle="popover" title="Cuenta {!! ucwords(Session::get('comjunplus.usuario.account'))!!}" data-placement="bottom" data-content="<div>Rol: {!!Session::get('comjunplus.usuario.rol')!!}</div><div>Nº de Tiendas: {!!Session::get('comjunplus.usuario.stores')!!}</div><div style='margin-bottom: 10%;'>Nº de Productos por Tienda: {!!Session::get('comjunplus.usuario.products')!!}</div><div style='font-size: 12px;'>Nota: Puedes modificar tu cuenta para que soporte más productos o más tiendas. <div style='color: blue;cursor: pointer;' data-toggle='modal' data-target='#mesadmin_modal'>Comunicate con soporte Aqui!.</div></div>" data-html="true">Resumen de Cuenta</div>
+						<!--<div class="col-md-12 col-md-offset-0 data_cell_b"> Preguntas Frecuentes</div>-->
+						<div class="col-md-12 col-md-offset-0 data_cell_b_c" data-toggle='modal' data-target='#mesadmin_modal'> Envianos tus Sugerencia</div>
+					</div>
 				</div>
 			</div>
-		</div>
 		
-		<div class="col-md-9 col-md-offset-0">		
-			<div class="panel panel-default">				
-				<div class="panel-heading">Datos de Mi Perfil de Usuario {{--{{Session::get('comjunplus.usuario.name')}}--}}			 
-					{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/profile/'.Session::get('comjunplus.usuario.avatar'),'Imagen no disponible',array( 'style'=>'width: 10%; border:2px solid #ddd;border-radius: 50%; float: right;' ))}}					
-				</div>					
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-3 col-md-offset-0 data_cell">							
-							<b>Usuario</b></br> {{Session::get('comjunplus.usuario.name')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0 data_cell">							
-							<b>Nombres</b></br> {{Session::get('comjunplus.usuario.names')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0 data_cell">							
-							<b>Apellidos</b></br> {{Session::get('comjunplus.usuario.surnames')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0">							
-													
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3 col-md-offset-0 data_cell">							
-							<b>Identificación</b></br> {{Session::get('comjunplus.usuario.identificacion')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0 data_cell">							
-							<b>Fecha de Nacimento</b></br> {{Session::get('comjunplus.usuario.birthdate')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0 data_cell">							
-							<b>Teléfono Fijo</b></br> {{Session::get('comjunplus.usuario.fix_number')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0 data_cell">							
-							<b>Teléfono Movil</b></br> {{Session::get('comjunplus.usuario.movil_number')}}						
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3 col-md-offset-0 data_cell_c">							
-							<b>Correo Electronico</b></br> {{Session::get('comjunplus.usuario.email')}}						
-						</div>						
-						<div class="col-md-3 col-md-offset-0 data_cell_c">							
-							<b>Dirección</b></br> {{Session::get('comjunplus.usuario.adress')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0 data_cell_c">							
-							<b>Departamento</b></br> {{Session::get('comjunplus.usuario.state')}}						
-						</div>
-						<div class="col-md-3 col-md-offset-0 data_cell_c">							
-							<b>Ciudad</b></br> {{Session::get('comjunplus.usuario.city')}}						
-						</div>						
+			<div class="col-md-9 col-md-offset-0">		
+				<div class="panel panel-default">				
+					<div class="panel-heading">Datos de Mi Perfil de Usuario {{--{{Session::get('comjunplus.usuario.name')}}--}}			 
+						{{ Html::image('users/'.Session::get('comjunplus.usuario.name').'/profile/'.Session::get('comjunplus.usuario.avatar'),'Imagen no disponible',array( 'style'=>'width: 10%; border:2px solid #ddd;border-radius: 50%; float: right;' ))}}					
 					</div>					
-				</div>
-			</div>			
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-3 col-md-offset-0 data_cell">							
+								<b>Usuario</b></br> {{Session::get('comjunplus.usuario.name')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0 data_cell">							
+								<b>Nombres</b></br> {{Session::get('comjunplus.usuario.names')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0 data_cell">							
+								<b>Apellidos</b></br> {{Session::get('comjunplus.usuario.surnames')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0">							
+														
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3 col-md-offset-0 data_cell">							
+								<b>Identificación</b></br> {{Session::get('comjunplus.usuario.identificacion')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0 data_cell">							
+								<b>Fecha de Nacimento</b></br> {{Session::get('comjunplus.usuario.birthdate')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0 data_cell">							
+								<b>Teléfono Fijo</b></br> {{Session::get('comjunplus.usuario.fix_number')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0 data_cell">							
+								<b>Teléfono Movil</b></br> {{Session::get('comjunplus.usuario.movil_number')}}						
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3 col-md-offset-0 data_cell_c">							
+								<b>Correo Electronico</b></br> {{Session::get('comjunplus.usuario.email')}}						
+							</div>						
+							<div class="col-md-3 col-md-offset-0 data_cell_c">							
+								<b>Dirección</b></br> {{Session::get('comjunplus.usuario.adress')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0 data_cell_c">							
+								<b>Departamento</b></br> {{Session::get('comjunplus.usuario.state')}}						
+							</div>
+							<div class="col-md-3 col-md-offset-0 data_cell_c">							
+								<b>Ciudad</b></br> {{Session::get('comjunplus.usuario.city')}}						
+							</div>						
+						</div>					
+					</div>
+				</div>			
+			</div>
 		</div>
 		
 		<div class="col-md-6 col-md-offset-0">
 			<div class="panel panel-default">
 				<div class="panel-heading">Mensajes Recibidos</div>
 				<div class="panel-body">
-					<table id="table_orders" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
+					<table id="table_msj_recibidos" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
 						<thead >
-				            <tr>
-				            	<td></td>			            			            	
-			        			<td>CLIENTE</td>
-			        			<td>CALIFICACIÓN</td>
-			        			<td>RESEÑA</td>
+				            <tr>				          			        			
+			        			<td>ASUNTO</td>
+			        			<td>MENSAJE</td>
 			        			<td>FECHA</td>		        			
 				            </tr>
 				        </thead>              
@@ -202,12 +202,20 @@
 		
 		<div class="col-md-6 col-md-offset-0">
 			<div class="panel panel-default">
-				<div class="panel-heading">Estado de Pedidos</div>
-				<div class="panel-body"></div>
+				<div class="panel-heading">Mensajes Enviados</div>
+				<div class="panel-body">
+					<table id="table_msj_enviados" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
+						<thead >
+				            <tr>
+			        			<td>ASUNTO</td>
+			        			<td>MENSAJE</td>
+			        			<td>FECHA</td>		        			
+				            </tr>
+				        </thead>              
+					</table>
+				</div>
 			</div>
 		</div>
-		
-		
 	</div>
 @endsection
 
@@ -299,8 +307,6 @@
 						</div>						
 					</div>
 					
-					
-					
 					<div class=" col-md-4 ">	
 						<div class="form-group ">
 							{!! Form::label('img_user', 'Imagen de Usuario', array('class' => 'col-md-12 control-label')) !!}
@@ -351,9 +357,7 @@
 									<div class="col-md-12">
 										{!! Form::password('contraseña_dos', array('class' => 'form-control','placeholder'=>'Ingresa nuevamente tu contraseña')) !!}
 									</div>
-									
 								</div>
-								      
 					        {!! Form::close() !!}
 						</div>						
 					</div>
@@ -398,7 +402,54 @@
 @endsection
 
 @section('script')
-	<script type="text/javascript">  
+	<script type="text/javascript"> 
+		//tabla de mensajes recibidos
+		javascript:seg_user.table_receiver = $('#table_msj_recibidos').DataTable( {
+		    "responsive": true,
+		    "processing": true,
+		    "bLengthChange": false,
+		    "bFilter": false,
+			"ordering": false,
+        	"info":     false,
+		    "serverSide": true,	        
+		    "ajax": "{{url('user/listarajaxmsjreceiver')}}",	
+		    "iDisplayLength": 25,       
+		    "columns": [
+		        { "data": "subject" },		        
+		        { "data": "message" },
+		        { "data": "date" }		        		        
+		    ],	       
+		    "language": {
+		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		    },		   
+		    "fnRowCallback": function( nRow, aData ) {
+            }
+		});
+
+		//tabla de mensajes enviadod
+		javascript:seg_user.table_senders = $('#table_msj_enviados').DataTable( {
+		    "responsive": true,
+		    "processing": true,
+		    "bLengthChange": false,
+		    "bFilter": false,
+			"ordering": false,
+        	"info":     false,
+		    "serverSide": true,	        
+		    "ajax": "{{url('user/listarajaxmsjsender')}}",	
+		    "iDisplayLength": 25,       
+		    "columns": [
+		        { "data": "subject" },		        
+		        { "data": "message" },
+		        { "data": "date" }		        		        
+		    ],	       
+		    "language": {
+		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		    },		   
+		    "fnRowCallback": function( nRow, aData ) {
+            }
+		});
+
+
 		$('#fecha_nacimiento').datepicker({
 			format: "yyyy-mm-dd",
 			autoclose: true,			
@@ -409,6 +460,7 @@
 			datos['id'] =$( "#departamento option:selected" ).val();			   
 			seg_ajaxobject.peticionajax($('#form_consult_city').attr('action'),datos,"seg_user.consultaRespuestaCity");
 		});
+
 		$('[data-toggle="popover"]').popover({
 			html: true,
 	        trigger: 'manual',			

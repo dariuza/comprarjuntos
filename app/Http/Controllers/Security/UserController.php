@@ -3,6 +3,7 @@
 use App\User;
 use App\Core\Security\UserProfile;
 use App\Core\Security\City;
+use App\Core\ComprarJuntos\Mensaje;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -236,6 +237,72 @@ class UserController extends Controller {
 			//return Redirect::to('perfil')->with('message', ['¡Los Datos de tu perfil se han actualizado correctamente!']);
 			return Redirect::back()->with('message', ['¡Los Datos de tu perfil se han actualizado correctamente!']);
 		}
+	}
+
+	//para tabla de remitentes
+	public function getListarajaxmsjsender(Request $request){
+
+		$moduledata['total']=Mensaje::where('user_receiver_id',Session::get('comjunplus.usuario.id'))->count();
+		if(!empty($request->input('search')['value'])){
+			$moduledata['mensajes']=
+			Mensaje::
+			select('clu_mailbox.*')			
+			->where('clu_mailbox.user_receiver_id',Session::get('comjunplus.usuario.id'))
+			->where(function ($query) {
+				$query->where('clu_mailbox.subject', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_mailbox.message', 'like', '%'.Session::get('search').'%')	
+				->orWhere('clu_mailbox.object_id', 'like', '%'.Session::get('search').'%')	
+				->orWhere('clu_mailbox.date', 'like', '%'.Session::get('search').'%');				
+			})
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();		
+			$moduledata['filtro'] = count($moduledata['ordenes']);
+
+		}else{
+			$moduledata['mensajes']=\DB::table('clu_mailbox')
+			->where('clu_mailbox.user_receiver_id',Session::get('comjunplus.usuario.id'))
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();			
+				
+			$moduledata['filtro'] = $moduledata['total'];
+		}
+
+		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['mensajes']]);
+	}
+
+	//para tabla de destinatarios
+	public function getListarajaxmsjreceiver(Request $request){
+
+		$moduledata['total']=Mensaje::where('user_sender_id',Session::get('comjunplus.usuario.id'))->count();
+		if(!empty($request->input('search')['value'])){
+			$moduledata['mensajes']=
+			Mensaje::
+			select('clu_mailbox.*')			
+			->where('clu_mailbox.user_sender_id',Session::get('comjunplus.usuario.id'))
+			->where(function ($query) {
+				$query->where('clu_mailbox.subject', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_mailbox.message', 'like', '%'.Session::get('search').'%')	
+				->orWhere('clu_mailbox.object_id', 'like', '%'.Session::get('search').'%')	
+				->orWhere('clu_mailbox.date', 'like', '%'.Session::get('search').'%');				
+			})
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();		
+			$moduledata['filtro'] = count($moduledata['ordenes']);
+
+		}else{
+			$moduledata['mensajes']=\DB::table('clu_mailbox')
+			->where('clu_mailbox.user_receiver_id',Session::get('comjunplus.usuario.id'))
+			->skip($request->input('start'))->take($request->input('length'))
+			->orderBy('id', 'desc')
+			->get();			
+				
+			$moduledata['filtro'] = $moduledata['total'];
+		}
+
+		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['mensajes']]);
 	}
 		
 	//Función para cambiar de lugar 
