@@ -294,7 +294,7 @@ class UserController extends Controller {
 
 		}else{
 			$moduledata['mensajes']=\DB::table('clu_mailbox')
-			->where('clu_mailbox.user_receiver_id',Session::get('comjunplus.usuario.id'))
+			->where('clu_mailbox.user_sender_id',Session::get('comjunplus.usuario.id'))
 			->skip($request->input('start'))->take($request->input('length'))
 			->orderBy('id', 'desc')
 			->get();			
