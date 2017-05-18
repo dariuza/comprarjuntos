@@ -1188,6 +1188,11 @@ class WelcomeController extends Controller {
 		}
 		
 	}
+
+	public function getTerminosycondiciones(Request $request){
+		
+		return view('user/terminos');		
+	}
 	
 
 }
