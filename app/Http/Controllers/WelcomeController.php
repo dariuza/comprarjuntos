@@ -834,7 +834,8 @@ class WelcomeController extends Controller {
 			$message->to($data['email'],'Soporte')->subject('Solicitud de Usuario.');
 		});
 
-		//enviar mensaje a super de tendero en mailbox		
+		//enviar mensaje a super de tendero en mailbox	
+		$hoy = new DateTime();	
 		$mensaje = new Mensaje();
 		$mensaje->subject = 'Solicitud a Soporte';
 		$mensaje->date = $hoy->format('Y-m-d H:i:s');
@@ -920,9 +921,9 @@ class WelcomeController extends Controller {
 			}
 
 			//agregamosel mensaje del tendero a las notaciones de la orden
+			$hoy = new DateTime();
 			if($data['mensaje_orden'] != ""){
-				$anotacion = new Anotacion();
-				$hoy = new DateTime();
+				$anotacion = new Anotacion();				
 				$anotacion->user_name = $data['name_client'];
 				$anotacion->date = $hoy->format('Y-m-d H:i:s');
 				$anotacion->description = $data['mensaje_orden'];
