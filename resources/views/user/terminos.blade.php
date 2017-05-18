@@ -1,7 +1,12 @@
 @extends('app')
 
 @section('content')
-
+	<style>
+		li{
+			margin-top: 1.5%;
+			margin-bottom: 0.5%;
+		}
+	</style>
 	<div class="row visible-lg" style="margin-top: 3%;"></div>
 	<div class="row visible-md" style="margin-top: 5%;"></div>
 	<div class="row visible-sm" style="margin-top: 8%;"></div>
@@ -70,7 +75,7 @@
 		</div>
 	</div>
 		
-	<div class=col-md-10 col-md-offset-1> 
+	<div class="col-md-10 col-md-offset-1" style="text-align: justify;"> 
 		<h3>Bienvenidos a ComprarJuntos</h3>
 		<div>
 			Este contrato describe los términos y condiciones que son aplicables al uso del software ComprarJuntos ofrecido por La Corporación para el Fomento de las Finanzas Solidarias - FOMENTAMOS (operador exclusivo de comprarjuntos.com.co);  respecto a los servicios de compra y venta de bienes, artículos y servicios. Cualquier persona que desee acceder y/o usar los servicios podrá hacerlo sujetándose a los Términos y Condiciones junto con las demás políticas y principios que rigen ComprarJuntos.
@@ -130,6 +135,14 @@
 			<li>PROPIEDAD INTELECTUAL</li>
 			<div>
 				Los contenidos de las pantallas relativas a los servicios de ComprarJuntos como así también los programas, bases de datos, redes, archivos que permiten al Usuario acceder y usar su Cuenta, son de propiedad de FOMENTAMOS. y están protegidas por las leyes y tratados internacionales de derecho de autor, marcas, patentes, modelos y diseños industriales. El uso indebido y la reproducción total o parcial de dichos contenidos quedan prohibidos, están penados por la ley con sanciones civiles y penales, y serán objeto de todas las acciones judiciales pertinentes.
+			</div>
+			<li>LEY APLICABLE</li>
+			<div>
+				Este acuerdo estará regido en todos sus puntos por las leyes vigentes en la República de Colombia.
+			</div>
+			<li>JURISDICCIÓN APLICABLE</li>
+			<div>
+				Para todo lo relativo a la interpretación y cumplimiento de este Contrato, las partes se someten a las leyes aplicables y a los Tribunales competentes de la Ciudad de Medellín, y renuncian a cualquier otro que por razón de sus domicilios presentes o futuros pudiere corresponderles.
 			</div>
 		</ol>
 	</div>

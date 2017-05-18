@@ -630,7 +630,7 @@
 				</div>
 				<div class = "alerts-module"></div>				
 				<div class="modal-body">
-					<div class="row ">
+					<div class="row" style="margin-bottom: 15px;">
 						<div class="col-md-12 col-md-offset-0 row_init">
 							{!! Form::open(array('id'=>'registry','url' => '/registro','method'=>'get','onsubmit'=>'javascript:return seg_user.validateRegistry()')) !!}
 				        		<div class="form-group">				        		
@@ -653,15 +653,14 @@
 									{!! Form::label('contraseña_dos', 'Contraseña Nuevamente', array('class' => 'col-md-12 control-label')) !!}
 									<div class="col-md-12">
 										{!! Form::password('contraseña_dos', array('class' => 'form-control','placeholder'=>'Ingresa nuevamente tu contraseña')) !!}
-									</div>
-									
-								</div>
-								      
-					        {!! Form::close() !!}
-						</div>						
+									</div>									
+								</div>								      
+					        {!! Form::close() !!}					        
+						</div>									
 					</div>
+					<a href="{{ url('/welcome/terminosycondiciones')}}"  target="_blank" style="font-size: 16px;margin:auto;">Terminos y Condiciones</a>		
 		        </div>
-		        <div class="modal-footer">
+		        <div class="modal-footer">		          
 		          <button type="submit" form = "registry" class="btn btn-default " >Enviar</button>
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
 		        </div>     
