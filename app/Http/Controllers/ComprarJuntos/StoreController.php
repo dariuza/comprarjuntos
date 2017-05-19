@@ -5,6 +5,7 @@ use App\Core\ComprarJuntos\Producto;
 use App\Core\ComprarJuntos\Categoria;
 use App\Core\ComprarJuntos\Orden;
 use App\Core\ComprarJuntos\Anotacion;
+use App\Core\ComprarJuntos\Mensaje;
 use Validator;
 use Mail;
 use DateTime;
@@ -41,7 +42,7 @@ class StoreController extends Controller {
 	}
 	
 	public function getListar(){
-
+		
 		$moduledata['detalles']=\DB::table('clu_order_detail')
 		->select('clu_order_detail.*')
 		->leftjoin('clu_order', 'clu_order_detail.order_id', '=', 'clu_order.id')
@@ -845,10 +846,10 @@ class StoreController extends Controller {
 						$mensaje->user_receiver_id = 0;//enviada al cliente
 						$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado;
 						//enviada al cliente
-						if($orden->client_id){
-							$mensaje->user_receiver_id = $orden->client_id;
+						if($orden[0]->client_id){
+							$mensaje->user_receiver_id = $orden[0]->client_id;
 						}else{
-							$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client;
+							$mensaje->message = 'Nuevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado.' Cliente: '.$orden[0]->name_client.' - '.$orden[0]->email_client.' - '.$orden[0]->number_client.' - '.$orden[0]->adress_client;
 						}						
 						$html = '<div>'.
 									'Nuevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].''.

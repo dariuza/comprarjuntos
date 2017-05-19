@@ -1155,16 +1155,16 @@ class WelcomeController extends Controller {
 			$mensaje->date = $hoy->format('Y-m-d H:i:s');
 			$mensaje->object = 'clu_order';
 			$mensaje->object_id = $orden->id;
-			$mensaje->user_sender_id = $tienda[0]->user_id;//tendero			
-			$mensaje->user_receiver_id = 0;//enviada al cliente
+			$mensaje->user_receiver_id = $tienda[0]->user_id;//tendero			
+			$mensaje->user_sender_id = 0;//enviada al cliente
 			$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id;
 			//enviada al cliente
 			if($orden->client_id){
-				$mensaje->user_receiver_id = $orden->client_id;
+				$mensaje->user_sender_id = $orden->client_id;
 			}else{
-				$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client;
+				$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client.' Tienda: '.$tienda[0]->name;
 				if(!empty($request->input('description'))){
-					$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client.' Indicaciones: '.$request->input('description');
+					$mensaje->message = 'Nueva Orden de pedido, codigo:'.  $orden->id.' Cliente: '.$orden->name_client.' - '.$orden->email_client.' - '.$orden->number_client.' - '.$orden->adress_client.' Tienda: '.$tienda[0]->name.' Indicaciones: '.$request->input('description');
 				}
 			}
 			

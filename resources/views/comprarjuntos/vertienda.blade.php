@@ -135,6 +135,7 @@
 	.btn{
 		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 		font-size: 14px;
+		border-color: {!!$tienda[0]->color_two!!} !important;
 	}
 
 	.ui-autocomplete{
@@ -151,7 +152,13 @@
 		border-radius: 5px;
 		margin-bottom: 2%;
 		box-shadow: 4px 4px 2px #ddd;
-	}	
+	}
+	.panel-default{
+		border-color: {!!$tienda[0]->color_two!!} !important;		
+	}
+	.panel-heading{
+		background-color: {!!$tienda[0]->color_one!!} !important;
+	}
 
 	</style>
 

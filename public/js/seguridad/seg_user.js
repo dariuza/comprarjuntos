@@ -570,7 +570,7 @@ seg_user.prototype.openModalCart = function(result) {
         descript.className = "form-control";
         descript.setAttribute("name", "description");
         descript.setAttribute("row", 5);
-        descript.setAttribute("placeholder", "Ingresa, las sugerencias o indicaciones que el tendero deba tener encuenta con tu pedido. Ejemplo: mejor fecha de entrega, dirección alternativa, número de contacto, etc.");
+        descript.setAttribute("placeholder", "Ingresa, las sugerencias o indicaciones que el tendero deba tener encuenta con tu pedido. Ejemplo: mejor fecha de entrega, dirección alternativa, número de contacto, metodo de pago, etc.");
 
         div_c2.appendChild(div_c2_t);
         div_c2.appendChild(descript);

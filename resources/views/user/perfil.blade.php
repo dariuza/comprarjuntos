@@ -45,6 +45,11 @@
     		background-color: #f2dede;
     		border-color: #ebccd1;
 		}
+		.btn{
+			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+			font-size: 14px;
+			border-color: #449aa2;
+		}
 		
 		
 	</style>
@@ -189,9 +194,9 @@ color: #333;">Terminos y Condiciones </a></div>
 			<div class="panel panel-default">
 				<div class="panel-heading">Mensajes Recibidos</div>
 				<div class="panel-body">
-					<table id="table_msj_recibidos" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
+					<table id="table_msj_enviados" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
 						<thead >
-				            <tr>				          			        			
+				            <tr>
 			        			<td>ASUNTO</td>
 			        			<td>MENSAJE</td>
 			        			<td>FECHA</td>		        			
@@ -206,9 +211,9 @@ color: #333;">Terminos y Condiciones </a></div>
 			<div class="panel panel-default">
 				<div class="panel-heading">Mensajes Enviados</div>
 				<div class="panel-body">
-					<table id="table_msj_enviados" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
+					<table id="table_msj_recibidos" class="display responsive no-wrap " cellspacing="0" width="96%" style="margin: auto;">
 						<thead >
-				            <tr>
+				            <tr>				          			        			
 			        			<td>ASUNTO</td>
 			        			<td>MENSAJE</td>
 			        			<td>FECHA</td>		        			
@@ -218,6 +223,8 @@ color: #333;">Terminos y Condiciones </a></div>
 				</div>
 			</div>
 		</div>
+		
+		
 	</div>
 @endsection
 

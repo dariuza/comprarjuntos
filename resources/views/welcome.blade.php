@@ -72,6 +72,7 @@
 		.btn{
 			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 			font-size: 14px;
+			border-color: #449aa2;
 		}
 
 	</style>
@@ -215,7 +216,7 @@
 			</div>
 			@if(count($tendero))
 				<div class="col-md-3"  style="text-align: center;">
-					{{ Html::image('users/'.$tendero[0]->user_name.'/profile/'.$tendero[0]->avatar,'Imagen no disponible',array( 'style'=>'width: auto; height: 150px;border:2px solid #ddd;border-radius: 50%;' ))}}
+					{{ Html::image('users/'.$tendero[0]->user_name.'/profile/'.$tendero[0]->avatar,'Imagen no disponible',array( 'style'=>'width: auto; height: 150px;border:2px solid #449aa2;border-radius: 50%;' ))}}
 					<div>Yo: {{$tendero[0]->names}} </div>
 					<div> Tambièn hago parte de ComprarJuntos</div>
 				</div>
@@ -234,7 +235,7 @@
 				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
 				@foreach($tiendas as $tienda)
 					<div class="col-md-3 col-mx-offset-1">
-						<div class="panel panel-default">					
+						<div class="panel panel-default" style="border-color:{{$tienda->color_two}};">					
 							<div class="panel-body">
 						    	<div class="row">
 						    		<div class="col-md-12" style="text-align: center;">
@@ -280,7 +281,7 @@
 					<div class="col-md-12 col-md-offset-0">
 						{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
 						   <div class="input-group" style="width: 100%;">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;','maxlength' => 48)) !!}
+								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;border: 1px solid #449aa2;','maxlength' => 48)) !!}
 								<span class="input-group-btn">
 									<button class="btn btn-default" type="submit">Buscar!</button>
 								</span>
@@ -323,10 +324,10 @@
 							    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$producto->name}}
 						    						</a>
 								    			</div>
-								    			<div style="font-size: 14px;text-align: center;">
+								    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
 								    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$producto->store_city}} - {{$producto->store_adress}}
 								    			</div>						    			
-								    			<div style="font-size: 14px;text-align: center;">
+								    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
 								    				De la Tienda {{$producto->store_name}}
 								    			</div>						    			
 						    				</div>
@@ -347,7 +348,7 @@
 			</div>
 		</div>
 
-		<!-- Para resoluciones d computador-->
+		<!-- Para resoluciones de computador-->
 		<div  class=" row col-md-9 col-md-offset-0 visible-lg" >
 			<!-- Div de tiendas-->
 			<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">
@@ -357,7 +358,7 @@
 				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
 				@foreach($tiendas as $tienda)
 					<div class="col-md-3 col-mx-offset-1">
-						<div class="panel panel-default">					
+						<div class="panel panel-default" style="border-color:{{$tienda->color_two}};">					
 							<div class="panel-body">
 						    	<div class="row">
 						    		<div class="col-md-12 popoverStore" data-content="<div>{{$tienda->description}}</div><div><b>Tendero:</b> {{$tienda->tnames}} {{$tienda->tsurnames}}</div>" rel="popover" data-placement="bottom" data-original-title="{{$tienda->name}}" data-trigger="hover" data-html="true">
@@ -403,7 +404,7 @@
 					<div class="col-md-12 col-md-offset-0">
 						{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
 						   <div class="input-group" style="width: 100%;">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;','maxlength' => 48)) !!}
+								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;border: 1px solid #449aa2;','maxlength' => 48)) !!}
 								<span class="input-group-btn">
 									<button class="btn btn-default" type="submit">Buscar!</button>
 								</span>
@@ -451,10 +452,10 @@
 							    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$producto->name}}
 						    						</a>
 								    			</div>
-								    			<div style="font-size: 14px;text-align: center;">
+								    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
 								    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$producto->store_city}} - {{$producto->store_adress}}
 								    			</div>						    			
-								    			<div style="font-size: 14px;text-align: center;">
+								    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
 								    				De la Tienda {{$producto->store_name}}
 								    			</div>						    			
 						    				</div>
