@@ -9,11 +9,6 @@ class DepartmentTableSeeder extends Illuminate\Database\Seeder {
 			'code'=>5,
 			'department'=>'Antioquia'			
 			)
-		);
-		\DB::table('seg_department')->insert(array(
-			'code'=>41,
-			'department'=>'Huila'			
-			)
-		);
+		);		
 	}
 }
