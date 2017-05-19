@@ -312,18 +312,7 @@ class CityTableSeeder extends Illuminate\Database\Seeder {
 				'department_id' => 1
 		)
 				);
-		\DB::table('seg_city')->insert(array(
-				'code' => 26,
-				'city' => "Altamira",
-				'department_id' => 2
-		)
-				);
-		\DB::table('seg_city')->insert(array(
-				'code' => 245,
-				'city' => "El Carmen de Atrato",
-				'department_id' => 2
-		)
-				);
+		
 		\DB::table('seg_city')->insert(array(
 				'code' => 2000,
 				'city' => "Bolombolo",
