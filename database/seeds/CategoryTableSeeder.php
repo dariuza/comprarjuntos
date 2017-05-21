@@ -2260,33 +2260,33 @@ class CategoryTableSeeder extends Illuminate\Database\Seeder {
 		//34 Bisuteria
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Collares',
-			'category_id'=> 33
+			'category_id'=> 34
 			)
 		);
 
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Collares',
-			'category_id'=> 33
+			'category_id'=> 34
 			)
 		);
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Anillos',
-			'category_id'=> 33
+			'category_id'=> 34
 			)
 		);
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Aretes',
-			'category_id'=> 33
+			'category_id'=> 34
 			)
 		);
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Pulseras',
-			'category_id'=> 33
+			'category_id'=> 34
 			)
 		);
 		\DB::table('clu_category')->insert(array(
 			'name'=>'Accesorios',
-			'category_id'=> 33
+			'category_id'=> 34
 			)
 		);
 
