@@ -48,15 +48,21 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				@if (Auth::guest())
 					<!-- Usuario sin Loguear -->
-					<ul class="nav navbar-nav">
+					<ul class="nav navbar-nav">		
+					
+					<!--
 					<li class="dropdown">
 						<a href="#" data-submenu="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" tabindex="0">Como Iniciar<span class="caret"></span></a>
+						
 						<ul class="dropdown-menu" role="menu">							
 							<li><a href="{{ url('/auth/logout') }}">Ser Un Tendero</a></li>							
 							<li><a href="{{ url('/auth/logout') }}">Atender una Venta</a></li>
 							<li><a href="{{ url('/auth/logout') }}">Crear un Grupo</a></li>											
 						</ul>
+
 					</li>				
+					-->
+					
 					</ul>
 					<div class="visible-lg div-finder-conteiner">
 						<div class="div-finder">
