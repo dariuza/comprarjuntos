@@ -701,7 +701,8 @@ class WelcomeController extends Controller {
 			$moduledata['ordenes']=
 			Orden::
 			select('clu_order.*')			
-			->where('clu_order.store_id',Session::get('store.id'))		
+			->where('clu_order.store_id',Session::get('store.id'))
+			->where('clu_order.resenia_active',1)		
 			->where(function ($query) {
 				$query->where('clu_order.name_client', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_order.resenia', 'like', '%'.Session::get('search').'%')	
@@ -714,6 +715,7 @@ class WelcomeController extends Controller {
 		}else{			
 			$moduledata['ordenes']=\DB::table('clu_order')
 			->where('clu_order.store_id',Session::get('store.id'))
+			->where('clu_order.resenia_active',1)
 			->skip($request->input('start'))->take($request->input('length'))
 			->orderBy('id', 'desc')
 			->get();			
@@ -1036,6 +1038,12 @@ class WelcomeController extends Controller {
 			$orden->email_client = $cliente[0]->email;
 			$orden->number_client = $cliente[0]->movil_number.', ' .$cliente[0]->fix_number;
 			$orden->client_id = $cliente[0]->user_id;
+			//verificamos si ya terminado sus datos de perfil
+			if(empty($cliente[0]->names) || empty($cliente[0]->adress) || empty($cliente[0]->email) ){
+				//el cleinte no ha terminado su registro
+				return Redirect::back()->with('error',['Lo sentimos pero el pedido no pudo realizarce, aùn tienes datos por diligenciar en tu perfil de usuario.']);
+
+			}
 		}
 		$orden->active= true;
 		$orden->stage_id = 1;

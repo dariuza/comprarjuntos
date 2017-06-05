@@ -347,153 +347,154 @@
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<!-- Para resoluciones de computador-->
-		<div  class=" row col-md-9 col-md-offset-0 visible-lg" >
-			<!-- Div de tiendas-->
-			<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">
-				<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
-					<b>Encuentra Tiendas y Crea Redes de Consumo</b>
+	<!-- Para resoluciones de computador-->
+	<div  class=" row col-md-9 col-md-offset-0 visible-lg" >
+		<!-- Div de tiendas-->
+		<div class="col-md-12 col-md-offset-0 " style="margin-top: 1%;">
+			<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
+				<b>Encuentra Tiendas y Crea Redes de Consumo</b>
+			</div>
+			<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
+			@foreach($tiendas as $tienda)
+				<div class="col-md-3 col-mx-offset-1">
+					<div class="panel panel-default" style="border-color:{{$tienda->color_two}};">					
+						<div class="panel-body">
+					    	<div class="row">
+					    		<div class="col-md-12 popoverStore" data-content="<div>{{$tienda->description}}</div><div><b>Tendero:</b> {{$tienda->tnames}} {{$tienda->tsurnames}}</div>" rel="popover" data-placement="bottom" data-original-title="{{$tienda->name}}" data-trigger="hover" data-html="true">
+					    			<a href="{{url('/'.$tienda->name)}}">
+					    				{{ Html::image('users/'.$tienda->user_name.'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}	    				
+					    			</a>					    				    									    			
+					    		</div>
+					    		<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;"> 
+			    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array('class'=>'img_tendero', 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
+			    				</a>	
+					    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
+					    	{{$tienda->color_two}};padding: 0px;">					    			
+					    			<div class="col-md-12" style="padding: 0px;">				    				
+				    					<div style="text-align: center;">
+				    						<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;text-decoration:none;	">	
+					    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$tienda->name}}
+				    						</a>
+						    			</div>			    				
+					    			</div>
+					    			<div class="col-md-12" >
+					    				<div style="font-size: 16px;text-align: center;">
+						    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$tienda->department}} - {{$tienda->city}}
+						    			</div>						    			
+						    			<div style="font-size: 16px;text-align: center;">
+						    				{{$tienda->adress}}
+						    			</div>		
+					    			</div>  			
+					    		</div>
+					    	</div>
+					    </div>				    
+					</div>
+				</div>	
+			@endforeach
+			</div>
+		</div>
+
+		<!--Div Presentaciòn de una tienda-->
+		<div class="col-md-10 col-md-offset-1 comprarjuntos" style="margin-top: 3%;background-image: url('images/banner/banner_word.jpg');">
+			<div class="row col-md-7 col-md-offset-1" style="font-size: 30px;">
+				<div class="col-md-12 col-md-offset-0">
+					Encuentra lo que buscas
 				</div>
-				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
-				@foreach($tiendas as $tienda)
+				<div class="col-md-12 col-md-offset-0">
+					{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
+					   <div class="input-group" style="width: 100%;">
+							{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;border: 1px solid #449aa2;','maxlength' => 48)) !!}
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit">Buscar!</button>
+							</span>
+						</div>
+				    {!! Form::close() !!}
+			    </div>		    
+			</div>
+
+			<div class="row col-md-4 col-md-offset-0" style="font-size: 22px;text-align: center;">
+				<div>Tiendas</div>
+				<div>Productos</div>
+				<!--<div>Grupos de Consumo</div>-->
+				<div>Tenderos</div>
+			</div>
+		</div>
+
+		<!--Div de productos-->
+		<div class="col-md-12 col-md-offset-0" style="margin-top: 3%;">
+			<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
+				<b>Encuentra Productos y Consume Responsablemente</b>
+			</div>
+			<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
+				@php ($p=0)
+				@php ($j=1)
+				@foreach($productos as $producto)						
+					@if($p%4==0)
+						<div class="col-md-12 col-md-offset-0">
+					@endif
 					<div class="col-md-3 col-mx-offset-1">
-						<div class="panel panel-default" style="border-color:{{$tienda->color_two}};">					
+						<div class="panel panel-default">					
 							<div class="panel-body">
 						    	<div class="row">
-						    		<div class="col-md-12 popoverStore" data-content="<div>{{$tienda->description}}</div><div><b>Tendero:</b> {{$tienda->tnames}} {{$tienda->tsurnames}}</div>" rel="popover" data-placement="bottom" data-original-title="{{$tienda->name}}" data-trigger="hover" data-html="true">
-						    			<a href="{{url('/'.$tienda->name)}}">
-						    				{{ Html::image('users/'.$tienda->user_name.'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}	    				
-						    			</a>					    				    									    			
+						    		<div class="col-md-12 popoverStore" data-content="<div><b>Precio:</b> ${{$producto->price}}</div>@if($producto->colors)<div> Colores: {{$producto->colors}}</div>@endif @if($producto->sizes)<div> Tamaños: {{$producto->sizes}}</div>@endif @if($producto->flavors)<div> Sabores: {{$producto->flavors}}</div>@endif @if($producto->materials)<div> Materiales: {{$producto->materials}}</div>@endif" rel="popover" data-placement="bottom" data-original-title="{{$producto->name}}" data-trigger="hover" data-html="true">
+						    			<a href="{{url('/'.$producto->store_name)}}">
+						    				{{ Html::image('users/'.$producto->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
+						    			</a>				    			
 						    		</div>
-						    		<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;"> 
-				    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array('class'=>'img_tendero', 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
-				    				</a>	
-						    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
-						    	{{$tienda->color_two}};padding: 0px;">					    			
-						    			<div class="col-md-12" style="padding: 0px;">				    				
+						    		{{--
+						    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 0px;">
+						    		--}}
+						    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 0px;">
+						    			<div  class="col-md-12" style="padding: 0px;">
 					    					<div style="text-align: center;">
-					    						<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;text-decoration:none;	">	
-						    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$tienda->name}}
+					    						<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;text-decoration:none;	">	
+						    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$producto->name}}
 					    						</a>
-							    			</div>			    				
-						    			</div>
-						    			<div class="col-md-12" >
-						    				<div style="font-size: 16px;text-align: center;">
-							    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$tienda->department}} - {{$tienda->city}}
+							    			</div>
+							    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
+							    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$producto->store_city}} - {{$producto->store_adress}}
 							    			</div>						    			
-							    			<div style="font-size: 16px;text-align: center;">
-							    				{{$tienda->adress}}
-							    			</div>		
-						    			</div>  			
+							    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
+							    				De la Tienda {{$producto->store_name}}
+							    			</div>						    			
+					    				</div>
+					    				{{--
+					    				<div class="col-md-3 hidden-xs">
+					    					<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;">
+						    					{{ Html::image('users/'.$producto->user_name.'/stores/'.$producto->store_image,'Imagen no disponible',array( 'style'=>'width: 130%;border-radius: 0%;' ))}}
+						    				</a>
+						    			</div>
+						    			--}}		    			
 						    		</div>
 						    	</div>
 						    </div>				    
 						</div>
-					</div>	
-				@endforeach
-				</div>
-			</div>
-
-			<!--Div Presentaciòn de una tienda-->
-			<div class="col-md-10 col-md-offset-1 comprarjuntos" style="margin-top: 3%;background-image: url('images/banner/banner_word.jpg');">
-				<div class="row col-md-7 col-md-offset-1" style="font-size: 30px;">
-					<div class="col-md-12 col-md-offset-0">
-						Encuentra lo que buscas
 					</div>
-					<div class="col-md-12 col-md-offset-0">
-						{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left visible-lg','onsubmit'=>'javascript:return seg_user.validateFinder()', 'style'=>'width: 100%;')) !!}
-						   <div class="input-group" style="width: 100%;">
-								{!! Form::text('finder','', array('class' => 'form-control','placeholder'=>'¿Que Estas Buscando?','style'=>'text-align: center;border: 1px solid #449aa2;','maxlength' => 48)) !!}
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit">Buscar!</button>
-								</span>
-							</div>
-					    {!! Form::close() !!}
-				    </div>		    
-				</div>
-
-				<div class="row col-md-4 col-md-offset-0" style="font-size: 22px;text-align: center;">
-					<div>Tiendas</div>
-					<div>Productos</div>
-					<!--<div>Grupos de Consumo</div>-->
-					<div>Tenderos</div>
-				</div>
-			</div>
-
-			<!--Div de productos-->
-			<div class="col-md-12 col-md-offset-0" style="margin-top: 3%;">
-				<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
-					<b>Encuentra Productos y Consume Responsablemente</b>
-				</div>
-				<div class="col-md-12 col-md-offset-0" style="margin-top: 1%;" >
-					@php ($p=0)
-					@php ($j=1)
-					@foreach($productos as $producto)						
-						@if($p%4==0)
-							<div class="col-md-12 col-md-offset-0">
-						@endif
-						<div class="col-md-3 col-mx-offset-1">
-							<div class="panel panel-default">					
-								<div class="panel-body">
-							    	<div class="row">
-							    		<div class="col-md-12 popoverStore" data-content="<div><b>Precio:</b> ${{$producto->price}}</div>@if($producto->colors)<div> Colores: {{$producto->colors}}</div>@endif @if($producto->sizes)<div> Tamaños: {{$producto->sizes}}</div>@endif @if($producto->flavors)<div> Sabores: {{$producto->flavors}}</div>@endif @if($producto->materials)<div> Materiales: {{$producto->materials}}</div>@endif" rel="popover" data-placement="bottom" data-original-title="{{$producto->name}}" data-trigger="hover" data-html="true">
-							    			<a href="{{url('/'.$producto->store_name)}}">
-							    				{{ Html::image('users/'.$producto->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}    				
-							    			</a>				    			
-							    		</div>
-							    		{{--
-							    		<div class="col-md-12"  style="background-color:{{$producto->color_one}}; color: {{$producto->color_two}}; border-color:{{$producto->color_two}};padding: 0px;">
-							    		--}}
-							    		<div class="col-md-12"  style="background-color:#fff; color: #777777; border-color:#777777;padding: 0px;">
-							    			<div  class="col-md-12" style="padding: 0px;">
-						    					<div style="text-align: center;">
-						    						<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;text-decoration:none;	">	
-							    						<span class="glyphicon glyphicon-home option_store_icon" aria-hidden="true"></span> {{$producto->name}}
-						    						</a>
-								    			</div>
-								    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
-								    				<span class="glyphicon glyphicon-map-marker option_store_icon" aria-hidden="true"></span> {{$producto->store_city}} - {{$producto->store_adress}}
-								    			</div>						    			
-								    			<div style="font-size: 14px;text-align: center;border-color:{{$tienda->color_two}};">
-								    				De la Tienda {{$producto->store_name}}
-								    			</div>						    			
-						    				</div>
-						    				{{--
-						    				<div class="col-md-3 hidden-xs">
-						    					<a href="{{url('/'.$producto->name)}}" style="color:{{$producto->color_two}};font-size: 18px;">
-							    					{{ Html::image('users/'.$producto->user_name.'/stores/'.$producto->store_image,'Imagen no disponible',array( 'style'=>'width: 130%;border-radius: 0%;' ))}}
-							    				</a>
-							    			</div>
-							    			--}}		    			
-							    		</div>
-							    	</div>
-							    </div>				    
-							</div>
+					@if($j%4==0)
+						</div>							
+					@elseif($p == count($productos)-1)
 						</div>
-						@if($j%4==0)
-							</div>							
-						@elseif($p == count($productos)-1)
-							</div>
-						@endif
-						@php ($p++)
-						@php ($j++)
-					@endforeach
-				</div>
+					@endif
+					@php ($p++)
+					@php ($j++)
+				@endforeach
 			</div>
 		</div>
+	</div>
 
-		<div class="row col-md-3 col-md-offset-0 visible-lg" >
-			<div class="col-md-12 col-md-offset-0 " style="border: 1px solid #449AA2;">
-				<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
-					<b>¿Que es ComprarJuntos?</b>
-				</div>
-				<div class="row col-md-12 col-md-offset-0" style="text-align: justify;">
-					ComprarJuntos es un proyecto para fomentar el consumo responsable. Es una herramienta para favorecer el cambio y promover la economia solidaria. La idea es que la gente pueda unirse a Grupos de Consumo existentes o puedan crear nuevos Grupos de Consumo con compañeros, vecinos o amigos. Se da la posibilidad a productoras y productores de promocionar sus productos y comunicar tanto con grupos de consumo como con otros productores para intercambiar información. Facilitamos el sistema de pedidos para que todo el proceso sea más sencillo y rápido tanto para los grupos de consumo como para los productores. Es soberanía alimentaria: volvamos a ser dueños de nuestra comida, compremos a través de circuitos locales, compremos productos de comercio justo, ¡Compremos Ecológico, Compremos Juntos!
-				</div>
-			</div>		
-		</div>
-	</div>	
+	<div class="row col-md-3 col-md-offset-0 visible-lg" >
+		<div class="col-md-12 col-md-offset-0 " style="border: 1px solid #449AA2;">
+			<div class=" col-md-12  col-md-offset-0 title m-b-md center-block" style="font-size: 22px;">
+				<b>¿Que es ComprarJuntos?</b>
+			</div>
+			<div class="row col-md-12 col-md-offset-0" style="text-align: justify;">
+				ComprarJuntos es un proyecto para fomentar el consumo responsable. Es una herramienta para favorecer el cambio y promover la economia solidaria. La idea es que la gente pueda unirse a Grupos de Consumo existentes o puedan crear nuevos Grupos de Consumo con compañeros, vecinos o amigos. Se da la posibilidad a productoras y productores de promocionar sus productos y comunicar tanto con grupos de consumo como con otros productores para intercambiar información. Facilitamos el sistema de pedidos para que todo el proceso sea más sencillo y rápido tanto para los grupos de consumo como para los productores. Es soberanía alimentaria: volvamos a ser dueños de nuestra comida, compremos a través de circuitos locales, compremos productos de comercio justo, ¡Compremos Ecológico, Compremos Juntos!
+			</div>
+		</div>		
+	</div>
+	
 
 @endsection
 

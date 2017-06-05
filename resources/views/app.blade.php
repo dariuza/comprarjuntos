@@ -258,4 +258,11 @@
 		@yield('script')
 		
 	</body>
+	<footer>
+		<div class="form-group">
+			<div class="col-md-3 col-md-offset-5">
+				<p>© 2017 {{ Session::get('copy') }}, Inc.</p>
+			</div>		
+		</div>	
+	</footer>
  </html>
