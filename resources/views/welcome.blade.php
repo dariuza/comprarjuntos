@@ -367,9 +367,11 @@
 					    				{{ Html::image('users/'.$tienda->user_name.'/stores/'.$tienda->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 150px;border-radius: 0%;' ))}}	    				
 					    			</a>					    				    									    			
 					    		</div>
+					    		<!--
 					    		<a href="{{url('/'.$tienda->name)}}" style="color:{{$tienda->color_two}};font-size: 16px;"> 
 			    					{{ Html::image('users/'.$tienda->user_name.'/profile/'.$tienda->avatar,'Imagen no disponible',array('class'=>'img_tendero', 'style'=>'width: 35%;border-radius: 50%;position: absolute; margin-left: 40%;z-index: 99;' ))}}
-			    				</a>	
+			    				</a>
+			    				-->
 					    		<div class="col-md-12"  style="background-color:{{$tienda->color_one}}; color: {{$tienda->color_two}}; border-color:
 					    	{{$tienda->color_two}};padding: 0px;">					    			
 					    			<div class="col-md-12" style="padding: 0px;">				    				
@@ -781,7 +783,56 @@
 		         
 			</div>
 		 </div>
-	</div>	
+	</div>
+
+	<!--Modal para el Formulario de registro-->
+	<div class="modal fade" id="registry_modal" role="dialog" >
+	    <div class="modal-dialog  modal-sm">	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Formulario de Registro</h4>
+				</div>
+				<div class = "alerts-module"></div>				
+				<div class="modal-body">
+					<div class="row" style="margin-bottom: 15px;">
+						<div class="col-md-12 col-md-offset-0 row_init">
+							{!! Form::open(array('id'=>'registry','url' => '/registro','method'=>'get','onsubmit'=>'javascript:return seg_user.validateRegistry()')) !!}
+				        		<div class="form-group">				        		
+
+									{!! Form::label('usuario', 'Usuario', array('class' => 'col-md-12 control-label')) !!}						
+									<div class="col-md-12">
+										{!! Form::text('usuario', old('usuario'), array('class' => 'form-control','placeholder'=>'Ingresa tu nombre usuario', 'autofocus'=>'autofocus'))!!}
+									</div>
+									
+									{!! Form::label('email', 'Correo Electronico', array('class' => 'col-md-12 control-label')) !!}
+									<div class="col-md-12">
+										{!! Form::email('email','', array('class' => 'form-control','placeholder'=>'Ingresa tu email, no es obligatorio')) !!}
+									</div>			
+									
+									{!! Form::label('contraseña_uno', 'Contraseña', array('class' => 'col-md-12 control-label')) !!}
+									<div class="col-md-12">
+										{!! Form::password('contraseña_uno', array('class' => 'form-control','placeholder'=>'Ingresa tu contraseña')) !!}
+									</div>
+									
+									{!! Form::label('contraseña_dos', 'Contraseña Nuevamente', array('class' => 'col-md-12 control-label')) !!}
+									<div class="col-md-12">
+										{!! Form::password('contraseña_dos', array('class' => 'form-control','placeholder'=>'Ingresa nuevamente tu contraseña')) !!}
+									</div>									
+								</div>								      
+					        {!! Form::close() !!}					        
+						</div>									
+					</div>
+					<a href="{{ url('/welcome/terminosycondiciones')}}"  target="_blank" style="font-size: 16px;margin:auto;">Terminos y Condiciones</a>		
+		        </div>
+		        <div class="modal-footer">		          
+		          <button type="submit" form = "registry" class="btn btn-default " >Enviar</button>
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>		                  
+		        </div>     
+	      </div>
+      </div>
+	</div>
 	@endif
 
 	<!--Modal generico para mensajes a tendero-->

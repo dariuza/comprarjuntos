@@ -721,7 +721,7 @@ class StoreController extends Controller {
 	//funciòn para ante el cambio de estado de la orden
 	public function postCambioestadoorder(Request $request){
 		//verificamos la orden y la tienda
-		//Tiendas
+		//Tiendas		
 		try {
 			$orden=\DB::table('clu_order')			
 			->leftjoin('clu_store', 'clu_order.store_id', '=', 'clu_store.id')
@@ -811,7 +811,7 @@ class StoreController extends Controller {
 					
 					try{
 						Mail::send('email.order_change',$data,function($message) use ($orden) {
-							$message->from(Session::get('mail'),Session::get('copy').' - '.$orden[0]->id);
+							$message->from(Session::get('mail'),Session::get('app').' - '.$orden[0]->id);
 							$message->to($orden[0]->email_client,$orden[0]->name_client)->subject('Orden de Pedido.');
 						});
 					}catch (\Exception  $e) {	
@@ -844,7 +844,7 @@ class StoreController extends Controller {
 						$mensaje->object_id = $data['orden_id'];
 						$mensaje->user_sender_id = $tienda[0]->user_id;//tendero			
 						$mensaje->user_receiver_id = 0;//enviada al cliente
-						$mensaje->message = 'Nevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado;
+						$mensaje->message = 'Nuevo cambio de estado en Orden de pedido, codigo: '.$data['orden_id'].' '.$data['mensaje_orden'].', Estado actual: '.$estado;
 						//enviada al cliente
 						if($orden[0]->client_id){
 							$mensaje->user_receiver_id = $orden[0]->client_id;

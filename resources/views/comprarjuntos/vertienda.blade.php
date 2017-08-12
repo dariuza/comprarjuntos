@@ -135,7 +135,7 @@
 	.btn{
 		font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 		font-size: 14px;
-		border-color: {!!$tienda[0]->color_two!!} !important;
+		/*border-color: {!!$tienda[0]->color_two!!} !important;*/
 	}
 
 	.ui-autocomplete{
@@ -158,6 +158,26 @@
 	}
 	.panel-heading{
 		background-color: {!!$tienda[0]->color_one!!} !important;
+	}
+	.buscador_t{
+		border-color: {!!$tienda[0]->color_two!!} !important;		
+	}
+	.cart_b{
+		color: {!!$tienda[0]->color_one!!} !important;		
+	}
+	.boton_cart2{
+	    text-align: center;
+	    background-color: {!!$tienda[0]->color_two!!} !important;	
+	}
+	.bange_cart_b{
+		color: {!!$tienda[0]->color_one!!} !important;		
+	}
+	.cart_text_b{
+		color: {!!$tienda[0]->color_one!!} !important;		
+	}
+	.badge{
+		background-color: {!!$tienda[0]->color_one!!} !important;
+		color: {!!$tienda[0]->color_two!!} !important;			
 	}
 
 	</style>
@@ -232,7 +252,7 @@
 		</div>
 	</div>
 	
-	<div class="row tienda_banner col-md-10 col-md-offset-1" style="height: 200px;font-size: 40px; color: {{$tienda[0]->color_two}} !important; padding: 1%;margin-bottom: 1%; ">
+	<div class="row tienda_banner col-md-10 col-md-offset-1 visible-lg" style="height: 200px;font-size: 40px; color: {{$tienda[0]->color_two}} !important; padding: 1%;margin-bottom: 1%; ">
 		@if($tienda[0]->banner == 'default.png')
 			{{$tienda[0]->name}}
 		@endif
@@ -242,7 +262,8 @@
 			<div class="col-md-5">
 			{{ Html::image('users/'.$tienda[0]->user_name.'/stores/'.$tienda[0]->image,'Imagen no disponible',array( 'style'=>'width: 100%;height: 200px;border-radius: 0%;' ))}}	
 			</div>
-			<div class="col-md-7 col-sd-offset-0" style="text-align: center;">				
+			<div class="col-md-7 col-sd-offset-0" style="text-align: center;">
+				<div class ="hidden-lg" style="margin-bottom: 1%;margin-top: 1%;"><b>{{strtoupper($tienda[0]->name)}}</b></div>
 				<div>{{$tienda[0]->description}}</div>
 				<div><span class="glyphicon glyphicon-map-marker" aria-hidden="true">{{$tienda[0]->department}}, {{$tienda[0]->city}}</span></div>
 				<div>{{$tienda[0]->adress}}</div>
@@ -341,7 +362,20 @@
 		</div>		
 	</div>	
 
-	<div class="col-md-10 col-md-offset-1" style="margin-bottom: 2%;">
+	<!--Buscador de tiendas solo para moviles-->
+	<div class="col-md-10 col-md-offset-1 hidden-lg">
+		{!! Form::open(array('url' => '/','method'=>'get','class'=>'navbar-form navbar-left','onsubmit'=>'javascript:return seg_user.validateFinder()')) !!}
+		   <div class="input-group">
+				{!! Form::text('finder_store','', array('class' => 'form-control buscador_t','placeholder'=>'Buscador de Productos','style'=>'text-align: center;','maxlength' => 48)) !!}
+				{!! Form::hidden('store', $tienda[0]->id) !!}
+				<span class="input-group-btn">
+					<button class="btn btn-default buscador_t" type="submit">Buscar!</button>
+				</span>
+			</div>
+	    {!! Form::close() !!}
+    </div>	
+
+	<div class="col-md-10 col-md-offset-1 " style="margin-bottom: 2%;">
 		<div class="title m-b-md center-block">
 			<div class="btn-group btn-menu" role="group">
 				<!--<button type="button" class="btn btn-default">Articulos</button>-->
@@ -349,7 +383,7 @@
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#ubication_modal">Ubicaciòn</button>
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#resumen_modal">Resumen</button>				
 				<!--<button type="button" class="btn btn-default">Grupos de Consumo</button>-->
-				<button type="button" class="btn btn-default" ><a href="#calificaciones" id="link1" class="bnt-catacteristicas">Calificaciones</a></button>
+				<button type="button" class="btn btn-default visible-lg" ><a href="#calificaciones" id="link1" class="bnt-catacteristicas">Calificaciones</a></button>
 			</div>
 		</div>
 	</div>
@@ -368,7 +402,55 @@
 	<div id="color_two" style="display:none;">{{$tienda[0]->color_two}}</div>
 
 	<!--Listado de productos-->
-	<div class="col-md-10 col-md-offset-1 listado_productos">
+	<!-- Para resoluciones de celulares-->
+	<div class="col-md-10 col-md-offset-1 listado_productos hidden-lg">
+		@php ($p=0)
+		@php ($j=1)
+		@foreach($productos as $producto)
+			@if($p%4==0)
+				<div class="col-md-12 col-md-offset-0">
+			@endif
+			<div class="col-md-3 col-mx-offset-1" style="text-align: center;">
+				<div class="panel panel-default">					
+					<div class="panel-body">
+				    	<div class="row">
+				    		<div class="col-md-12 option_add_product" id ="{{$producto->name}}_{{$producto->id}}">				    			
+			    				{{ Html::image('users/'.$tendero[0]->user_name.'/products/'.$producto->image1,'Imagen no disponible',array( 'style'=>'width: 90%;height: 200px;border-radius: 0%;' ))}}				    							    			
+				    		</div>
+
+				    		<div class="col-xs-12 panel-footer"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:{{$tienda[0]->color_two}};padding: 2px;">				    			
+				    			<div class="col-xs-12 col-mx-offset-0" style="font-size: 18px;">
+					    			{{$producto->name}}				    			
+				    			</div>
+				    			<div class="col-xs-4 col-mx-offset-0">
+				    				<span class="glyphicon glyphicon glyphicon-tags option_store_icon" aria-hidden="true"></span>
+				    				<div  style="font-size: 16px;">${{$producto->price}}</div>					    			
+				    			</div>	
+				    			<div class="col-xs-4 col-mx-offset-0 option_store" data-toggle="popover" title="{{$producto->name}}" data-placement="bottom" data-content="<div>{{$producto->description}}</div><div>Nº de veces comprado: {{$producto->ventas}}</div>" data-html="true">			    			
+				    				<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>
+				    				<div style="font-size: 14px;">Descripciòn</div>
+				    			</div>
+				    			<div class="col-xs-4 col-mx-offset-0 option_store option_add_product" id ="{{$producto->name}}_{{$producto->id}}">
+				    				<span class="glyphicon glyphicon-shopping-cart option_store_icon" aria-hidden="true"></span>
+				    				<div style="font-size: 14px;">Al Carrito</div>
+				    			</div>	
+				    		</div>
+				    	</div>
+				    </div>				    
+				</div>
+			</div>
+			@if($j%4==0)
+				</div>							
+			@elseif($p == count($productos)-1)
+				</div>
+			@endif
+			@php ($p++)
+			@php ($j++)
+		@endforeach
+	</div>
+
+	<!-- Para resoluciones de computador-->
+	<div class="col-md-10 col-md-offset-1 listado_productos visible-lg">
 		@php ($p=0)
 		@php ($j=1)
 		@foreach($productos as $producto)
@@ -384,16 +466,20 @@
 				    		</div>
 
 				    		<div class="col-md-12 panel-footer"  style="background-color:{{$tienda[0]->color_one}}; color: {{$tienda[0]->color_two}}; border-color:{{$tienda[0]->color_two}};padding: 2px;">				    			
-				    			<div class="col-md-4 col-mx-offset-0" style="font-size: 14px;">
+				    			<div class="col-md-12 col-mx-offset-0" style="font-size: 18px;">
 					    			{{$producto->name}}				    			
+				    			</div>
+				    			<div class="col-md-4 col-mx-offset-0">
+				    				<span class="glyphicon glyphicon glyphicon-tags option_store_icon" aria-hidden="true"></span>
+				    				<div  style="font-size: 16px;">${{$producto->price}}</div>					    			
 				    			</div>	
 				    			<div class="col-md-4 col-mx-offset-0 option_store" data-toggle="popover" title="{{$producto->name}}" data-placement="bottom" data-content="<div>{{$producto->description}}</div><div>Nº de veces comprado: {{$producto->ventas}}</div>" data-html="true">			    			
 				    				<span class="glyphicon glyphicon-signal option_store_icon" aria-hidden="true"></span>
-				    				<div style="font-size: 10px;">Descripciòn</div>
+				    				<div style="font-size: 14px;">Descripciòn</div>
 				    			</div>
 				    			<div class="col-md-4 col-mx-offset-0 option_store option_add_product" id ="{{$producto->name}}_{{$producto->id}}">
 				    				<span class="glyphicon glyphicon-shopping-cart option_store_icon" aria-hidden="true"></span>
-				    				<div style="font-size: 10px;">Al Carrito</div>
+				    				<div style="font-size: 14px;">Al Carrito</div>
 				    			</div>	
 				    		</div>
 				    	</div>
@@ -564,7 +650,7 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<!--Para captar los datos de los invitados que desean comprar-->
 	<div class="modal fade" id="invitado_cart_modal" role="dialog">
 		<div class="modal-dialog modal-sm">
@@ -582,8 +668,13 @@
 						</div>
 
 						<div class="col-md-12">
+							{!! Form::label('municipio', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
+							{!! Form::select('municipio_invitado_modal',$ciudades,null, array('id'=>'municipio_invitado_modal','class' => 'form-control','placeholder'=>'Municipio de recidencia')) !!}							
+						</div>
+
+						<div class="col-md-12">
 							{!! Form::label('direccion', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
-							{!! Form::text('dir_invitado_modal',null, array('id'=>'dir_invitado_modal', 'class' => 'form-control','placeholder'=>'Dirección Y Ciudad de recidencia')) !!}
+							{!! Form::text('dir_invitado_modal',null, array('id'=>'dir_invitado_modal', 'class' => 'form-control','placeholder'=>'Dirección de recidencia')) !!}
 						</div>
 
 						<div class="col-md-12">
@@ -798,11 +889,21 @@
     {!! Form::open(array('id'=>'form_from_products','url' => 'welcome/listarajaxproducts')) !!}		
     {!! Form::close() !!}
 
+	<nav class="navbar  navbar-fixed-bottom navbar-light bg-faded hidden-lg">		
+		<a href="#" id="cart_modal_b">
+			<div class="col-xs-4 col-xs-offset-4 boton_cart2" style="border-radius: 5%">			
+				<span class="glyphicon glyphicon-shopping-cart cart_b" aria-hidden="true" style = "font-size: 30px;"></span>
+				<span class ="cart_text_b" style = "font-size: 16px;" >Carro</span>	
+				<span id="bange_cart_b" class="badge"></span>
+			</div>
+		</a>
+
+	</nav>
 @endsection
 
 @section('script')
 	<script type="text/javascript" src="{{ url('js/chosen.jquery.min.js') }}"></script>
-
+	<script type="text/javascript">	$('#cart_modal_b').on('click', function (e) { seg_user.openModalCart();});</script>
 	<!--Autocomplete para buscador-->
 	@foreach($products_name as $producto)
 		<script type="text/javascript" charset="utf-8">  seg_user.datos_productos.push("{!!$producto!!}"); </script>
@@ -1184,6 +1285,11 @@
 							$('#bange_cart').html(1);	
 						}else{
 							$('#bange_cart').html(parseInt($('#bange_cart').html())+1);
+						}
+						if($('#bange_cart_b').html() == ""){
+							$('#bange_cart_b').html(1);	
+						}else{
+							$('#bange_cart_b').html(parseInt($('#bange_cart_b').html())+1);
 						}
 					}
 					//cerrar el modal
