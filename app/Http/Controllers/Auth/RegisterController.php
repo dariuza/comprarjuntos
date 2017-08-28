@@ -83,7 +83,8 @@ class RegisterController extends Controller
     
     public function getRegistry(Request $request)
     {
-    	if ($this->auth->guest()){
+    	//if ($this->auth->guest()){
+    	if (1){
     		$messages = [
 				'required' => 'El campo :attribute es requerido.',
 				'size' => 'El campo :attribute deberia ser mayor a :size.',
@@ -219,7 +220,8 @@ class RegisterController extends Controller
 								$message->to(Session::get('mail'),Session::get('name'))->subject('Registro de Tendero.');
 							});						
 							
-							return redirect()->action('Auth\LoginController@getLogin', ['user_id' => $user->id, 'usuario'=>$user->name, 'contraseña'=>  $request->input()['contraseña_uno']]);
+							return Redirect::to('/')->with('message',['Usuario agregado correctamente']);
+							//return redirect()->action('Auth\LoginController@getLogin', ['user_id' => $user->id, 'usuario'=>$user->name, 'contraseña'=>  $request->input()['contraseña_uno']]);
 							
 						}else{
 							return Redirect::to('/')->withErrors(['Datos invalidos, La contraseña no coincide']);

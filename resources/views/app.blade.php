@@ -103,8 +103,7 @@
 				    	</div>
 				    </div>
 
-					<ul class="nav navbar-nav navbar-right">				
-						<li><a href="#" data-toggle="modal" data-target="#registry_modal" >Registrate</a></li>
+					<ul class="nav navbar-nav navbar-right">
 						<li><a href="#" data-toggle="modal" data-target="#login_modal" >Ingresa</a></li>
 						<li>
 							<a href="#" id="cart_modal_a">		
@@ -196,6 +195,9 @@
 				    	</div>
 				    </div>
 					<ul class="nav navbar-nav navbar-right">
+						@if( Session::get('comjunplus.usuario.rol_id') == 1 )
+							<li><a href="#" data-toggle="modal" data-target="#registry_modal" >Registrate</a></li>
+						@endif
 						<li class="dropdown">
 							<a href="#" data-submenu="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" tabindex="0">{{Session::get('comjunplus.usuario.name')}}<span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">							
@@ -208,7 +210,7 @@
 										<span class="badge">5</span>
 									</a>
 								</li>
-								-->
+								-->								
 								<li>
 									<a href="{{ url('/perfil/'.Session::get('comjunplus.usuario.name')) }}">
 										<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -264,4 +266,11 @@
 		@yield('script')
 		
 	</body>
+	<footer>
+		<div class="form-group">
+			<div class="col-md-3 col-md-offset-5">
+				<p>© 2017 {{ Session::get('copy') }}, Inc.</p>
+			</div>		
+		</div>	
+	</footer>
  </html>

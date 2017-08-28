@@ -51,10 +51,11 @@ class WelcomeController extends Controller {
 			}
 		}
 
-		Session::put('app', env('APP_NAME','ComprarJuntos'));
-		Session::put('copy', env('APP_RIGTH','ComprarJuntos'));
-		Session::put('mail', env('MAIL_USERNAME','info.comprarjuntos@gmail.com'));
+		Session::put('app', env('APP_NAME','Macalù'));
+		Session::put('copy', env('APP_RIGTH','Temposolutions'));
+		Session::put('mail', env('MAIL_USERNAME','soportemacalu@gmail.com'));
 		Session::put('support', env('APP_SUPPORT','daruiza@gmail.com'));
+		Session::put('frequency', env('APP_FREQUENCY',6500));
 		//Session::put('style', env('APP_STYLE','default'));		
 		/**
 		 * REALIZAMOS CONSULTAS PARA INDEX
@@ -86,16 +87,16 @@ class WelcomeController extends Controller {
 				$ciudades[$city->city] = $city->city;
 			}
 			$moduledata['ciudades']=$ciudades;
-		}		
+		}	
 
-		$moduledata['category'] = \DB::table('clu_category')
+		$category = \DB::table('clu_category')
 		->select('clu_category.name','fc.name as fname')
 		->leftjoin('clu_category as fc', 'clu_category.category_id', '=', 'fc.id')
 		->orderByRaw("RAND()")
 		->get();
 		//construimos el array
 		$cat =  array();
-		foreach ($moduledata['category'] as $key => $value) {
+		foreach ($category as $key => $value) {
 			if(!$value->fname){
 				if(!array_key_exists($value->name,$cat))$cat[$value->name] = array(); 
 			}else{
@@ -114,7 +115,31 @@ class WelcomeController extends Controller {
 		->skip(0)->take(1)
 		->get();
 
-		//HAY REQUEST
+		//ultima_tienda		
+		$moduledata['ultima_tienda'] = \DB::table('clu_store')
+		->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar','seg_user_profile.names as tnames','seg_user_profile.surnames as tsurnames')
+		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+		->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+		->where('seg_user_profile.avatar','!=','default.png')
+		->where('clu_store.status','Activa')
+		->where('clu_store.id',\DB::table('clu_store')->max('clu_store.id'))		
+		->get();
+
+		//si no hay nueva tienda, buscamos una otra que pueda ubicarce
+		if(!count($moduledata['ultima_tienda'])){
+			$moduledata['ultima_tienda'] = \DB::table('clu_store')
+			->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar','seg_user_profile.names as tnames','seg_user_profile.surnames as tsurnames')
+			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+			->where('seg_user_profile.avatar','!=','default.png')
+			->where('clu_store.status','Activa')
+			->orderByRaw("RAND()")
+			->skip(0)->take(1)
+			->get();
+		}
+			
+
+		//HAY REQUEST INDICA BUSQUEDA
 		if(!empty($request->input())){
 			//si es el finder es el buscador inicial			
 			if(array_key_exists('categoria',$request->input())){
@@ -133,9 +158,10 @@ class WelcomeController extends Controller {
 					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 					->where('clu_store.metadata','like','%'.$categoria[0]->category_id.'%')
+					->where('seg_user_profile.avatar','!=','default.png')
 					->where('clu_store.status','Activa')
 					->orderByRaw("RAND()")
-					->skip(0)->take(4)
+					->skip(0)->take(6)
 					->get();		
 
 					//productos		
@@ -147,7 +173,7 @@ class WelcomeController extends Controller {
 					->where('clu_products.category','like','%'.$categoria[0]->id.'%')
 					->where('clu_store.status','Activa')
 					->orderByRaw("RAND()")
-					->skip(0)->take(12)
+					->skip(0)->take(18)
 					->get();
 
 				}else{
@@ -157,9 +183,10 @@ class WelcomeController extends Controller {
 					->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 					->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
 					->where('clu_store.metadata','like','%'.$categoria[0]->id.'%')
+					->where('seg_user_profile.avatar','!=','default.png')
 					->where('clu_store.status','Activa')
 					->orderByRaw("RAND()")
-					->skip(0)->take(4)
+					->skip(0)->take(6)
 					->get();
 					
 					//necesitamos las subcategorias
@@ -186,7 +213,7 @@ class WelcomeController extends Controller {
 							}
 						})
 						->orderByRaw("RAND()")
-						->skip(0)->take(12)
+						->skip(0)->take(16)
 						->get();
 					}					
 				}
@@ -217,7 +244,7 @@ class WelcomeController extends Controller {
 					}
 				})
 				->orderByRaw("RAND()")
-				->skip(0)->take(4)
+				->skip(0)->take(6)
 				->get();
 
 				$moduledata['productos'] = \DB::table('clu_products')
@@ -235,11 +262,12 @@ class WelcomeController extends Controller {
 					}
 				})
 				->orderByRaw("RAND()")
-				->skip(0)->take(12)
+				->skip(0)->take(18)
 				->get();				
 			}
 
 			if(array_key_exists('finder_store',$request->input())){
+
 				//buscador de la tienda, intentan buscar productos o categorias
 				$criterio = explode(' ',strtolower($request->input('finder_store')));
 				$conectors = Conector::all()->toArray();			
@@ -260,7 +288,7 @@ class WelcomeController extends Controller {
 				->select('seg_user_profile.*','seg_user.name as user_name')
 				->leftjoin('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')					
 				->where('seg_user.id',$moduledata['tienda'][0]->user_id)		
-				->get();			
+				->get();
 
 				$moduledata['productos'] = \DB::table('clu_products')
 				->select('clu_products.*',\DB::raw('SUM(clu_order_detail.volume) as ventas'))			
@@ -275,7 +303,7 @@ class WelcomeController extends Controller {
 					}
 				})
 				->groupBy('clu_products.id')
-				->skip(0)->take(16)		
+				->skip(0)->take(18)		
 				->get();
 
 				$ventas = \DB::table('clu_products')
@@ -291,7 +319,7 @@ class WelcomeController extends Controller {
 					}
 				})
 				->groupBy('clu_products.id')
-				->skip(0)->take(16)		
+				->skip(0)->take(18)		
 				->get();
 
 				foreach ($moduledata['productos'] as $pkey => $producto) {
@@ -300,7 +328,7 @@ class WelcomeController extends Controller {
 						if($producto->id == $venta->id){
 							//el producto tiene ventas reales
 							$producto->ventas = $venta->ventas;
-							 break; 
+							break; 
 						}
 					}				
 				}
@@ -320,13 +348,20 @@ class WelcomeController extends Controller {
 					$moduledata['categorias'][] = $value->name;
 				}
 
+				$citys = \DB::table('seg_city')->orderBy('city','asc')				
+				->get();
+				foreach ($citys as $city){
+					$ciudades[$city->city] = $city->city;
+				}
+				$moduledata['ciudades']=$ciudades;
+				
 				//autocomplete para el buscador
 				$products = \DB::table('clu_products')
 				->select('clu_products.name as pname','clu_category.name as cname')
 				->leftjoin('clu_category', 'clu_products.category', '=', 'clu_category.id')	
 				->where('clu_products.store_id',$moduledata['tienda'][0]->id)
 				->orderByRaw("RAND()")
-				->skip(0)->take(128)					
+				->skip(0)->take(24)					
 				->get();
 				$moduledata['products_name'] = array();
 				foreach ($products as $key => $value) {
@@ -334,6 +369,7 @@ class WelcomeController extends Controller {
 				}
 
 				//resumen estadistico
+				//preguntamos si hay ordenes
 				$moduledata['orders'] = \DB::table('clu_order')
 				->select('clu_stage.stage', \DB::raw('count(*) as total'))
 				->join('clu_stage', 'clu_order.stage_id', '=', 'clu_stage.id')
@@ -346,6 +382,7 @@ class WelcomeController extends Controller {
 					if($value->stage == "RECHAZADO") $value->color = "#ff5c33";
 					if($value->stage == "FINALIZADO") $value->color = "#33cc33";
 				}
+
 				$moduledata['calificaciones'] = \DB::table('clu_order')
 				->select('clu_order.resenia', \DB::raw('count(*) as total'))			
 				->where('clu_order.store_id',$moduledata['tienda'][0]->id)
@@ -357,10 +394,10 @@ class WelcomeController extends Controller {
 					if($value->resenia == 3){$value->resenia_text = "Regular";$value->color = "#ffcc00";}
 					if($value->resenia == 4){$value->resenia_text = "Bueno";$value->color = "#66ccff";}
 					if($value->resenia == 5){$value->resenia_text = "Muy Bueno";$value->color = "#00cc66";}
-				}	
+				}
 
 				//paginador
-				$moduledata['paginador']['total'] =Producto::where('clu_order.store_id',$moduledata['tienda'][0]->id)->count();
+				$moduledata['paginador']['total'] =Producto::where('clu_products.store_id',$moduledata['tienda'][0]->id)->count();
 				$moduledata['paginador']['ppp'] =16;//productospor pagina
 				$moduledata['paginador']['pagina'] =1;
 				$moduledata['paginador']['paginas'] = ceil($moduledata['paginador']['total'] / $moduledata['paginador']['ppp']);
@@ -390,7 +427,6 @@ class WelcomeController extends Controller {
 				//asignamos el id para listar las ordenes, en listarajaxorders
 				Session::put('store.id', $moduledata['tienda'][0]->id);			
 				return view('comprarjuntos/vertienda')->with($moduledata);
-
 			}
 
 		}else{
@@ -400,12 +436,13 @@ class WelcomeController extends Controller {
 			->select('clu_store.*','seg_user.name as user_name','seg_user_profile.avatar as avatar','seg_user_profile.names as tnames','seg_user_profile.surnames as tsurnames')
 			->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
 			->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
-			->where('clu_store.status','Activa')
+			->where('seg_user_profile.avatar','!=','default.png')
+			->where('clu_store.status','Activa')			
 			->orderByRaw("RAND()")
-			->skip(0)->take(4)
+			->skip(0)->take(6)
 			->get();		
 
-			//productos		
+			// algunos productos		
 			$moduledata['productos'] = \DB::table('clu_products')
 			->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name')
 			->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
@@ -413,18 +450,47 @@ class WelcomeController extends Controller {
 			->where('clu_products.active',1)
 			->where('clu_store.status','Activa')
 			->orderByRaw("RAND()")
-			->skip(0)->take(12)
+			->skip(0)->take(18)
 			->get();
 
 		}
 		
 		//return view('welcome',['modulo'=>$moduledata]);
+		//dd($moduledata);
+		//dd(Session::all());
 		return view('welcome')->with($moduledata);		
+	}
+
+	//funcion llamado de iten carrusel
+	public function postConsultaritem(){
+		//consultamos un item alazar
+		$data_array = array();
+		$data_array['producto'] = \DB::table('clu_products')
+		->select('clu_products.*','clu_store.id as store_id','clu_store.name as store_name','clu_store.city as store_city','clu_store.adress as store_adress','clu_store.image as store_image','clu_store.color_one as color_one','clu_store.color_two as color_two','seg_user.name as user_name','seg_user_profile.avatar as user_avatar')
+		->leftjoin('clu_store', 'clu_products.store_id', '=', 'clu_store.id')
+		->leftjoin('seg_user', 'clu_store.user_id', '=', 'seg_user.id')
+		->leftjoin('seg_user_profile', 'clu_store.user_id', '=', 'seg_user_profile.user_id')
+		->where('clu_products.active',1)		
+		->where('clu_store.status','Activa')
+		->orderByRaw("RAND()")
+		->skip(0)->take(1)
+		->get();
+
+
+		
+		return response()->json(['respuesta'=>true,'data'=>$data_array]);
 	}
 
 	//Este es el metodo que controla el buscador principal
 	public function getFind($data = null){
 		//BUSQUEDA DE TIENDA PRODUCTO O CATEGORIA
+		
+		if( empty(Session::get('copy'))){
+			Session::put('app', env('APP_NAME','Macalù'));
+			Session::put('copy', env('APP_RIGTH','Temposolutions'));
+			Session::put('mail', env('MAIL_USERNAME','soportemacalu@gmail.com'));
+			Session::put('support', env('APP_SUPPORT','daruiza@gmail.com'));	
+		}	
 		
 		//PRIMERO miramos si coincide con el nombre de una tienda
 		$moduledata['tienda'] = \DB::table('clu_store')
@@ -486,6 +552,13 @@ class WelcomeController extends Controller {
 				$moduledata['categorias'][] = $value->name;
 			}
 
+			$citys = \DB::table('seg_city')->orderBy('city','asc')				
+			->get();
+			foreach ($citys as $city){
+				$ciudades[$city->city] = $city->city;
+			}
+			$moduledata['ciudades']=$ciudades;
+			
 			//autocomplete para el buscador
 			$products = \DB::table('clu_products')
 			->select('clu_products.name as pname','clu_category.name as cname')
@@ -650,7 +723,7 @@ class WelcomeController extends Controller {
 				return Redirect::to('/mistiendas/listar');
 				
 			}			
-		}
+		}		
 
 		if($data == 'modalmessagetotender' ){
 			//el cliente desea dejar un mensaje para el tendero deacuerdo ala orden aceptada o rechazada.
@@ -701,7 +774,8 @@ class WelcomeController extends Controller {
 			$moduledata['ordenes']=
 			Orden::
 			select('clu_order.*')			
-			->where('clu_order.store_id',Session::get('store.id'))		
+			->where('clu_order.store_id',Session::get('store.id'))
+			->where('clu_order.resenia_active',1)		
 			->where(function ($query) {
 				$query->where('clu_order.name_client', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_order.resenia', 'like', '%'.Session::get('search').'%')	
@@ -714,6 +788,7 @@ class WelcomeController extends Controller {
 		}else{			
 			$moduledata['ordenes']=\DB::table('clu_order')
 			->where('clu_order.store_id',Session::get('store.id'))
+			->where('clu_order.resenia_active',1)
 			->skip($request->input('start'))->take($request->input('length'))
 			->orderBy('id', 'desc')
 			->get();			
@@ -830,7 +905,7 @@ class WelcomeController extends Controller {
 		);		
 				
 		Mail::send('email.support',$data,function($message) use ($data) {
-			$message->from(Session::get('mail'),Session::get('copy'));
+			$message->from(Session::get('mail'),Session::get('app'));
 			$message->to($data['email'],'Soporte')->subject('Solicitud de Usuario.');
 		});
 
@@ -912,7 +987,7 @@ class WelcomeController extends Controller {
 						
 			try{
 				Mail::send('email.order_message_tender',$data,function($message) use ($orden,$tienda) {
-					$message->from(Session::get('mail'),Session::get('copy').' - '.$orden[0]->id);
+					$message->from(Session::get('mail'),Session::get('app').' - '.$orden[0]->id);
 					$message->to($tienda[0]->email,$tienda[0]->uname)->subject('Orden de Pedido.');
 				});
 			}catch (\Exception  $e) {	
@@ -1003,8 +1078,8 @@ class WelcomeController extends Controller {
 	public function postAddproduct(Request $request){
 		//consultamos las caracteristicas del producto		
 		$producto = \DB::table('clu_products')							
-			->where('clu_products.id',$request->input('id'))		
-			->get();			
+		->where('clu_products.id',$request->input('id'))		
+		->get();			
 		return response()->json(['respuesta'=>true,'request'=>$request->input(),'data'=>$producto]);	
 	}
 
@@ -1018,7 +1093,7 @@ class WelcomeController extends Controller {
 		if(!empty($request->input('name_invitado')) && !empty($request->input('dir_invitado')) ){
 			//es invitado, captamos los datos de contacto
 			$orden->name_client = $request->input('name_invitado');
-			$orden->adress_client = $request->input('dir_invitado');
+			$orden->adress_client = $request->input('dir_invitado').' - '.$request->input('municipio_invitado');
 			$orden->email_client = strtolower($request->input('email_invitado'));
 			$orden->number_client = $request->input('tel_invitado');
 			$orden->client_id = 0;
@@ -1036,6 +1111,12 @@ class WelcomeController extends Controller {
 			$orden->email_client = $cliente[0]->email;
 			$orden->number_client = $cliente[0]->movil_number.', ' .$cliente[0]->fix_number;
 			$orden->client_id = $cliente[0]->user_id;
+			//verificamos si ya terminado sus datos de perfil
+			if(empty($cliente[0]->names) || empty($cliente[0]->adress) || empty($cliente[0]->email) ){
+				//el cleinte no ha terminado su registro
+				return Redirect::back()->with('error',['Lo sentimos pero el pedido no pudo realizarce, aùn tienes datos por diligenciar en tu perfil de usuario.']);
+
+			}
 		}
 		$orden->active= true;
 		$orden->stage_id = 1;
@@ -1131,7 +1212,7 @@ class WelcomeController extends Controller {
 			//envio de correo al tendero
 			try{
 				Mail::send('email.order',$data,function($message) use ($tienda,$orden) {
-					$message->from(Session::get('mail'),Session::get('copy').' - '.$orden->id);
+					$message->from(Session::get('mail'),Session::get('app').' - '.$orden->id);
 					$message->to($tienda[0]->email,$tienda[0]->name)->subject('Orden de Pedido.');
 				});
 			}catch (\Exception  $e) {	
@@ -1141,7 +1222,7 @@ class WelcomeController extends Controller {
 			//envio de correo a cliente, si falla notificar al tendero en mensage
 			try{
 				Mail::send('email.order_client',$data,function($message) use ($orden) {
-					$message->from(Session::get('mail'),Session::get('copy').' - '.$orden->id);
+					$message->from(Session::get('mail'),Session::get('app').' - '.$orden->id);
 					$message->to($orden->email_client,$orden->name_client)->subject('Orden de Pedido.');
 				});
 			}catch (\Exception  $e) {	
@@ -1189,8 +1270,7 @@ class WelcomeController extends Controller {
 		
 	}
 
-	public function getTerminosycondiciones(Request $request){
-		
+	public function getTerminosycondiciones(Request $request){		
 		return view('user/terminos');		
 	}
 	
